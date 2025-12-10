@@ -146,3 +146,53 @@ Notes / follow-ups:
 
 - Next: complete security review by searching for secrets and verifying there are no config files with credentials. I will also run a final markdown syntax check and ask for your approval before committing.
 - If you'd like, I can extract the appended appendix into a separate `PRD_Addendum.md` instead; you previously asked for in-place edits so I applied them there.
+
+---
+
+## Consolidated Checklist (current status)
+
+**What I'm Building:**
+
+- ✅ `src/screens/SignUp.jsx` - User registration form
+- ✅ `src/screens/Login.jsx` - User login form
+- ✅ `src/contexts/AuthContext.jsx` - Global auth state management
+- ✅ `src/config/firebase.js` - Firebase configuration (uses `import.meta.env` placeholders)
+- ✅ `src/components/Navbar.jsx` - Smart navbar with auth display
+- ✅ `src/screens/Dashboard.jsx` - Bare-bones dashboard with metrics and recent uploads
+- ✅ `src/screens/BrandAssets/UploadAsset.jsx` - Admin upload form (storage + metadata)
+- ✅ `PRD.md` - Consolidated canonical PRD with Appendix (Data Schema, mock API contract, env example, firebase.rules)
+
+**Remaining (priority for 10% MVP):**
+
+### Task 1.1: Firebase Project Configuration ⭐ CRITICAL
+- [ ] Create/verify Firebase project on Firebase Console
+- [ ] Obtain Firebase configuration credentials and set local `.env.local` (do NOT commit)
+
+### Task 1.2: Wire App & Routes
+- [ ] Add `src/App.jsx` minimal router and wrap app with `AuthProvider`
+- [ ] Register routes: `/`, `/login`, `/signup`, `/dashboard`, `/brand`, `/templates`, `/upload`, `/share/:id`
+
+### Task 1.3: Asset Library (Core PoC)
+- [ ] Implement `src/screens/BrandAssets/AssetLibrary.jsx` to list assets by category
+- [ ] Add download links that use Storage `fileUrl` (signed URLs if available)
+
+### Task 1.4: Integrations & UX
+- [ ] Integrate `Upload` into Navbar (route `/upload`) and protect admin access
+- [ ] Add minimal page shells for `Brand` (colors, typography) and `Templates`
+
+### Task 1.5: Brand Sweep (Mock)
+- [ ] Implement `src/screens/BrandSweep.jsx` to upload old/new logos and call `/api/sweep` mock (simulate progress)
+- [ ] Persist sweep results in Firestore `sweeps/{id}` per the PRD schema
+
+### Task 1.6: Styling + Polish (Minimal)
+- [ ] Apply consistent Tailwind classes across pages (dark theme)
+- [ ] Ensure mobile/responsive layout for each page
+
+### Task 1.7: Final Review & Security
+- [ ] Run repo secret scan and confirm no secrets committed
+- [ ] Verify `firebase.rules` are applied in staging/testing
+- [ ] Run basic functional smoke tests (signup, login, upload, download, sweep mock)
+
+---
+
+I will start with Task 1.2: wire `App.jsx` with routes and `AuthProvider`, then scaffold `AssetLibrary.jsx`. I will mark each task done as I finish it.
