@@ -18,26 +18,34 @@ export default function Dashboard() {
       setLoading(false);
       return;
     }
-    
+
     const assetsRef = collection(db, "assets");
     const qRecent = query(assetsRef, orderBy("uploadedAt", "desc"), limit(5));
 
     // total assets count via snapshot (not optimal for large collections but fine for PoC)
-    const unsubTotal = onSnapshot(assetsRef, (snap) => {
-      setTotalAssets(snap.size);
-    }, (error) => {
-      console.error("Error loading assets:", error);
-      setLoading(false);
-    });
+    const unsubTotal = onSnapshot(
+      assetsRef,
+      (snap) => {
+        setTotalAssets(snap.size);
+      },
+      (error) => {
+        console.error("Error loading assets:", error);
+        setLoading(false);
+      }
+    );
 
-    const unsubRecent = onSnapshot(qRecent, (snap) => {
-      const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
-      setRecent(items);
-      setLoading(false);
-    }, (error) => {
-      console.error("Error loading recent assets:", error);
-      setLoading(false);
-    });
+    const unsubRecent = onSnapshot(
+      qRecent,
+      (snap) => {
+        const items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        setRecent(items);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error loading recent assets:", error);
+        setLoading(false);
+      }
+    );
 
     return () => {
       unsubTotal();
@@ -48,19 +56,29 @@ export default function Dashboard() {
   return (
     <div>
       <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-      <p className="text-gray-600 mb-8">Overview of your brand assets and activity</p>
-      
+      <p className="text-gray-600 mb-8">
+        Overview of your brand assets and activity
+      </p>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-600 mb-2">Total Assets</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">
+            Total Assets
+          </div>
           <div className="text-4xl font-bold text-blue-600">{totalAssets}</div>
         </div>
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-600 mb-2">Recent Activity</div>
-          <div className="text-4xl font-bold text-emerald-600">{recent.length}</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">
+            Recent Activity
+          </div>
+          <div className="text-4xl font-bold text-emerald-600">
+            {recent.length}
+          </div>
         </div>
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-600 mb-2">Last Sweep</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">
+            Last Sweep
+          </div>
           <div className="text-4xl font-bold text-gray-600">N/A</div>
         </div>
       </div>
@@ -76,7 +94,7 @@ export default function Dashboard() {
         ) : (
           <ul className="space-y-3">
             {recent.map((r) => (
-              <li key={r.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
+              <li key={r.id} className="list-item">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="font-medium text-gray-900">{r.name}</div>
@@ -96,4 +114,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

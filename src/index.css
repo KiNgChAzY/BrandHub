@@ -6,6 +6,10 @@
   --brand-primary: #0ea5a4;
 }
 
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
 @layer base {
   * {
     @apply border-gray-700;
@@ -22,6 +26,7 @@
       sans-serif;
   }
 
+  /* Headings */
   h1 {
     @apply text-3xl font-bold mb-4 text-gray-100;
   }
@@ -34,6 +39,7 @@
     @apply text-xl font-bold mb-2 text-gray-100;
   }
 
+  /* Links and Buttons */
   a {
     @apply text-blue-400 hover:text-blue-300 transition-colors;
   }
@@ -42,12 +48,18 @@
     @apply transition-all duration-200;
   }
 
+  /* Form Elements */
   input, select, textarea {
     @apply text-gray-100;
   }
 }
 
+/* ==========================================================================
+   Component Styles
+   ========================================================================== */
+
 @layer components {
+  /* Buttons */
   .btn-primary {
     @apply px-6 py-2.5 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 
            active:bg-blue-800 transition-all duration-200 shadow-md hover:shadow-lg 
@@ -72,12 +84,14 @@
            shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  /* Inputs */
   .input {
     @apply w-full px-4 py-2.5 rounded-lg border border-gray-700 bg-gray-800 
            text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 
            focus:ring-blue-500 focus:border-transparent transition-all;
   }
 
+  /* Cards */
   .card {
     @apply p-6 rounded-lg bg-gray-800 shadow-lg border border-gray-700;
   }
@@ -87,6 +101,7 @@
            border border-gray-700 shadow-xl hover:shadow-2xl transition-all duration-300;
   }
 
+  /* Layout */
   .flex-center {
     @apply flex items-center justify-center;
   }
@@ -97,5 +112,15 @@
 
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Alerts */
+  .alert-danger {
+    @apply p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm;
+  }
+
+  /* List Items */
+  .list-item {
+    @apply p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors;
   }
 }
