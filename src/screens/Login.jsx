@@ -24,10 +24,10 @@ export default function Login() {
     <div className="max-w-md mx-auto">
       <div className="card">
         <h2 className="text-3xl font-bold mb-2 text-center">Welcome Back</h2>
-        <p className="text-gray-400 text-center mb-6">Sign in to your BrandHub account</p>
+        <p className="text-gray-600 text-center mb-6">Sign in to your BrandHub account</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -38,7 +38,7 @@ export default function Login() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -49,7 +49,7 @@ export default function Login() {
             />
           </div>
           {error && (
-            <div className="p-3 rounded-lg bg-red-900/50 border border-red-700 text-red-300 text-sm">
+            <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
               {error}
             </div>
           )}
@@ -61,3 +61,4 @@ export default function Login() {
     </div>
   );
 }
+

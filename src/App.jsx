@@ -19,13 +19,13 @@ function BrandLandingPage() {
       <h1 className="text-3xl font-bold mb-4">Brand Guidelines</h1>
       <p className="text-gray-400 mb-6">Select a section to view brand guidelines</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link to="/brand/colors" className="card hover:bg-gray-700 transition-colors cursor-pointer">
+        <Link to="/brand/colors" className="card hover:bg-gray-50 transition-colors cursor-pointer">
           <h2 className="text-xl font-bold mb-2">Colors</h2>
-          <p className="text-gray-400">View color palette and swatches</p>
+          <p className="text-gray-600">View color palette and swatches</p>
         </Link>
-        <Link to="/brand/typography" className="card hover:bg-gray-700 transition-colors cursor-pointer">
+        <Link to="/brand/typography" className="card hover:bg-gray-50 transition-colors cursor-pointer">
           <h2 className="text-xl font-bold mb-2">Typography</h2>
-          <p className="text-gray-400">View font families and styles</p>
+          <p className="text-gray-600">View font families and styles</p>
         </Link>
       </div>
     </div>
@@ -38,8 +38,8 @@ function AdminRoute({ children }) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -53,8 +53,8 @@ function PrivateRoute({ children }) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mb-4"></div>
-          <p className="text-gray-400">Loading...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -65,7 +65,7 @@ function PrivateRoute({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-900 text-gray-100">
+      <div className="min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
         <main className="container mx-auto py-8">
           <Routes>

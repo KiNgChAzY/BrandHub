@@ -48,43 +48,43 @@ export default function Dashboard() {
   return (
     <div>
       <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-      <p className="text-gray-400 mb-8">Overview of your brand assets and activity</p>
+      <p className="text-gray-600 mb-8">Overview of your brand assets and activity</p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-400 mb-2">Total Assets</div>
-          <div className="text-4xl font-bold text-blue-400">{totalAssets}</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">Total Assets</div>
+          <div className="text-4xl font-bold text-blue-600">{totalAssets}</div>
         </div>
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-400 mb-2">Recent Activity</div>
-          <div className="text-4xl font-bold text-green-400">{recent.length}</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">Recent Activity</div>
+          <div className="text-4xl font-bold text-emerald-600">{recent.length}</div>
         </div>
         <div className="metric-card">
-          <div className="text-sm font-medium text-gray-400 mb-2">Last Sweep</div>
-          <div className="text-4xl font-bold text-gray-400">N/A</div>
+          <div className="text-sm font-medium text-gray-600 mb-2">Last Sweep</div>
+          <div className="text-4xl font-bold text-gray-600">N/A</div>
         </div>
       </div>
 
       <section className="card">
         <h2 className="text-2xl font-bold mb-4">Recent Uploads</h2>
         {loading ? (
-          <div className="text-center py-8 text-gray-400">Loading...</div>
+          <div className="text-center py-8 text-gray-600">Loading...</div>
         ) : recent.length === 0 ? (
-          <div className="text-center py-8 text-gray-400">
+          <div className="text-center py-8 text-gray-600">
             No assets uploaded yet. Upload your first asset to get started!
           </div>
         ) : (
           <ul className="space-y-3">
             {recent.map((r) => (
-              <li key={r.id} className="p-4 bg-gray-700/50 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors">
+              <li key={r.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-medium text-gray-100">{r.name}</div>
-                    <div className="text-sm text-gray-400 mt-1">
+                    <div className="font-medium text-gray-900">{r.name}</div>
+                    <div className="text-sm text-gray-600 mt-1">
                       {r.category} • {r.fileType}
                     </div>
                   </div>
-                  <span className="px-3 py-1 text-xs font-medium bg-blue-600/20 text-blue-400 rounded-full">
+                  <span className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full">
                     {r.category}
                   </span>
                 </div>
@@ -96,3 +96,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

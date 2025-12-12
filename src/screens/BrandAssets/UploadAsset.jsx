@@ -19,14 +19,14 @@ export default function UploadAsset() {
   if (!user) {
     return (
       <div className="card">
-        <p className="text-gray-400">Please log in to upload assets.</p>
+        <p className="text-gray-600">Please log in to upload assets.</p>
       </div>
     );
   }
   if (role !== "admin") {
     return (
       <div className="card">
-        <p className="text-gray-400">Only admins can upload assets.</p>
+        <p className="text-gray-600">Only admins can upload assets.</p>
       </div>
     );
   }
@@ -94,10 +94,10 @@ export default function UploadAsset() {
     <div className="max-w-2xl mx-auto">
       <div className="card">
         <h1 className="text-3xl font-bold mb-2">Upload Asset</h1>
-        <p className="text-gray-400 mb-6">Add a new brand asset to your library</p>
+        <p className="text-gray-600 mb-6">Add a new brand asset to your library</p>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Asset Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -107,7 +107,7 @@ export default function UploadAsset() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -121,17 +121,17 @@ export default function UploadAsset() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">File</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">File</label>
             <input 
               type="file" 
               accept="*/*" 
               onChange={handleFileChange}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-700 bg-gray-800 text-gray-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
             />
             <p className="text-xs text-gray-500 mt-1">Maximum file size: 10MB</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Description (optional)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Description (optional)</label>
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -140,17 +140,17 @@ export default function UploadAsset() {
             />
           </div>
           {error && (
-            <div className="p-3 rounded-lg bg-red-900/50 border border-red-700 text-red-300 text-sm">
+            <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
               {error}
             </div>
           )}
           {loading && (
-            <div className="p-4 rounded-lg bg-blue-900/50 border border-blue-700">
+            <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-300">Uploading...</span>
-                <span className="text-sm font-medium text-blue-400">{progress}%</span>
+                <span className="text-sm text-blue-700">Uploading...</span>
+                <span className="text-sm font-medium text-blue-600">{progress}%</span>
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-gray-100 rounded-full h-2">
                 <div 
                   className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
@@ -170,3 +170,4 @@ export default function UploadAsset() {
     </div>
   );
 }
+
