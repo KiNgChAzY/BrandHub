@@ -21,20 +21,43 @@ export default function Login() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-4">
-      <h2 className="text-2xl mb-4">Login</h2>
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <div>
-          <label className="block text-sm">Email</label>
-          <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 rounded bg-gray-800 text-white" type="email" required />
-        </div>
-        <div>
-          <label className="block text-sm">Password</label>
-          <input value={password} onChange={(e) => setPassword(e.target.value)} className="w-full p-2 rounded bg-gray-800 text-white" type="password" required />
-        </div>
-        {error && <div className="text-red-400">{error}</div>}
-        <button className="px-4 py-2 bg-indigo-600 rounded">Sign in</button>
-      </form>
+    <div className="max-w-md mx-auto">
+      <div className="card">
+        <h2 className="text-3xl font-bold mb-2 text-center">Welcome Back</h2>
+        <p className="text-gray-400 text-center mb-6">Sign in to your BrandHub account</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input"
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          {error && (
+            <div className="p-3 rounded-lg bg-red-900/50 border border-red-700 text-red-300 text-sm">
+              {error}
+            </div>
+          )}
+          <button type="submit" className="btn-primary w-full">
+            Sign in
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

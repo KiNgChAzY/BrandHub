@@ -16,6 +16,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if Firebase is configured
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
+    
     const unsubscribe = onAuthStateChanged(auth, async (u) => {
       setUser(u);
       if (u) {
@@ -32,11 +38,22 @@ export function AuthProvider({ children }) {
         setRole(null);
       }
       setLoading(false);
+    }, (error) => {
+      console.error("Auth state error:", error);
+      setLoading(false);
     });
     return unsubscribe;
   }, []);
 
-  async function signup(email, password, selectedRole = "user", displayName = "") {
+  async function signup(
+    email,
+    password,
+    selectedRole = "user",
+    displayName = ""
+  ) {
+    if (!auth) {
+      throw new Error("Firebase not configured. Please set up .env.local with Firebase credentials.");
+    }
     const res = await createUserWithEmailAndPassword(auth, email, password);
     // create user profile in Firestore
     await setDoc(doc(db, "users", res.user.uid), {
@@ -49,15 +66,21 @@ export function AuthProvider({ children }) {
   }
 
   function login(email, password) {
+    if (!auth) {
+      throw new Error("Firebase not configured. Please set up .env.local with Firebase credentials.");
+    }
     return signInWithEmailAndPassword(auth, email, password);
   }
 
   function logout() {
+    if (!auth) return Promise.resolve();
     return signOut(auth);
   }
 
   return (
-    <AuthContext.Provider value={{ user, role, loading, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, role, loading, signup, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
