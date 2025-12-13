@@ -17,15 +17,27 @@ function BrandLandingPage() {
   return (
     <div className="card">
       <h1 className="text-3xl font-bold mb-4">Brand Guidelines</h1>
-      <p className="text-gray-400 mb-6">Select a section to view brand guidelines</p>
+      <p className="mb-6" style={{ color: "var(--text-secondary)" }}>
+        Select a section to view brand guidelines
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link to="/brand/colors" className="card hover:bg-gray-50 transition-colors cursor-pointer">
+        <Link
+          to="/brand/colors"
+          className="card hover:shadow-md transition-all cursor-pointer"
+        >
           <h2 className="text-xl font-bold mb-2">Colors</h2>
-          <p className="text-gray-600">View color palette and swatches</p>
+          <p style={{ color: "var(--text-secondary)" }}>
+            View color palette and swatches
+          </p>
         </Link>
-        <Link to="/brand/typography" className="card hover:bg-gray-50 transition-colors cursor-pointer">
+        <Link
+          to="/brand/typography"
+          className="card hover:shadow-md transition-all cursor-pointer"
+        >
           <h2 className="text-xl font-bold mb-2">Typography</h2>
-          <p className="text-gray-600">View font families and styles</p>
+          <p style={{ color: "var(--text-secondary)" }}>
+            View font families and styles
+          </p>
         </Link>
       </div>
     </div>
@@ -136,10 +148,7 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-            <Route
-              path="/share/:id"
-              element={<ShareBrandPage />}
-            />
+            <Route path="/share/:id" element={<ShareBrandPage />} />
           </Routes>
         </main>
       </div>
