@@ -1,0 +1,25 @@
+{
+  "models": [
+    {
+      "title": "DeepSeek",
+      "provider": "openai",
+      "model": "deepseek-coder",
+      "apiKey": "sk-e448ca03f4b74a199ec8c058a6af135c",
+      "apiBase": "https://api.deepseek.com",
+      "contextLength": 32768
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "DeepSeek",
+    "provider": "openai",
+    "model": "deepseek-coder",
+    "apiKey": "sk-e448ca03f4b74a199ec8c058a6af135c",
+    "apiBase": "https://api.deepseek.com"
+  },
+  "embeddingsProvider": {
+    "provider": "openai",
+    "model": "text-embedding-ada-002",
+    "apiKey": "sk-e448ca03f4b74a199ec8c058a6af135c",
+    "apiBase": "https://api.deepseek.com"
+  }
+}

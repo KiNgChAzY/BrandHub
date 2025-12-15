@@ -5,6 +5,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 
@@ -21,27 +24,31 @@ export function AuthProvider({ children }) {
       setLoading(false);
       return;
     }
-    
-    const unsubscribe = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
-      if (u) {
-        try {
-          const ref = doc(db, "users", u.uid);
-          const snap = await getDoc(ref);
-          if (snap.exists()) setRole(snap.data().role || "user");
-          else setRole("user");
-        } catch (err) {
-          console.error("Error fetching user role:", err);
-          setRole("user");
+
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      async (u) => {
+        setUser(u);
+        if (u) {
+          try {
+            const ref = doc(db, "users", u.uid);
+            const snap = await getDoc(ref);
+            if (snap.exists()) setRole(snap.data().role || "user");
+            else setRole("user");
+          } catch (err) {
+            console.error("Error fetching user role:", err);
+            setRole("user");
+          }
+        } else {
+          setRole(null);
         }
-      } else {
-        setRole(null);
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Auth state error:", error);
+        setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error("Auth state error:", error);
-      setLoading(false);
-    });
+    );
     return unsubscribe;
   }, []);
 
@@ -52,7 +59,9 @@ export function AuthProvider({ children }) {
     displayName = ""
   ) {
     if (!auth) {
-      throw new Error("Firebase not configured. Please set up .env.local with Firebase credentials.");
+      throw new Error(
+        "Firebase not configured. Please set up .env.local with Firebase credentials."
+      );
     }
     const res = await createUserWithEmailAndPassword(auth, email, password);
     // create user profile in Firestore
@@ -67,7 +76,9 @@ export function AuthProvider({ children }) {
 
   function login(email, password) {
     if (!auth) {
-      throw new Error("Firebase not configured. Please set up .env.local with Firebase credentials.");
+      throw new Error(
+        "Firebase not configured. Please set up .env.local with Firebase credentials."
+      );
     }
     return signInWithEmailAndPassword(auth, email, password);
   }
@@ -77,9 +88,74 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  async function loginWithGoogle() {
+    if (!auth) {
+      throw new Error(
+        "Firebase not configured. Please set up .env.local with Firebase credentials."
+      );
+    }
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+
+    // Create or update user profile in Firestore
+    const userRef = doc(db, "users", result.user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        email: result.user.email,
+        role: "user",
+        displayName: result.user.displayName || "",
+        lastLogin: serverTimestamp(),
+        provider: "google",
+      });
+    } else {
+      await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+    }
+
+    return result;
+  }
+
+  async function loginWithGithub() {
+    if (!auth) {
+      throw new Error(
+        "Firebase not configured. Please set up .env.local with Firebase credentials."
+      );
+    }
+    const provider = new GithubAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+
+    // Create or update user profile in Firestore
+    const userRef = doc(db, "users", result.user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        email: result.user.email,
+        role: "user",
+        displayName: result.user.displayName || "",
+        lastLogin: serverTimestamp(),
+        provider: "github",
+      });
+    } else {
+      await setDoc(userRef, { lastLogin: serverTimestamp() }, { merge: true });
+    }
+
+    return result;
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, role, loading, signup, login, logout }}
+      value={{
+        user,
+        role,
+        loading,
+        signup,
+        login,
+        logout,
+        loginWithGoogle,
+        loginWithGithub,
+      }}
     >
       {children}
     </AuthContext.Provider>

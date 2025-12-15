@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
+import { TwentyFirstToolbar } from "@21st-extension/toolbar-react";
+import { ReactPlugin } from "@21st-extension/react";
 import Navbar from "./components/Navbar";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
@@ -77,6 +79,7 @@ function PrivateRoute({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <TwentyFirstToolbar config={{ plugins: [ReactPlugin] }} />
       <div className="min-h-screen bg-gray-50 text-gray-900">
         <Navbar />
         <main className="container mx-auto py-8">
