@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { getFirebaseErrorMessage } from "../utils/errorMessages";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function Login() {
       await login(email, password);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.message || "Login failed");
+      setError(getFirebaseErrorMessage(err));
     }
   }
 
@@ -24,10 +25,10 @@ export default function Login() {
     <div className="max-w-md mx-auto">
       <div className="card">
         <h2 className="text-3xl font-bold mb-2 text-center">Welcome Back</h2>
-        <p className="text-gray-600 text-center mb-6">Sign in to your BrandHub account</p>
+        <p className="text-muted-foreground text-center mb-6">Sign in to your BrandHub account</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Email</label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -35,10 +36,11 @@ export default function Login() {
               type="email"
               placeholder="you@example.com"
               required
+              maxLength={254}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Password</label>
             <input
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -46,10 +48,11 @@ export default function Login() {
               type="password"
               placeholder="••••••••"
               required
+              maxLength={128}
             />
           </div>
           {error && (
-            <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
               {error}
             </div>
           )}
@@ -57,8 +60,17 @@ export default function Login() {
             Sign in
           </button>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-primary hover:underline font-medium">
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
+
 

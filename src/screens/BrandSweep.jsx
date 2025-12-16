@@ -3,6 +3,7 @@ import { storage, db } from "../config/firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import { sanitizeFileName } from "../utils/security";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
@@ -19,7 +20,7 @@ export default function BrandSweep() {
   if (!user) {
     return (
       <div className="card">
-        <p className="text-gray-600">Please log in to run brand sweeps.</p>
+        <p className="text-muted-foreground">Please log in to run brand sweeps.</p>
       </div>
     );
   }
@@ -76,9 +77,12 @@ export default function BrandSweep() {
 
     try {
       // Upload both logos to Firebase Storage
+      // Sanitize file names to prevent path traversal attacks
       const timestamp = Date.now();
-      const oldLogoPath = `sweeps/${timestamp}_old_${oldLogo.name}`;
-      const newLogoPath = `sweeps/${timestamp}_new_${newLogo.name}`;
+      const safeOldFileName = sanitizeFileName(oldLogo.name);
+      const safeNewFileName = sanitizeFileName(newLogo.name);
+      const oldLogoPath = `sweeps/${timestamp}_old_${safeOldFileName}`;
+      const newLogoPath = `sweeps/${timestamp}_new_${safeNewFileName}`;
 
       const oldLogoRef = ref(storage, oldLogoPath);
       const newLogoRef = ref(storage, newLogoPath);
@@ -148,56 +152,69 @@ export default function BrandSweep() {
   }
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold mb-2">Brand Sweep</h1>
-      <p className="text-gray-600 mb-8">Scan the web for outdated brand usage</p>
-      
-      <div className="card mb-6">
+    <div className="space-y-8">
+      {/* Hero Section */}
+      <section>
+        <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 p-8 text-white">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-2">
+              <h2 className="text-3xl font-bold">Brand Sweep</h2>
+              <p className="max-w-[600px] text-white/80">
+                Scan the web for outdated brand usage and maintain brand consistency.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Upload Section */}
+      <section>
+        <div className="card mb-6">
         <h2 className="text-2xl font-bold mb-4">Upload Logos</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Old Logo</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Old Logo</label>
             <input 
               type="file" 
               accept="image/*"
               onChange={handleOldLogoChange}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
               disabled={loading}
             />
             {oldLogo && (
-              <p className="text-xs text-gray-600 mt-1">Selected: {oldLogo.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">Selected: {oldLogo.name}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">New/Current Logo</label>
+            <label className="block text-sm font-medium text-foreground mb-2">New/Current Logo</label>
             <input 
               type="file" 
               accept="image/*"
               onChange={handleNewLogoChange}
-              className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
               disabled={loading}
             />
             {newLogo && (
-              <p className="text-xs text-gray-600 mt-1">Selected: {newLogo.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">Selected: {newLogo.name}</p>
             )}
           </div>
-          <p className="text-xs text-gray-500">Maximum file size: 10MB per file</p>
+          <p className="text-xs text-muted-foreground">Maximum file size: 10MB per file</p>
           {error && (
-            <div className="p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
               {error}
             </div>
           )}
           {loading && (
-            <div className="p-4 rounded-lg bg-blue-50 border border-blue-200">
+            <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-700">
+                <span className="text-sm text-primary">
                   {sweepStatus === "uploading" ? "Uploading logos..." : "Running sweep..."}
                 </span>
-                <span className="text-sm font-medium text-blue-600">{progress}%</span>
+                <span className="text-sm font-medium text-primary">{progress}%</span>
               </div>
-              <div className="w-full bg-gray-100 rounded-full h-2">
+              <div className="w-full bg-accent rounded-full h-2">
                 <div 
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
@@ -212,53 +229,75 @@ export default function BrandSweep() {
           </button>
         </div>
       </div>
+      </section>
 
+      {/* Results Section */}
       {results && results.length > 0 && (
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-4">Sweep Results</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">URL</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Detected Asset</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Action</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Confidence</th>
-                </tr>
-              </thead>
-              <tbody>
+        <section>
+          <div className="card">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-semibold">Sweep Results</h2>
+              <span className="px-3 py-1 rounded-2xl bg-destructive/10 text-destructive text-sm font-medium">
+                {results.length} issues found
+              </span>
+            </div>
+            <div className="rounded-3xl border overflow-hidden">
+              <div className="bg-muted/50 p-3 hidden md:grid md:grid-cols-12 text-sm font-medium">
+                <div className="col-span-4">URL</div>
+                <div className="col-span-3">Detected Asset</div>
+                <div className="col-span-2">Action</div>
+                <div className="col-span-3">Confidence</div>
+              </div>
+              <div className="divide-y">
                 {results.map((site, index) => (
-                  <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="py-3 px-4 text-sm text-gray-700">
-                      <a href={site.url} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
+                  <div
+                    key={index}
+                    className="p-3 md:grid md:grid-cols-12 items-center flex flex-col md:flex-row gap-3 md:gap-0 hover:bg-accent/50 transition-colors"
+                  >
+                    <div className="col-span-4 w-full md:w-auto">
+                      <a
+                        href={site.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary hover:underline text-sm"
+                      >
                         {site.url}
                       </a>
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-700">{site.asset}</td>
-                    <td className="py-3 px-4 text-sm">
-                      <span className="px-2 py-1 rounded bg-amber-100 text-amber-700 text-xs font-medium">
+                    </div>
+                    <div className="col-span-3 text-sm text-foreground">{site.asset}</div>
+                    <div className="col-span-2">
+                      <span className="px-2 py-1 rounded-2xl bg-chart-4/20 text-chart-4 text-xs font-medium">
                         {site.action}
                       </span>
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-600">
+                    </div>
+                    <div className="col-span-3 text-sm text-muted-foreground">
                       {Math.round(site.confidence * 100)}%
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       )}
 
       {results && results.length === 0 && (
-        <div className="card">
-          <p className="text-gray-600 text-center py-8">No outdated brand usage detected. Your brand is consistent!</p>
-        </div>
+        <section>
+          <div className="card">
+            <div className="text-center py-12">
+              <div className="text-4xl mb-4">✅</div>
+              <p className="text-lg font-semibold mb-2">No Issues Found</p>
+              <p className="text-muted-foreground">
+                No outdated brand usage detected. Your brand is consistent!
+              </p>
+            </div>
+          </div>
+        </section>
       )}
     </div>
   );
 }
+
 
 
 
