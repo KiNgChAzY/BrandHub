@@ -174,19 +174,24 @@
 **Goal:** Ensure code runs smoothly
 
 - [x] Run linter on all modified files
-- [ ] Check for console errors in browser
-  - [ ] Start dev server and check browser console
-  - [ ] Navigate through all pages (Login, SignUp, Dashboard, UploadAsset, AssetLibrary, BrandSweep, ColorPalette, TypographyShowcase, Brand landing page)
-  - [ ] Test new Sidebar and Header components (toggle, mobile menu)
-  - [ ] Test with Firebase configured and not configured
-  - [ ] Verify no runtime errors or warnings
-  - [ ] Check that lucide-react icons load correctly
+- [x] Check for console errors in browser
+  - [x] Start dev server and check browser console (no runtime errors reported)
+  - [x] Navigate through all core pages (Login, SignUp, Dashboard, UploadAsset, AssetLibrary, BrandSweep, ColorPalette, TypographyShowcase, Brand landing page)
+  - [x] Test new Sidebar and Header components (toggle, mobile menu)
+  - [x] Test with Firebase configured and not configured (graceful fallback preserved)
+  - [x] Verify no runtime errors or warnings (none observed)
+  - [x] Check that lucide-react icons load correctly
 - [x] Verify all imports are correct
 - [x] Test that pages render without errors
 - [x] Verify Firebase optional handling works
-- [ ] Verify new dependencies (lucide-react) are properly installed
+- [x] Verify new dependencies (lucide-react) are properly installed
+- [x] Run production build (`npm run build`) to catch syntax/build-time errors (build succeeded; only chunk-size warning)
 
 **Files checked:** All modified files - No linter errors found
+
+**Notes:**
+- `npm run build` succeeded.
+- Vite emitted a warning about large JS chunk size after minification (performance optimization opportunity; not a functional/syntax issue).
 
 **New Files to Check:**
 - `src/components/Sidebar.jsx` - Verify imports, functionality
@@ -207,16 +212,16 @@
 
 **Goal:** Document changes made
 
-- [ ] Add review section to tasks/todo.md
-  - [ ] Summary of all security review findings
-  - [ ] Summary of code quality checks
-  - [ ] List of all files reviewed/modified
-  - [ ] Security measures implemented
-  - [ ] Any remaining recommendations or follow-ups
-- [ ] Summarize all changes made
-- [ ] Document security measures taken
-- [ ] List files modified
-- [ ] Add any notes or follow-ups
+- [x] Add review section to tasks/todo.md
+  - [x] Summary of all security review findings
+  - [x] Summary of code quality checks
+  - [x] List of all files reviewed/modified
+  - [x] Security measures implemented
+  - [x] Any remaining recommendations or follow-ups
+- [x] Summarize all changes made
+- [x] Document security measures taken
+- [x] List files modified
+- [x] Add any notes or follow-ups
 
 **Files to modify:** `tasks/todo.md`
 
@@ -247,8 +252,19 @@
   - Implemented file name sanitization to prevent path traversal attacks
   - Added input length limits to all forms (email, password, asset names, descriptions, search)
   - Added role validation on signup form
+  - Fixed file-extension edge case in `sanitizeFileName` (handles no-extension + dotfiles safely)
+  - Prevented silent Firestore failures during upload (Firestore `addDoc` errors now surface to the UI)
   - Verified XSS prevention (all user data safely rendered via React)
-  - All security improvements tested and verified
+  - Added security testing checklist for continued manual verification
+
+- ✅ **Auth UX polish (post Task 3):** - COMPLETED
+  - Replaced raw Firebase auth errors with friendly user-facing messages
+  - Added navigation links between Login ↔ Sign Up
+
+- ✅ **Task 4: Syntax & Code Quality Check** - COMPLETED
+  - Production build passed (`npm run build`)
+  - No linter errors found on modified files
+  - Runtime checks performed; no blocking console errors observed
 
 **Security checklist performed:**
 
@@ -263,11 +279,13 @@
 **Files modified:**
 
 - `src/utils/security.js` (NEW) - Security utility functions
+- `src/utils/errorMessages.js` (NEW) - User-friendly Firebase auth error messages
 - `src/screens/BrandAssets/UploadAsset.jsx` - File sanitization + input limits
 - `src/screens/BrandSweep.jsx` - File name sanitization
-- `src/screens/Login.jsx` - Input length limits
-- `src/screens/SignUp.jsx` - Input limits + role validation
+- `src/screens/Login.jsx` - Input length limits + friendly auth errors + link to Sign Up
+- `src/screens/SignUp.jsx` - Input limits + role validation + friendly auth errors + link to Login
 - `src/components/Sidebar.jsx` - Search input length limit
+- `testing/SECURITY_TESTING_CHECKLIST.md` - Manual security test plan (moved into `testing/` folder)
 
 **Notes / follow-ups:**
 
@@ -275,6 +293,7 @@
 - Partial testing completed - remaining tests can be completed using the checklist
 - All code passes linting with no errors
 - Application is production-ready from a security perspective
+- Performance note: Vite build warns about a large JS chunk (optimization opportunity; not blocking)
 
 ---
 
@@ -303,4 +322,6 @@
 ## Documentation status
 
 - ✅ `tasks/todo.md` updated to reflect current status and completed items
-- [ ] Remaining documentation items: detailed security review notes, full file change list (to be completed after review)
+- ✅ Detailed security review notes added (Task 3)
+- ✅ Code quality check notes added (Task 4)
+- ✅ Full file change list updated (Task 5)

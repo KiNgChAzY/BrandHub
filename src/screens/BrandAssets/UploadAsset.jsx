@@ -83,24 +83,33 @@ export default function UploadAsset() {
           setLoading(false);
         },
         async () => {
-          const url = await getDownloadURL(uploadTask.snapshot.ref);
-          // Save metadata to Firestore (with sanitized inputs)
-          await addDoc(collection(db, "assets"), {
-            name: sanitizedName,
-            category,
-            fileUrl: url,
-            fileType: file.type,
-            uploadedBy: user.uid,
-            uploadedAt: serverTimestamp(),
-            downloads: 0,
-            metadata: { description: sanitizeText(description, MAX_DESCRIPTION_LENGTH) },
-          });
-          setLoading(false);
-          setProgress(100);
-          setName("");
-          setCategory("logo");
-          setFile(null);
-          setDescription("");
+          try {
+            const url = await getDownloadURL(uploadTask.snapshot.ref);
+            // Save metadata to Firestore (with sanitized inputs)
+            await addDoc(collection(db, "assets"), {
+              name: sanitizedName,
+              category,
+              fileUrl: url,
+              fileType: file.type,
+              uploadedBy: user.uid,
+              uploadedAt: serverTimestamp(),
+              downloads: 0,
+              metadata: {
+                description: sanitizeText(description, MAX_DESCRIPTION_LENGTH),
+              },
+            });
+
+            setLoading(false);
+            setProgress(100);
+            setName("");
+            setCategory("logo");
+            setFile(null);
+            setDescription("");
+          } catch (err) {
+            console.error(err);
+            setError(err?.message || "Failed to save asset metadata. Please try again.");
+            setLoading(false);
+          }
         }
       );
     } catch (err) {

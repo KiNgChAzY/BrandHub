@@ -26,8 +26,18 @@ export function sanitizeFileName(fileName) {
   // Limit length to prevent DoS
   const MAX_LENGTH = 255;
   if (sanitized.length > MAX_LENGTH) {
-    const ext = sanitized.substring(sanitized.lastIndexOf('.'));
-    sanitized = sanitized.substring(0, MAX_LENGTH - ext.length) + ext;
+    // Preserve extension when present (and not a leading dotfile like ".gitignore")
+    const lastDot = sanitized.lastIndexOf(".");
+    const hasExtension = lastDot > 0 && lastDot < sanitized.length - 1;
+    const ext = hasExtension ? sanitized.slice(lastDot) : "";
+    const base = hasExtension ? sanitized.slice(0, lastDot) : sanitized;
+
+    // Truncate base to fit, keeping extension if possible
+    if (ext && ext.length < MAX_LENGTH) {
+      sanitized = base.slice(0, MAX_LENGTH - ext.length) + ext;
+    } else {
+      sanitized = base.slice(0, MAX_LENGTH);
+    }
   }
   
   // Ensure we have a valid filename
