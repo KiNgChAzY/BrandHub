@@ -8,6 +8,8 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+  const [brandName, setBrandName] = useState("");
+  const [brandDescription, setBrandDescription] = useState("");
   const [error, setError] = useState(null);
   const { signup } = useAuth();
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ export default function SignUp() {
     }
     
     try {
-      await signup(email, password, role);
+      await signup(email, password, role, "", brandName, brandDescription);
       navigate("/dashboard");
     } catch (err) {
       setError(getFirebaseErrorMessage(err));
@@ -73,6 +75,28 @@ export default function SignUp() {
               <option value="admin">Admin</option>
             </select>
             <p className="text-xs text-muted-foreground mt-1">Admins can upload and manage assets</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Brand Name (optional)</label>
+            <input
+              value={brandName}
+              onChange={(e) => setBrandName(e.target.value)}
+              className="input"
+              placeholder="e.g., Acme Corporation"
+              maxLength={100}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Brand Description (optional)</label>
+            <textarea
+              value={brandDescription}
+              onChange={(e) => setBrandDescription(e.target.value)}
+              className="input"
+              placeholder="Brief description of your brand"
+              rows={3}
+              maxLength={500}
+            />
+            <p className="text-xs text-muted-foreground mt-1">Maximum 500 characters</p>
           </div>
           {error && (
             <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">

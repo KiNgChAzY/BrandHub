@@ -7,18 +7,42 @@ import {
   orderBy,
   limit,
   onSnapshot,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import { ImageIcon, Palette, Type, Layers, Wand2, FileText, TrendingUp, Users } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const [totalAssets, setTotalAssets] = useState(0);
   const [recent, setRecent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [brandName, setBrandName] = useState("");
+  const [brandDescription, setBrandDescription] = useState("");
 
   useEffect(() => {
     if (!db) {
       setLoading(false);
       return;
+    }
+    
+    // Load brand info from user profile
+    if (user) {
+      const loadBrandInfo = async () => {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            setBrandName(userData.brandName || "");
+            setBrandDescription(userData.brandDescription || "");
+          }
+        } catch (err) {
+          console.error("Error loading brand info:", err);
+        }
+      };
+      loadBrandInfo();
     }
     
     const assetsRef = collection(db, "assets");
@@ -44,7 +68,7 @@ export default function Dashboard() {
       unsubTotal();
       unsubRecent();
     };
-  }, []);
+  }, [user]);
 
   // Quick access apps (using our actual routes)
   const quickApps = [
@@ -116,9 +140,11 @@ export default function Dashboard() {
               <div className="px-3 py-1 rounded-xl bg-white/20 text-white text-sm font-medium inline-block">
                 Welcome Back
               </div>
-              <h2 className="text-3xl font-bold">BrandHub Dashboard</h2>
+              <h2 className="text-3xl font-bold">
+                {brandName ? `${brandName} Dashboard` : "BrandHub Dashboard"}
+              </h2>
               <p className="max-w-[600px] text-white/80">
-                Manage your brand assets, track usage, and maintain consistency across all channels.
+                {brandDescription || "Manage your brand assets, track usage, and maintain consistency across all channels."}
               </p>
               <div className="flex flex-wrap gap-3">
                 <Link to="/assets" className="px-4 py-2 rounded-2xl bg-white text-indigo-700 hover:bg-white/90 font-medium">

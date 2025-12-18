@@ -8,6 +8,7 @@ import SignUp from "./screens/SignUp";
 import Dashboard from "./screens/Dashboard";
 import UploadAsset from "./screens/BrandAssets/UploadAsset";
 import AssetLibrary from "./screens/BrandAssets/AssetLibrary";
+import AssetDetail from "./screens/BrandAssets/AssetDetail";
 import ColorPalette from "./screens/BrandAssets/ColorPalette";
 import TypographyShowcase from "./screens/BrandAssets/TypographyShowcase";
 import BrandSweep from "./screens/BrandSweep";
@@ -118,7 +119,15 @@ function AppContent() {
     "/upload": "Upload Asset",
   };
 
-  const pageTitle = pageTitles[location.pathname] || "BrandHub";
+  // Handle dynamic routes like /assets/:assetId
+  const getPageTitle = () => {
+    if (location.pathname.startsWith("/assets/") && location.pathname !== "/assets") {
+      return "Asset Details";
+    }
+    return pageTitles[location.pathname] || "BrandHub";
+  };
+
+  const pageTitle = getPageTitle();
 
   // Don't show sidebar on auth pages
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
@@ -182,6 +191,14 @@ function AppContent() {
               element={
                 <PrivateRoute>
                   <AssetLibrary />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/assets/:assetId"
+              element={
+                <PrivateRoute>
+                  <AssetDetail />
                 </PrivateRoute>
               }
             />

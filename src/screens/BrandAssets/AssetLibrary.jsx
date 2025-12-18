@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../../config/firebase";
 import { collection, query, orderBy, getDocs } from "firebase/firestore";
 import { FileText } from "lucide-react";
 
 export default function AssetLibrary() {
+  const navigate = useNavigate();
   const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -93,7 +95,8 @@ export default function AssetLibrary() {
           {assets.map((a) => (
             <div
               key={a.id}
-              className="card overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300 hover:scale-[1.02]"
+              className="card overflow-hidden rounded-3xl border hover:border-primary/50 transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+              onClick={() => navigate(`/assets/${a.id}`)}
             >
               <div className="pb-2">
                 <div className="flex items-center justify-between mb-3">
@@ -112,14 +115,15 @@ export default function AssetLibrary() {
                 </p>
               </div>
               <div className="pt-2">
-                <a
-                  href={a.fileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block w-full px-4 py-2 rounded-2xl bg-primary/10 text-primary text-sm font-medium text-center hover:bg-primary/20 transition-colors"
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(a.fileUrl, "_blank");
+                  }}
+                  className="w-full px-4 py-2 rounded-2xl bg-primary/10 text-primary text-sm font-medium text-center hover:bg-primary/20 transition-colors"
                 >
                   Download
-                </a>
+                </button>
               </div>
             </div>
           ))}

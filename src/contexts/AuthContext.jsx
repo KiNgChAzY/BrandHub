@@ -49,7 +49,9 @@ export function AuthProvider({ children }) {
     email,
     password,
     selectedRole = "user",
-    displayName = ""
+    displayName = "",
+    brandName = "",
+    brandDescription = ""
   ) {
     if (!auth) {
       throw new Error("Firebase not configured. Please set up .env.local with Firebase credentials.");
@@ -60,6 +62,8 @@ export function AuthProvider({ children }) {
       email,
       role: selectedRole,
       displayName,
+      brandName: brandName || "",
+      brandDescription: brandDescription || "",
       lastLogin: serverTimestamp(),
     });
     return res;

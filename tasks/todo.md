@@ -325,3 +325,178 @@
 - ✅ Detailed security review notes added (Task 3)
 - ✅ Code quality check notes added (Task 4)
 - ✅ Full file change list updated (Task 5)
+
+---
+
+## MVP Spec Alignment Plan
+
+**Purpose:** Align BrandHub with the MVP spec requirements from the business partner. This focuses on implementing missing MVP-critical features while hiding out-of-scope features.
+
+**Key Principles:**
+- **Simplicity First:** Every change should be minimal and impact as little code as possible
+- **Security First:** All code must be production-ready with proper validation and sanitization
+- **No Assumptions:** Ask questions if anything is unclear before implementing
+
+### Current State Analysis
+
+**✅ Already Built (Aligned with MVP):**
+- Email/password authentication
+- Admin/User roles (User = Viewer functionally)
+- Asset upload with categories
+- Asset library with grid view
+- Download functionality
+- Brand overview pages (Color Palette, Typography)
+- Asset Detail Page with two-panel layout + Usage Rules (already implemented)
+
+**❌ MVP-Critical Missing Features:**
+1. User Invitations by email (Required)
+2. Asset Version Replacement with archiving (Currently replaces but doesn't archive)
+3. User Feedback Loop modal (Required)
+4. Admin-only Delete functionality (Required)
+
+**🚫 Out of Scope but Currently Built:**
+- Brand Sweep (MVP spec explicitly excludes this - needs to be hidden)
+
+---
+
+### Implementation Plan
+
+#### Phase 1: Hide Out-of-Scope Features
+
+**Task 1.1: Hide Brand Sweep from Navigation**
+- [ ] Remove "Sweep" item from Sidebar navigation menu
+- [ ] Remove "Brand Sweep" card from Dashboard quick access apps
+- [ ] Remove "Run Sweep" button from Dashboard hero section
+- [ ] Comment out Brand Sweep route in App.jsx (keep code for future use)
+- [ ] Remove "/sweep" from pageTitles mapping in App.jsx
+- **Files to modify:** `src/components/Sidebar.jsx`, `src/screens/Dashboard.jsx`, `src/App.jsx`
+
+---
+
+#### Phase 2: User Invitations System
+
+**Task 2.1: Create UserInvite Component**
+- [ ] Create `src/components/UserInvite.jsx` component
+- [ ] Add email input field with validation (use `isValidEmail` from security utils)
+- [ ] Add role selection dropdown (User/Admin)
+- [ ] Add form submission handler
+- [ ] Store invitation in Firestore `invitations` collection with fields:
+  - `email` (sanitized, lowercase)
+  - `role` (user/admin)
+  - `invitedBy` (current user UID)
+  - `invitedByEmail` (current user email)
+  - `invitedAt` (serverTimestamp)
+  - `status` (pending/accepted/expired)
+- [ ] Prevent duplicate invitations (check if email already exists in invitations collection)
+- [ ] Add success/error message handling
+- [ ] Add modal close functionality
+- **Security:** Sanitize email input, validate role selection, prevent duplicate invites
+
+**Task 2.2: Add Invite Button to Header**
+- [ ] Add "Invite User" button to Header component (admin only)
+- [ ] Import UserInvite component
+- [ ] Add state to manage modal visibility
+- [ ] Position button next to Upload button
+- **Files to modify:** `src/components/Header.jsx`
+
+---
+
+#### Phase 3: User Feedback System
+
+**Task 3.1: Create FeedbackModal Component**
+- [ ] Create `src/components/FeedbackModal.jsx` component
+- [ ] Add feedback type selection (Bug / Feature Idea / General)
+- [ ] Add message textarea field (max 2000 chars, sanitized)
+- [ ] Add form submission handler
+- [ ] Store feedback in Firestore `feedback` collection with fields:
+  - `type` (bug/feature/general)
+  - `message` (sanitized text)
+  - `submittedBy` (user UID or "anonymous")
+  - `submittedByEmail` (user email or "anonymous")
+  - `submittedAt` (serverTimestamp)
+  - `status` (new/reviewed/archived)
+- [ ] Add success message and auto-close after submission
+- [ ] Add error handling
+- **Security:** Sanitize message text, enforce length limits
+
+**Task 3.2: Add Feedback Link to Sidebar**
+- [ ] Add "Give Feedback" button in Sidebar footer section
+- [ ] Import FeedbackModal component
+- [ ] Add state to manage modal visibility
+- [ ] Position above Settings button
+- **Files to modify:** `src/components/Sidebar.jsx`
+
+---
+
+#### Phase 4: Admin-Only Delete Functionality
+
+**Task 4.1: Add Delete Button to AssetDetail**
+- [ ] Add delete button next to "Replace Asset" button (admin only)
+- [ ] Add confirmation modal state
+- [ ] Style delete button with destructive styling
+- **Files to modify:** `src/screens/BrandAssets/AssetDetail.jsx`
+
+**Task 4.2: Implement Delete Functionality**
+- [ ] Create `handleDeleteAsset` function
+- [ ] Store `storagePath` in Firestore when uploading assets (update UploadAsset.jsx)
+- [ ] Delete file from Firebase Storage using `storagePath`
+- [ ] Delete document from Firestore `assets` collection
+- [ ] Navigate back to asset library after successful deletion
+- [ ] Add error handling for storage deletion failures
+- [ ] Add confirmation modal with warning message
+- **Security:** Only allow admin role, validate asset ownership, handle errors gracefully
+- **Files to modify:** `src/screens/BrandAssets/AssetDetail.jsx`, `src/screens/BrandAssets/UploadAsset.jsx`
+
+---
+
+#### Phase 5: Asset Version Archiving
+
+**Task 5.1: Update Asset Replacement to Archive Old Versions**
+- [ ] Before replacing, save old file URL and metadata to `previousVersions` array in asset document
+- [ ] Store version metadata: `fileUrl`, `fileType`, `replacedAt` (serverTimestamp), `replacedBy` (user UID)
+- [ ] Update replace function to append to `previousVersions` array instead of overwriting
+- [ ] Keep current version clearly marked (current fileUrl is the active version)
+- **Note:** MVP spec says "archive previous version automatically" - storing in Firestore is sufficient, no need for separate archive collection
+- **Files to modify:** `src/screens/BrandAssets/AssetDetail.jsx`
+
+**Task 5.2: Display Version Status in AssetDetail**
+- [ ] Show "Current" badge if no previous versions
+- [ ] Show version count if previous versions exist
+- [ ] Display in Asset Information panel
+- **Files to modify:** `src/screens/BrandAssets/AssetDetail.jsx`
+
+---
+
+### Security Checklist (Before Completion)
+
+- [ ] All user inputs sanitized (email, message text, file names)
+- [ ] Input length limits enforced (email max 254, message max 2000)
+- [ ] Role validation on invitation (only "user" or "admin" allowed)
+- [ ] Duplicate invitation prevention (query Firestore before creating)
+- [ ] Admin-only access enforced (delete, invite buttons)
+- [ ] No sensitive data in frontend code
+- [ ] Error messages don't expose system details
+- [ ] All Firestore operations have error handling
+- [ ] Storage operations have error handling
+
+---
+
+### Testing Checklist
+
+- [ ] Brand Sweep hidden from all navigation
+- [ ] User invitation modal opens and closes correctly
+- [ ] Invitation creates Firestore document with correct fields
+- [ ] Duplicate invitations prevented
+- [ ] Feedback modal opens and closes correctly
+- [ ] Feedback creates Firestore document with correct fields
+- [ ] Delete button only visible to admins
+- [ ] Delete confirmation modal shows warning
+- [ ] Delete removes file from Storage and document from Firestore
+- [ ] Asset replacement archives old version
+- [ ] Version status displays correctly
+
+---
+
+### Review Section
+
+_This section will be completed after implementation with a summary of changes, security review, and any notes._
