@@ -15,6 +15,9 @@ export default function UploadAsset() {
   const [category, setCategory] = useState("logo");
   const [file, setFile] = useState(null);
   const [description, setDescription] = useState("");
+  const [formatRecommendations, setFormatRecommendations] = useState("");
+  const [restrictions, setRestrictions] = useState("");
+  const [usageNotes, setUsageNotes] = useState("");
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -83,24 +86,41 @@ export default function UploadAsset() {
           setLoading(false);
         },
         async () => {
+          try {
           const url = await getDownloadURL(uploadTask.snapshot.ref);
-          // Save metadata to Firestore (with sanitized inputs)
+            // Save metadata to Firestore (with sanitized inputs)
           await addDoc(collection(db, "assets"), {
-            name: sanitizedName,
+              name: sanitizedName,
             category,
             fileUrl: url,
             fileType: file.type,
             uploadedBy: user.uid,
             uploadedAt: serverTimestamp(),
             downloads: 0,
-            metadata: { description: sanitizeText(description, MAX_DESCRIPTION_LENGTH) },
+              metadata: {
+                description: sanitizeText(description, MAX_DESCRIPTION_LENGTH),
+              },
+            usageRules: {
+              formatRecommendations: sanitizeText(formatRecommendations, 500),
+              restrictions: sanitizeText(restrictions, 500),
+              usageNotes: sanitizeText(usageNotes, 500),
+            },
           });
+
           setLoading(false);
           setProgress(100);
           setName("");
           setCategory("logo");
           setFile(null);
           setDescription("");
+          setFormatRecommendations("");
+          setRestrictions("");
+          setUsageNotes("");
+          } catch (err) {
+            console.error(err);
+            setError(err?.message || "Failed to save asset metadata. Please try again.");
+            setLoading(false);
+          }
         }
       );
     } catch (err) {
@@ -162,6 +182,47 @@ export default function UploadAsset() {
               maxLength={MAX_DESCRIPTION_LENGTH}
             />
             <p className="text-xs text-muted-foreground mt-1">Maximum {MAX_DESCRIPTION_LENGTH} characters</p>
+          </div>
+          <div className="border-t border-border pt-5">
+            <h3 className="text-lg font-semibold mb-4">Usage Rules (Optional)</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Format Recommendations</label>
+                <textarea
+                  value={formatRecommendations}
+                  onChange={(e) => setFormatRecommendations(e.target.value)}
+                  className="input"
+                  placeholder="e.g., Use PNG for transparent backgrounds, PDF for print"
+                  rows={2}
+                  maxLength={500}
+                />
+                <p className="text-xs text-muted-foreground mt-1">Maximum 500 characters</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Restrictions</label>
+                <textarea
+                  value={restrictions}
+                  onChange={(e) => setRestrictions(e.target.value)}
+                  className="input"
+                  placeholder="e.g., Do not stretch or recolor, maintain aspect ratio"
+                  rows={2}
+                  maxLength={500}
+                />
+                <p className="text-xs text-muted-foreground mt-1">Maximum 500 characters</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-foreground mb-2">Usage Notes</label>
+                <textarea
+                  value={usageNotes}
+                  onChange={(e) => setUsageNotes(e.target.value)}
+                  className="input"
+                  placeholder="Additional guidance for using this asset"
+                  rows={2}
+                  maxLength={500}
+                />
+                <p className="text-xs text-muted-foreground mt-1">Maximum 500 characters</p>
+              </div>
+            </div>
           </div>
           {error && (
             <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
