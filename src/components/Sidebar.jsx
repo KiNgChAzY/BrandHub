@@ -188,7 +188,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
 
       {/* Sidebar - Mobile */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-background border-r transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform bg-white border-r transition-transform duration-300 ease-in-out md:hidden ${
           mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -216,7 +216,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
 
       {/* Sidebar - Desktop */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 hidden w-64 transform border-r bg-background transition-transform duration-300 ease-in-out md:block ${
+        className={`fixed inset-y-0 left-0 z-30 hidden w-64 transform border-r bg-white transition-transform duration-300 ease-in-out md:block ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

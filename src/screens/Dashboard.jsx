@@ -73,7 +73,7 @@ export default function Dashboard() {
   // Quick access apps (using our actual routes)
   const quickApps = [
     {
-      name: "Asset Library",
+      name: "Asset Page",
       icon: <ImageIcon className="text-violet-500 h-6 w-6" />,
       description: "Browse and download brand assets",
       path: "/assets",

@@ -7,7 +7,7 @@ import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
 import Dashboard from "./screens/Dashboard";
 import UploadAsset from "./screens/BrandAssets/UploadAsset";
-import AssetLibrary from "./screens/BrandAssets/AssetLibrary";
+import AssetPage from "./screens/BrandAssets/AssetPage";
 import AssetDetail from "./screens/BrandAssets/AssetDetail";
 import ColorPalette from "./screens/BrandAssets/ColorPalette";
 import TypographyShowcase from "./screens/BrandAssets/TypographyShowcase";
@@ -110,7 +110,7 @@ function AppContent() {
   // Page titles mapping
   const pageTitles = {
     "/dashboard": "Dashboard",
-    "/assets": "Asset Library",
+    "/assets": "Asset Page",
     "/brand": "Brand Guidelines",
     "/brand/colors": "Color Palette",
     "/brand/typography": "Typography",
@@ -190,7 +190,7 @@ function AppContent() {
               path="/assets"
               element={
                 <PrivateRoute>
-                  <AssetLibrary />
+                  <AssetPage />
                 </PrivateRoute>
               }
             />

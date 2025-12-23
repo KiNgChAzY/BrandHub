@@ -305,7 +305,7 @@ export default function AssetDetail() {
       {/* Replace Asset Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card max-w-md w-full">
+          <div className="bg-white rounded-3xl shadow-lg border border-border p-6 max-w-md w-full">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold">Replace Asset</h2>
               <button
