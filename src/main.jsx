@@ -9,6 +9,9 @@ if (import.meta.env.DEV) {
   import("./utils/testImageConverter.js").catch(() => {
     // Silently fail if test utilities don't exist
   });
+  import("./services/testFormatService.js").catch(() => {
+    // Silently fail if test utilities don't exist
+  });
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
