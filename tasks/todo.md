@@ -319,6 +319,427 @@
 
 ---
 
+## 🎨 Design System Rollout
+
+**Goal:** Apply the design system from `zexample/globals.css` and `zexample/DESIGN_SYSTEM.md` to all pages and components across the project, ensuring consistent styling, typography, spacing, and component patterns.
+
+**Status:** Asset Page ✅ Complete - Ready to roll out to remaining pages/components
+
+**Key Changes Applied:**
+- ✅ Updated `src/index.css` with design system CSS variables and utility classes
+- ✅ Updated `tailwind.config.cjs` to use `var(--...)` format for all color variables
+- ✅ Added typography utility classes (`.text-heading-xl`, `.text-body-md`, etc.)
+- ✅ Added shadow utilities (`.shadow-sleek`, `.shadow-card`, `.shadow-float`)
+- ✅ Updated button component classes (`.btn-primary`, `.btn-secondary`, `.btn-ghost`)
+- ✅ Asset Page fully updated with design system classes
+
+**Pages to Update:**
+1. Dashboard
+2. Login
+3. SignUp
+4. BrandSweep
+5. AssetDetail
+6. UploadAsset
+7. ColorPalette
+8. TypographyShowcase
+9. Templates
+10. ShareBrandPage
+
+**Components to Update:**
+1. Header
+2. Navbar
+3. Sidebar
+4. AssetModal
+5. AssetEditModal
+6. DownloadModal
+7. UserInvite
+
+---
+
+### ✅ Design System Rollout - Step 1: Dashboard (COMPLETED)
+
+**Goal:** Update Dashboard page to use design system typography, spacing, buttons, and colors.
+
+**Questions to ask before starting:**
+- Should the dashboard cards use `.card` class or maintain current styling?
+- How should the quick access cards be styled (use design system card style)?
+- Should metrics use the design system's metric card style?
+
+**Tasks:**
+- [x] Review current Dashboard implementation
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-body-md`, etc.)
+- [x] Update buttons to use design system button classes (`.btn-primary`, `.btn-secondary`)
+- [x] Update spacing to use design system spacing scale (8px base unit)
+- [x] Update colors to use design system tokens (no hardcoded colors)
+- [x] Update cards to use design system card styling if applicable
+- [x] Test Dashboard functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/Dashboard.jsx`
+
+**Changes made:**
+- Replaced hero gradient with solid `bg-primary` color
+- Converted hero buttons to `.btn-secondary` with design system styling
+- Updated quick access cards to standard `.card` class
+- Updated metric cards to standard `.card` class (removed gradient style)
+- Updated icon colors to semantic design system colors (primary-accent, warning, error, info)
+- Updated all typography to design system classes
+- Changed border radius from `rounded-3xl` to design system tokens (`rounded-xl`, `rounded-lg`)
+- Updated spacing to use design system scale
+- Removed unused imports and hardcoded colors
+
+---
+
+---
+
+### ✅ Design System Rollout - Step 2: Login (COMPLETED)
+
+**Goal:** Update Login page to use design system typography, spacing, buttons, inputs, and colors.
+
+**Questions to ask before starting:**
+- Should error messages use the design system's error styling pattern?
+- Should the form layout spacing follow design system spacing scale?
+- Should labels use design system label typography classes?
+
+**Tasks:**
+- [x] Review current Login implementation
+- [x] Update typography to use design system classes (`.text-heading-xl` for heading)
+- [x] Update buttons to use design system button classes (`.btn-primary` - already in use)
+- [x] Update inputs to use design system input styling (`.input` class - already in use)
+- [x] Update spacing to use design system spacing scale (kept `space-y-4`)
+- [x] Update error message styling to use design system border radius (`rounded-lg`)
+- [x] Verify link styling uses design system patterns (kept `hover:underline`)
+- [x] Test Login functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/Login.jsx`
+
+**Changes made:**
+- Updated heading from `text-3xl font-bold` to `.text-heading-xl`
+- Updated error message border radius from `rounded-2xl` to `rounded-lg`
+- Kept all other styling as-is (minimal changes approach)
+
+---
+
+---
+
+### ✅ Design System Rollout - Step 3: SignUp (COMPLETED)
+
+**Goal:** Update SignUp page to use design system typography, spacing, buttons, inputs, and colors.
+
+**Questions to ask before starting:**
+- Should SignUp use the same heading size as Login (`.text-heading-xl`)?
+- Should error messages use the same styling as Login (`.rounded-lg`)?
+- Should form spacing match Login page (`space-y-4`)?
+- Should labels keep current styling or use design system label classes?
+
+**Tasks:**
+- [x] Review current SignUp implementation
+- [x] Update typography to use design system classes (`.text-heading-xl` for heading)
+- [x] Update buttons to use design system button classes (`.btn-primary` - already in use)
+- [x] Update inputs to use design system input styling (`.input` class - already in use)
+- [x] Update spacing to use design system spacing scale (kept `space-y-4`)
+- [x] Update error message styling to use design system border radius (`rounded-lg`)
+- [x] Verify link styling uses design system patterns (kept `hover:underline`)
+- [x] Test SignUp functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/SignUp.jsx`
+
+**Changes made:**
+- Updated heading from `text-3xl font-bold` to `.text-heading-xl`
+- Updated error message border radius from `rounded-2xl` to `rounded-lg`
+- Kept all other styling as-is (minimal changes approach, matching Login page)
+
+---
+
+### ✅ Design System Rollout - Step 4: BrandSweep (COMPLETED)
+
+**Goal:** Update BrandSweep page to use design system typography, spacing, buttons, inputs, and colors.
+
+**Questions to ask before starting:**
+- Should the hero section use solid `bg-primary` color like Dashboard, or a different approach?
+- Should file input buttons use design system button styling or keep custom file input styling?
+- Should the results table badges use design system semantic colors?
+- Should error/loading messages use the same styling patterns as Login/SignUp?
+
+**Tasks:**
+- [x] Review current BrandSweep implementation
+- [x] Update hero section (replace gradient with solid `bg-primary` color, update typography)
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-heading-lg`, `.text-body-md`, `.text-label-md`, `.text-label-sm`)
+- [x] Update buttons to use design system button classes (`.btn-primary` - already in use)
+- [x] Update file inputs to use design system primary colors (`file:bg-primary`, `hover:file:opacity-90`)
+- [x] Update spacing to use design system spacing scale
+- [x] Update error/loading message styling to use design system patterns (`rounded-lg`)
+- [x] Update border radius to use design system tokens (replaced `rounded-3xl` with `rounded-xl`/`rounded-lg`, `rounded-2xl` with `rounded-lg`)
+- [x] Update cards to use design system card styling (already using `.card`)
+- [x] Update badge/status indicators to use design system semantic colors (`bg-warning-light`, `text-warning-foreground`)
+- [x] Test BrandSweep functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/BrandSweep.jsx`
+
+**Changes made:**
+- Replaced hero gradient with solid `bg-primary` color and updated typography
+- Updated all headings to design system typography classes
+- Updated file input buttons to use design system primary colors
+- Updated error/loading messages to use `rounded-lg`
+- Updated results table border to use `rounded-lg`
+- Updated action badges to use design system semantic colors (`bg-warning-light`, `text-warning-foreground`)
+- Updated all border radius values to design system tokens
+
+---
+
+---
+
+### ✅ Design System Rollout - Step 5: AssetDetail (COMPLETED)
+
+**Goal:** Update AssetDetail page to use design system typography, spacing, buttons, inputs, modals, and colors.
+
+**Questions to ask before starting:**
+- Should the main heading use `.text-heading-xl` (same as other pages)?
+- Should the status badge use design system semantic colors (`bg-success-light`, `text-success-foreground`)?
+- Should file input buttons use design system primary colors (same as BrandSweep)?
+- Should modal border radius use `rounded-xl` or `rounded-lg`?
+- Should error/loading messages use `rounded-lg` (same as other pages)?
+
+**Tasks:**
+- [x] Review current AssetDetail implementation
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-heading-lg`, `.text-heading-md`, `.text-body-md`, `.text-body-sm`, `.text-caption`, `.text-label-sm`)
+- [x] Update buttons to use design system button classes (`.btn-primary`, `.btn-secondary` - already in use)
+- [x] Update file inputs to use design system primary colors (`file:bg-primary`, `hover:file:opacity-90`)
+- [x] Update modal styling to use design system patterns (`rounded-xl` for modal, `rounded-lg` for elements)
+- [x] Update spacing to use design system spacing scale
+- [x] Update error/loading message styling to use design system patterns (`rounded-lg`)
+- [x] Update border radius to use design system tokens (replaced `rounded-2xl` with `rounded-lg`, `rounded-3xl` with `rounded-xl`)
+- [x] Update status badge to use design system semantic colors (`bg-success-light`, `text-success-foreground`)
+- [x] Update empty states to use design system styling
+- [x] Test AssetDetail functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/BrandAssets/AssetDetail.jsx`
+
+**Changes made:**
+- Updated main heading to `.text-heading-xl`
+- Updated section headings to `.text-heading-md`
+- Updated modal heading to `.text-heading-lg`
+- Updated status badge to use design system semantic colors (`bg-success-light`, `text-success-foreground`)
+- Updated file input buttons to use design system primary colors
+- Updated modal border radius to `rounded-xl`
+- Updated all other border radius values to `rounded-lg`
+- Updated error/loading messages to use `rounded-lg`
+- Updated typography throughout to use design system classes
+
+---
+
+---
+
+### ✅ Design System Rollout - Step 6: UploadAsset (COMPLETED)
+
+**Goal:** Update UploadAsset page to use design system typography, spacing, buttons, inputs, and colors.
+
+**Questions to ask before starting:**
+- Should headings use design system typography classes (`.text-heading-xl`, `.text-heading-md`)?
+- Should file input buttons use design system primary colors (same as BrandSweep/AssetDetail)?
+- Should error/loading messages use `rounded-lg` (same as other pages)?
+- Should form spacing follow design system spacing scale?
+- Should labels keep current styling or use design system label classes?
+
+**Tasks:**
+- [x] Review current UploadAsset implementation
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-heading-sm`, `.text-body-md`, `.text-body-sm`)
+- [x] Update buttons to use design system button classes (`.btn-success` kept, `.btn-primary`, `.btn-secondary` already in use)
+- [x] Update file inputs to use design system primary colors (`file:bg-primary`, `hover:file:opacity-90`)
+- [x] Update spacing to use design system spacing scale (kept `space-y-5`)
+- [x] Update error/loading message styling to use design system patterns (`rounded-lg`)
+- [x] Update border radius to use design system tokens (replaced `rounded-2xl` with `rounded-lg`)
+- [x] Update cards to use design system card styling (already using `.card`)
+- [x] Test UploadAsset functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/BrandAssets/UploadAsset.jsx`
+
+**Changes made:**
+- Updated main heading to `.text-heading-xl`
+- Updated section heading to `.text-heading-sm`
+- Updated description text to `.text-body-md`
+- Updated file input buttons to use design system primary colors
+- Updated error/loading messages to use `rounded-lg` and `.text-body-sm`
+- Updated all border radius values to design system tokens (`rounded-lg`)
+- Kept `.btn-success` for submit button
+- Kept form spacing at `space-y-5` and label styling as-is
+
+---
+
+---
+
+### ✅ Design System Rollout - Step 7: ColorPalette (COMPLETED)
+
+**Goal:** Update ColorPalette page to use design system typography, spacing, buttons, and colors.
+
+**Questions to ask before starting:**
+- Should the hero section use solid `bg-primary` color like Dashboard, or keep gradient? → **Solid `bg-primary`**
+- Should headings use design system typography classes (`.text-heading-xl`, `.text-heading-lg`)? → **`.text-heading-xl` for hero, `.text-heading-md` for section**
+- Should color swatch cards use design system card styling? → **Keep `rounded-3xl` for swatch cards**
+- Should border radius follow design system tokens? → **`rounded-xl` for hero, `rounded-lg` for empty state**
+
+**Tasks:**
+- [x] Review current ColorPalette implementation
+- [x] Update hero section (replaced gradient with solid `bg-primary`, updated border radius to `rounded-xl`)
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-heading-md`, `.text-body-md`)
+- [x] Update spacing to use design system spacing scale
+- [x] Update border radius to use design system tokens (`rounded-xl` for hero, `rounded-lg` for empty state)
+- [x] Keep color swatch cards with `rounded-3xl` (as requested)
+- [x] Update loading and empty state headings to use design system typography
+- [x] Test ColorPalette functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/BrandAssets/ColorPalette.jsx`
+
+**Changes made:**
+- Updated hero section: replaced gradient with solid `bg-primary`, changed border radius from `rounded-3xl` to `rounded-xl`
+- Updated hero heading to `.text-heading-xl`
+- Updated hero description to `.text-body-md`, kept `text-white/80` opacity
+- Updated section heading "Brand Colors" to `.text-heading-md`
+- Updated loading state heading to `.text-heading-xl`
+- Updated empty state heading to `.text-heading-xl` and border radius to `rounded-lg`
+- Updated loading/empty state descriptions to `.text-body-md`
+- Kept color swatch cards with `rounded-3xl` (as requested)
+
+---
+
+### ✅ Design System Rollout - Step 8: TypographyShowcase (COMPLETED)
+
+**Goal:** Update TypographyShowcase page to use design system typography, spacing, buttons, and colors.
+
+**Questions to ask before starting:**
+- Should the hero section use solid `bg-primary` color like Dashboard/ColorPalette, or keep gradient? → **Solid `bg-primary`**
+- Should headings use design system typography classes (`.text-heading-xl`, `.text-heading-lg`, `.text-heading-md`)? → **`.text-heading-xl` for hero, `.text-heading-md` for font cards**
+- Should font card headings use design system typography classes? → **`.text-heading-md`**
+- Should border radius follow design system tokens (`rounded-lg`, `rounded-xl`)? → **`rounded-xl` for hero, `rounded-lg` for usage notes and empty state**
+- Should section labels use design system label classes? → **`.text-label-md`**
+- Should usage notes use design system semantic colors? → **`bg-info-light` / `text-info-foreground`**
+
+**Tasks:**
+- [x] Review current TypographyShowcase implementation
+- [x] Update hero section (replaced gradient with solid `bg-primary`, updated border radius to `rounded-xl`)
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-heading-md`, `.text-body-md`, `.text-body-sm`, `.text-label-md`)
+- [x] Update buttons to use design system button classes (already using `.btn-primary`)
+- [x] Update spacing to use design system spacing scale
+- [x] Update border radius to use design system tokens (`rounded-xl` for hero, `rounded-lg` for usage notes and empty state)
+- [x] Update cards to use design system card styling (already using `.card`)
+- [x] Update usage notes section to use design system semantic colors (`bg-info-light`, `text-info-foreground`)
+- [x] Update section labels to use design system label classes (`.text-label-md`)
+- [x] Test TypographyShowcase functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/BrandAssets/TypographyShowcase.jsx`
+
+**Changes made:**
+- Updated hero section: replaced gradient with solid `bg-primary`, changed border radius from `rounded-3xl` to `rounded-xl`
+- Updated hero heading to `.text-heading-xl`
+- Updated hero description to `.text-body-md`, kept `text-white/80` opacity
+- Updated font card headings to `.text-heading-md`
+- Updated metadata labels to `.text-label-md`
+- Updated section labels ("Heading Sample", "Body Sample") to `.text-label-md`
+- Updated usage notes section: changed from `bg-secondary/50` to `bg-info-light`, heading to `text-info-foreground`, border radius to `rounded-lg`
+- Updated usage notes text to `.text-body-sm`
+- Updated loading state heading to `.text-heading-xl`
+- Updated empty state heading to `.text-heading-xl` and border radius to `rounded-lg`
+- Updated loading/empty state descriptions to `.text-body-md`
+
+---
+
+### Design System Rollout - Step 9: Templates
+
+**Goal:** Update Templates page to use design system typography, spacing, buttons, and colors.
+
+**Questions to ask before starting:**
+- Should the hero section use solid `bg-primary` color like other pages, or keep any existing styling?
+- Should headings use design system typography classes (`.text-heading-xl`, `.text-heading-lg`, `.text-heading-md`)?
+- Should template cards use design system card styling?
+- Should border radius follow design system tokens (`rounded-lg`, `rounded-xl`)?
+
+**Tasks:**
+- [ ] Review current Templates implementation
+- [ ] Update hero section (if gradient exists, replace with solid color)
+- [ ] Update typography to use design system classes (headings, body text, labels)
+- [ ] Update buttons to use design system button classes
+- [ ] Update spacing to use design system spacing scale
+- [ ] Update border radius to use design system tokens
+- [ ] Update cards to use design system card styling
+- [ ] Test Templates functionality and visual appearance
+- [ ] Verify responsive behavior
+
+**Files to modify:**
+- `src/screens/Templates.jsx`
+
+---
+
+### ✅ Design System Rollout - Step 9: Templates (COMPLETED)
+
+**Goal:** Update Templates page to use design system typography, spacing, buttons, and colors.
+
+**Changes made:**
+- Updated hero section: replaced gradient with solid `bg-primary`, changed border radius from `rounded-3xl` to `rounded-xl`
+- Updated hero heading to `.text-heading-xl`
+- Updated hero description to `.text-body-md`, kept `text-white/80` opacity
+- Updated "Create Template" button to use `.btn-secondary`
+- Updated section heading "Available Templates" to `.text-heading-md`
+- Updated "View All" button text to `.text-body-sm`
+- Updated template card headings to `.text-heading-md`
+- Updated template card border radius from `rounded-3xl` to `rounded-xl`
+- Updated template card image area: changed from gradient to solid `bg-primary-accent` with `text-white`
+- Updated badges: Popular to `bg-success-light text-success-foreground`, New to `bg-warning-light text-warning-foreground`, Featured to `bg-info-light text-info-foreground`
+- Updated badge border radius from `rounded-xl` to `rounded-lg`
+- Updated badge text to `.text-label-sm`
+- Updated template description text to `.text-body-sm`
+- Updated category badges and "Use Template" button border radius from `rounded-xl` to `rounded-lg`
+- Updated "Use Template" button text to `.text-body-sm`
+- Updated empty state text to use `.text-body-md` and `.text-body-sm`
+
+**Files modified:**
+- `src/screens/Templates.jsx`
+
+---
+
+### ✅ Design System Rollout - Step 10: ShareBrandPage (COMPLETED)
+
+**Goal:** Update ShareBrandPage to use design system typography, spacing, buttons, and colors.
+
+**Questions to ask before starting:**
+- Should headings use design system typography classes (`.text-heading-xl`, `.text-heading-lg`, `.text-heading-md`)? → **`.text-heading-xl`**
+- Should description text use design system body classes? → **`.text-body-md` (MVP placeholder text)**
+- Should card content text use design system body classes? → **`.text-body-md`**
+
+**Tasks:**
+- [x] Review current ShareBrandPage implementation
+- [x] Update typography to use design system classes (`.text-heading-xl`, `.text-body-md`)
+- [x] Add MVP placeholder comments for future content updates
+- [x] Test ShareBrandPage functionality and visual appearance
+- [x] Verify responsive behavior
+
+**Files modified:**
+- `src/screens/ShareBrandPage.jsx`
+
+**Changes made:**
+- Updated main heading to `.text-heading-xl` (was `text-4xl font-bold`)
+- Updated description text to `.text-body-md` with comment noting it's MVP placeholder text
+- Updated card content text to `.text-body-md` with comment noting it's MVP placeholder content
+- Added comments indicating placeholder content needs to be updated later
+
+**Note:** This page currently has MVP placeholder content. Update with actual share page functionality and content when implementing the full feature.
+
+---
+
 ### Step 3: Update Firestore Schema for New Uploads
 
 **Goal:** Ensure new asset uploads initialize the `availableFormats` structure

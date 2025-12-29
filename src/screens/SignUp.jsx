@@ -35,7 +35,7 @@ export default function SignUp() {
   return (
     <div className="max-w-md mx-auto">
       <div className="card">
-        <h2 className="text-3xl font-bold mb-2 text-center">Create Account</h2>
+        <h2 className="text-heading-xl mb-2 text-center">Create Account</h2>
         <p className="text-muted-foreground text-center mb-6">Join BrandHub to manage your brand assets</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -99,7 +99,7 @@ export default function SignUp() {
             <p className="text-xs text-muted-foreground mt-1">Maximum 500 characters</p>
           </div>
           {error && (
-            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
               {error}
             </div>
           )}

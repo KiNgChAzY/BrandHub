@@ -38,10 +38,10 @@ export default function TypographyShowcase() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-4xl font-bold mb-2">Typography</h1>
-        <p className="text-muted-foreground mb-8">Brand typography and font guidelines</p>
+        <h1 className="text-heading-xl mb-2">Typography</h1>
+        <p className="text-body-md text-muted-foreground mb-8">Brand typography and font guidelines</p>
         <div className="card">
-          <div className="text-center py-12 text-muted-foreground">Loading typography…</div>
+          <div className="text-center py-12 text-body-md text-muted-foreground">Loading typography…</div>
         </div>
       </div>
     );
@@ -50,10 +50,10 @@ export default function TypographyShowcase() {
   if (!fonts.length) {
     return (
       <div>
-        <h1 className="text-4xl font-bold mb-2">Typography</h1>
-        <p className="text-muted-foreground mb-8">Brand typography and font guidelines</p>
+        <h1 className="text-heading-xl mb-2">Typography</h1>
+        <p className="text-body-md text-muted-foreground mb-8">Brand typography and font guidelines</p>
         <div className="card">
-          <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-border rounded-2xl">
+          <div className="text-center py-12 text-body-md text-muted-foreground border-2 border-dashed border-border rounded-lg">
             No typography assets found. Upload typography assets to see them here.
           </div>
         </div>
@@ -65,11 +65,11 @@ export default function TypographyShowcase() {
     <div className="space-y-8">
       {/* Hero Section */}
       <section>
-        <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white">
+        <div className="overflow-hidden rounded-xl bg-primary p-8 text-primary-foreground">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold">Typography</h2>
-              <p className="max-w-[600px] text-white/80">
+              <h2 className="text-heading-xl">Typography</h2>
+              <p className="max-w-[600px] text-body-md text-white/80">
                 Brand typography and font guidelines for consistent communication.
               </p>
             </div>
@@ -90,8 +90,8 @@ export default function TypographyShowcase() {
             <div key={font.id} className="card">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">{font.name || "Unnamed Font"}</h2>
-                  <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+                  <h2 className="text-heading-md mb-2">{font.name || "Unnamed Font"}</h2>
+                  <div className="flex flex-wrap gap-2 text-label-md text-muted-foreground">
                     {fontFamily && <span>Family: <span className="text-foreground">{fontFamily}</span></span>}
                     {fontWeight && <span>Weight: <span className="text-foreground">{fontWeight}</span></span>}
                     {fontStyle && fontStyle !== "normal" && (
@@ -113,7 +113,7 @@ export default function TypographyShowcase() {
               
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Heading Sample</h3>
+                  <h3 className="text-label-md text-muted-foreground mb-2">Heading Sample</h3>
                   <p
                     className="text-3xl"
                     style={{
@@ -126,7 +126,7 @@ export default function TypographyShowcase() {
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-2">Body Sample</h3>
+                  <h3 className="text-label-md text-muted-foreground mb-2">Body Sample</h3>
                   <p
                     className="text-base leading-relaxed"
                     style={{
@@ -139,9 +139,9 @@ export default function TypographyShowcase() {
                   </p>
                 </div>
                 {meta.usage && (
-                  <div className="mt-4 p-3 bg-secondary/50 rounded-2xl border border-border">
-                    <h4 className="text-sm font-medium text-foreground mb-1">Usage Notes</h4>
-                    <p className="text-sm text-muted-foreground">{meta.usage}</p>
+                  <div className="mt-4 p-3 bg-info-light rounded-lg border border-border">
+                    <h4 className="text-label-md text-info-foreground mb-1">Usage Notes</h4>
+                    <p className="text-body-sm text-muted-foreground">{meta.usage}</p>
                   </div>
                 )}
               </div>

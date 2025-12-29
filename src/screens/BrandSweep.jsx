@@ -155,11 +155,11 @@ export default function BrandSweep() {
     <div className="space-y-8">
       {/* Hero Section */}
       <section>
-        <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-pink-600 via-red-600 to-orange-600 p-8 text-white">
+        <div className="overflow-hidden rounded-xl bg-primary p-8 text-primary-foreground">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
-              <h2 className="text-3xl font-bold">Brand Sweep</h2>
-              <p className="max-w-[600px] text-white/80">
+              <h2 className="text-heading-xl">Brand Sweep</h2>
+              <p className="max-w-[600px] text-body-md text-primary-foreground/80">
                 Scan the web for outdated brand usage and maintain brand consistency.
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function BrandSweep() {
       {/* Upload Section */}
       <section>
         <div className="card mb-6">
-        <h2 className="text-2xl font-bold mb-4">Upload Logos</h2>
+        <h2 className="text-heading-lg mb-4">Upload Logos</h2>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Old Logo</label>
@@ -178,7 +178,7 @@ export default function BrandSweep() {
               type="file" 
               accept="image/*"
               onChange={handleOldLogoChange}
-              className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-lg border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:opacity-90 cursor-pointer"
               disabled={loading}
             />
             {oldLogo && (
@@ -191,7 +191,7 @@ export default function BrandSweep() {
               type="file" 
               accept="image/*"
               onChange={handleNewLogoChange}
-              className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-lg border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:opacity-90 cursor-pointer"
               disabled={loading}
             />
             {newLogo && (
@@ -200,12 +200,12 @@ export default function BrandSweep() {
           </div>
           <p className="text-xs text-muted-foreground">Maximum file size: 10MB per file</p>
           {error && (
-            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
               {error}
             </div>
           )}
           {loading && (
-            <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20">
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-primary">
                   {sweepStatus === "uploading" ? "Uploading logos..." : "Running sweep..."}
@@ -236,12 +236,12 @@ export default function BrandSweep() {
         <section>
           <div className="card">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold">Sweep Results</h2>
-              <span className="px-3 py-1 rounded-2xl bg-destructive/10 text-destructive text-sm font-medium">
+              <h2 className="text-heading-lg">Sweep Results</h2>
+              <span className="px-3 py-1 rounded-lg bg-destructive/10 text-destructive text-label-md font-medium">
                 {results.length} issues found
               </span>
             </div>
-            <div className="rounded-3xl border overflow-hidden">
+            <div className="rounded-lg border overflow-hidden">
               <div className="bg-muted/50 p-3 hidden md:grid md:grid-cols-12 text-sm font-medium">
                 <div className="col-span-4">URL</div>
                 <div className="col-span-3">Detected Asset</div>
@@ -266,7 +266,7 @@ export default function BrandSweep() {
                     </div>
                     <div className="col-span-3 text-sm text-foreground">{site.asset}</div>
                     <div className="col-span-2">
-                      <span className="px-2 py-1 rounded-2xl bg-chart-4/20 text-chart-4 text-xs font-medium">
+                      <span className="px-2 py-1 rounded-lg bg-warning-light text-warning-foreground text-label-sm font-medium">
                         {site.action}
                       </span>
                     </div>
@@ -286,8 +286,8 @@ export default function BrandSweep() {
           <div className="card">
             <div className="text-center py-12">
               <div className="text-4xl mb-4">✅</div>
-              <p className="text-lg font-semibold mb-2">No Issues Found</p>
-              <p className="text-muted-foreground">
+              <p className="text-heading-sm mb-2">No Issues Found</p>
+              <p className="text-body-md text-muted-foreground">
                 No outdated brand usage detected. Your brand is consistent!
               </p>
             </div>

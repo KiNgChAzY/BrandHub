@@ -152,12 +152,12 @@ export default function AssetDetail() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Link to="/assets" className="p-2 hover:bg-muted rounded-2xl transition-colors">
+        <Link to="/assets" className="p-2 hover:bg-muted rounded-lg transition-colors">
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold">{asset.name || "Untitled Asset"}</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-heading-xl">{asset.name || "Untitled Asset"}</h1>
+          <p className="text-body-md text-muted-foreground mt-1">
             {asset.category || "uncategorized"} • {asset.fileType || "file"}
           </p>
         </div>
@@ -178,7 +178,7 @@ export default function AssetDetail() {
         <div className="lg:col-span-2 space-y-6">
           {/* Asset Preview */}
           <div className="card">
-            <div className="aspect-video bg-muted rounded-2xl flex items-center justify-center overflow-hidden">
+            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center overflow-hidden">
               {asset.fileType?.startsWith("image/") ? (
                 <img
                   src={asset.fileUrl}
@@ -209,11 +209,11 @@ export default function AssetDetail() {
 
           {/* Format & Download */}
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Download</h2>
+            <h2 className="text-heading-md mb-4">Download</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Format</label>
-                <div className="px-4 py-2 rounded-2xl bg-muted border border-border">
+                <div className="px-4 py-2 rounded-lg bg-muted border border-border">
                   {asset.fileType || "Unknown format"}
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function AssetDetail() {
         {/* Side Panel (Right) - Usage Rules */}
         <div className="space-y-6">
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Usage Rules</h2>
+            <h2 className="text-heading-md mb-4">Usage Rules</h2>
             {hasUsageRules ? (
               <div className="space-y-4">
                 {usageRules.formatRecommendations && (
@@ -262,20 +262,20 @@ export default function AssetDetail() {
                 )}
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground border-2 border-dashed border-border rounded-2xl">
-                <p className="text-sm">No usage rules defined</p>
-                <p className="text-xs mt-2">Admins can add rules when uploading assets</p>
+              <div className="text-center py-8 text-muted-foreground border-2 border-dashed border-border rounded-lg">
+                <p className="text-body-sm">No usage rules defined</p>
+                <p className="text-caption mt-2">Admins can add rules when uploading assets</p>
               </div>
             )}
           </div>
 
           {/* Asset Info */}
           <div className="card">
-            <h2 className="text-xl font-semibold mb-4">Asset Information</h2>
-            <div className="space-y-3 text-sm">
+            <h2 className="text-heading-md mb-4">Asset Information</h2>
+            <div className="space-y-3 text-body-sm">
               <div>
                 <span className="text-muted-foreground">Status:</span>
-                <span className="ml-2 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+                <span className="ml-2 px-2 py-1 rounded-full bg-success-light text-success-foreground text-label-sm font-medium">
                   Current
                 </span>
               </div>
@@ -305,16 +305,16 @@ export default function AssetDetail() {
       {/* Replace Asset Modal */}
       {showReplaceModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl shadow-lg border border-border p-6 max-w-md w-full">
+          <div className="bg-white rounded-xl shadow-lg border border-border p-6 max-w-md w-full">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">Replace Asset</h2>
+              <h2 className="text-heading-lg">Replace Asset</h2>
               <button
                 onClick={() => {
                   setShowReplaceModal(false);
                   setReplaceFile(null);
                   setError(null);
                 }}
-                className="p-2 hover:bg-muted rounded-2xl"
+                className="p-2 hover:bg-muted rounded-lg"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -328,18 +328,18 @@ export default function AssetDetail() {
                 <input
                   type="file"
                   onChange={handleReplaceFileChange}
-                  className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+                  className="w-full px-4 py-2.5 rounded-lg border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:opacity-90 cursor-pointer"
                   disabled={replacing}
                 />
                 <p className="text-xs text-muted-foreground mt-1">Maximum file size: 10MB</p>
               </div>
               {error && (
-                <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+                <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-body-sm">
                   {error}
                 </div>
               )}
               {replacing && (
-                <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20">
+                <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm text-primary">Replacing asset...</span>
                     <span className="text-sm font-medium text-primary">{replaceProgress}%</span>

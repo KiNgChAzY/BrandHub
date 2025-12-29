@@ -133,8 +133,8 @@ export default function UploadAsset() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="card">
-        <h1 className="text-3xl font-bold mb-2">Upload Asset</h1>
-        <p className="text-muted-foreground mb-6">Add a new brand asset to your library</p>
+        <h1 className="text-heading-xl mb-2">Upload Asset</h1>
+        <p className="text-body-md text-muted-foreground mb-6">Add a new brand asset to your library</p>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Asset Name</label>
@@ -168,7 +168,7 @@ export default function UploadAsset() {
               type="file" 
               accept="*/*" 
               onChange={handleFileChange}
-              className="w-full px-4 py-2.5 rounded-2xl border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-2xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+              className="w-full px-4 py-2.5 rounded-lg border border-border bg-card text-foreground file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:opacity-90 cursor-pointer"
             />
             <p className="text-xs text-muted-foreground mt-1">Maximum file size: 10MB</p>
           </div>
@@ -184,7 +184,7 @@ export default function UploadAsset() {
             <p className="text-xs text-muted-foreground mt-1">Maximum {MAX_DESCRIPTION_LENGTH} characters</p>
           </div>
           <div className="border-t border-border pt-5">
-            <h3 className="text-lg font-semibold mb-4">Usage Rules (Optional)</h3>
+            <h3 className="text-heading-sm mb-4">Usage Rules (Optional)</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">Format Recommendations</label>
@@ -225,12 +225,12 @@ export default function UploadAsset() {
             </div>
           </div>
           {error && (
-            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-body-sm">
               {error}
             </div>
           )}
           {loading && (
-            <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20">
+            <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-primary">Uploading...</span>
                 <span className="text-sm font-medium text-primary">{progress}%</span>

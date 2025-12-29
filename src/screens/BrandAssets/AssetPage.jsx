@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { db } from "../../config/firebase";
-import { collection, query, orderBy, getDocs, where } from "firebase/firestore";
+import { collection, query, orderBy, getDocs, doc, updateDoc } from "firebase/firestore";
 import {
   FileText,
   Image as ImageIcon,
   File,
   Video,
   Presentation,
-  Music,
   Upload,
   Grid3x3,
   List,
   ChevronDown,
   Download,
-  MoreVertical,
-  Search,
+  Edit2,
+  Save,
+  X as XIcon,
 } from "lucide-react";
+import { db } from "../../config/firebase";
 import { useAuth } from "../../contexts/AuthContext";
 import AssetModal from "../../components/AssetModal";
+import DownloadModal from "../../components/DownloadModal";
 
 // Wrapper component to pass asset data to AssetModal
 function AssetModalWithData({ assetId, asset, isOpen, onClose, onAssetUpdate }) {
   return <AssetModal assetId={assetId} asset={asset} isOpen={isOpen} onClose={onClose} onAssetUpdate={onAssetUpdate} />;
 }
-import DownloadModal from "../../components/DownloadModal";
-import { doc, updateDoc } from "firebase/firestore";
-import { Edit2, Save, X as XIcon } from "lucide-react";
 
 // Category mapping: UI categories to Firestore categories
 const CATEGORY_MAP = {
@@ -121,11 +119,11 @@ export default function AssetPage() {
   // Get background color for asset preview
   function getAssetPreviewBg(asset) {
     const fileType = asset.fileType?.toLowerCase() || "";
-    if (fileType.includes("image")) return "bg-gray-100";
-    if (fileType.includes("pdf")) return "bg-red-50";
-    if (fileType.includes("zip") || fileType.includes("font")) return "bg-blue-50";
-    if (fileType.includes("presentation") || fileType.includes("powerpoint")) return "bg-orange-50";
-    return "bg-gray-100";
+    if (fileType.includes("image")) return "bg-muted";
+    if (fileType.includes("pdf")) return "bg-error-light";
+    if (fileType.includes("zip") || fileType.includes("font")) return "bg-info-light";
+    if (fileType.includes("presentation") || fileType.includes("powerpoint")) return "bg-warning-light";
+    return "bg-muted";
   }
 
   // Format date for display
@@ -214,7 +212,7 @@ export default function AssetPage() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-          <p className="text-muted-foreground">Loading assets…</p>
+          <p className="text-body-md text-muted-foreground">Loading assets…</p>
         </div>
       </div>
     );
@@ -235,19 +233,19 @@ export default function AssetPage() {
     <div className="flex flex-col gap-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-3xl font-black leading-tight tracking-tight">All Assets</h1>
-          <p className="text-muted-foreground text-base font-normal">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-heading-xl">All Assets</h1>
+          <p className="text-body-md text-muted-foreground">
             Manage, organize and download company branding materials
           </p>
         </div>
         {role === "admin" && (
           <Link
             to="/upload"
-            className="whitespace-nowrap shrink-0 flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm transition-all transform active:scale-95 w-fit"
+            className="whitespace-nowrap shrink-0 flex items-center gap-2 btn-primary w-fit"
           >
             <Upload className="h-5 w-5" />
-            <span className="text-sm font-bold">Upload New Asset</span>
+            <span>Upload New Asset</span>
           </Link>
         )}
       </div>
@@ -258,10 +256,10 @@ export default function AssetPage() {
           <button
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all active:scale-95 ${
+            className={`flex items-center justify-center px-4 py-2 rounded-full text-label-md font-medium whitespace-nowrap transition-all active:scale-95 ${
               selectedCategory === cat.id
-                ? "bg-black text-white shadow-sm"
-                : "bg-card text-muted-foreground border border-border hover:bg-muted hover:text-primary hover:border-primary/30"
+                ? "bg-primary text-primary-foreground shadow-sleek"
+                : "bg-card text-muted-foreground border border-border hover:bg-muted hover:text-foreground hover:border-primary-accent/30"
             }`}
           >
             {cat.label}
@@ -273,18 +271,18 @@ export default function AssetPage() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border pb-4">
         <div className="flex flex-wrap gap-2">
           {/* File Type Filter - UI Placeholder */}
-          <button className="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-muted-foreground/50 pl-3 pr-2 transition-all">
-            <span className="text-foreground text-sm font-medium">File Type</span>
+          <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
+            <span className="text-foreground text-label-md font-medium">File Type</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </button>
           {/* Date Modified Filter - UI Placeholder */}
-          <button className="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-muted-foreground/50 pl-3 pr-2 transition-all">
-            <span className="text-foreground text-sm font-medium">Date Modified</span>
+          <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
+            <span className="text-foreground text-label-md font-medium">Date Modified</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </button>
           {/* Owner Filter - UI Placeholder */}
-          <button className="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-muted-foreground/50 pl-3 pr-2 transition-all">
-            <span className="text-foreground text-sm font-medium">Owner</span>
+          <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
+            <span className="text-foreground text-label-md font-medium">Owner</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>
@@ -292,9 +290,9 @@ export default function AssetPage() {
         <div className="flex items-center gap-2 bg-card p-1 rounded-lg border border-border">
           <button
             onClick={() => setViewMode("list")}
-            className={`size-7 flex items-center justify-center rounded transition-colors ${
+            className={`size-8 flex items-center justify-center rounded transition-colors ${
               viewMode === "list"
-                ? "bg-muted text-foreground"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted/50"
             }`}
             title="List view"
@@ -303,9 +301,9 @@ export default function AssetPage() {
           </button>
           <button
             onClick={() => setViewMode("grid")}
-            className={`size-7 flex items-center justify-center rounded transition-colors ${
+            className={`size-8 flex items-center justify-center rounded transition-colors ${
               viewMode === "grid"
-                ? "bg-muted text-foreground"
+                ? "bg-primary text-primary-foreground"
                 : "text-muted-foreground hover:bg-muted/50"
             }`}
             title="Grid view"
@@ -318,10 +316,12 @@ export default function AssetPage() {
       {/* Assets Grid/List */}
       {!filteredAssets.length ? (
         <div className="card">
-          <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-border rounded-2xl">
-            {selectedCategory === "all"
-              ? "No assets found. Upload your first asset to get started!"
-              : `No ${categories.find((c) => c.id === selectedCategory)?.label.toLowerCase()} found.`}
+          <div className="text-center py-12 text-muted-foreground border-2 border-dashed border-border rounded-xl">
+            <p className="text-body-md">
+              {selectedCategory === "all"
+                ? "No assets found. Upload your first asset to get started!"
+                : `No ${categories.find((c) => c.id === selectedCategory)?.label.toLowerCase()} found.`}
+            </p>
           </div>
         </div>
       ) : viewMode === "grid" ? (
@@ -331,7 +331,7 @@ export default function AssetPage() {
             return (
               <div
                 key={asset.id}
-                className="group flex flex-col h-full bg-card border border-border rounded-xl hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+                className="group flex flex-col h-full bg-card border border-border rounded-lg hover:shadow-float transition-all duration-300 overflow-hidden cursor-pointer"
                 onClick={() => {
                   setSelectedAssetId(asset.id);
                   setIsModalOpen(true);
@@ -369,7 +369,7 @@ export default function AssetPage() {
                     const uploadDate = asset.uploadedAt.toDate ? asset.uploadedAt.toDate() : new Date(asset.uploadedAt);
                     const hoursSinceUpload = (Date.now() - uploadDate.getTime()) / (1000 * 60 * 60);
                     return hoursSinceUpload < 24 ? (
-                      <div className="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm z-10">
+                      <div className="absolute top-3 right-3 bg-success text-white text-label-sm font-semibold px-2 py-1 rounded-full shadow-sleek z-10">
                         NEW
                       </div>
                     ) : null;
@@ -385,7 +385,7 @@ export default function AssetPage() {
                         type="text"
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="input"
                         placeholder="Asset name"
                         maxLength={200}
                         onClick={(e) => e.stopPropagation()}
@@ -393,7 +393,7 @@ export default function AssetPage() {
                       <textarea
                         value={editDescription}
                         onChange={(e) => setEditDescription(e.target.value)}
-                        className="w-full px-3 py-2 rounded-lg border border-border focus:outline-none focus:ring-2 focus:ring-primary text-sm resize-none"
+                        className="input min-h-[80px] resize-none"
                         placeholder="Description (optional)"
                         rows={2}
                         maxLength={500}
@@ -406,7 +406,7 @@ export default function AssetPage() {
                             saveEdit(asset.id);
                           }}
                           disabled={saving}
-                          className="flex-1 h-9 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+                          className="flex-1 btn-primary flex items-center justify-center gap-2"
                         >
                           <Save className="h-4 w-4" />
                           {saving ? "Saving..." : "Save"}
@@ -417,7 +417,7 @@ export default function AssetPage() {
                             cancelEditing();
                           }}
                           disabled={saving}
-                          className="h-9 px-3 bg-muted hover:bg-muted/80 text-foreground rounded-lg text-sm font-medium flex items-center justify-center"
+                          className="btn-ghost h-10 px-3 flex items-center justify-center"
                         >
                           <XIcon className="h-4 w-4" />
                         </button>
@@ -427,15 +427,15 @@ export default function AssetPage() {
                     /* View Mode */
                     <>
                       <div className="flex flex-col gap-1">
-                        <h3 className="text-base font-bold line-clamp-2 mt-1" title={asset.name || "Untitled"}>
+                        <h3 className="text-heading-sm line-clamp-2" title={asset.name || "Untitled"}>
                           {asset.name || asset.filename || "Untitled"}
                         </h3>
                         {asset.metadata?.description && (
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                          <p className="text-body-sm text-muted-foreground line-clamp-2 mt-1">
                             {asset.metadata.description}
                           </p>
                         )}
-                        <p className="text-muted-foreground text-xs mt-2">
+                        <p className="text-caption mt-2">
                           Updated {formatDate(asset.uploadedAt)}
                         </p>
                       </div>
@@ -444,7 +444,7 @@ export default function AssetPage() {
                       <div className="mt-auto pt-2 flex items-center gap-2">
                         <button
                           onClick={(e) => handleDownloadClick(e, asset)}
-                          className="flex-1 h-9 px-3 bg-primary/10 hover:bg-background text-primary hover:text-foreground border border-border transition-all rounded-lg text-sm font-bold flex items-center justify-center gap-2"
+                          className="flex-1 btn-secondary flex items-center justify-center gap-2"
                         >
                           <span>Download</span>
                           <Download className="h-4 w-4" />
@@ -455,7 +455,7 @@ export default function AssetPage() {
                               e.stopPropagation();
                               startEditing(asset);
                             }}
-                            className="size-9 flex items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            className="btn-ghost size-10 flex items-center justify-center"
                             title="Edit asset"
                           >
                             <Edit2 className="h-4 w-4" />
@@ -475,7 +475,7 @@ export default function AssetPage() {
           {filteredAssets.map((asset) => (
             <div
               key={asset.id}
-              className="group flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:shadow-md transition-all cursor-pointer"
+              className="group flex items-center gap-4 p-4 bg-card border border-border rounded-lg hover:shadow-card transition-all cursor-pointer"
               onClick={() => {
                 setSelectedAssetId(asset.id);
                 setIsModalOpen(true);
@@ -485,14 +485,14 @@ export default function AssetPage() {
                 {getAssetIcon(asset)}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-base truncate">{asset.name || asset.filename || "Untitled"}</h3>
-                <p className="text-sm text-muted-foreground truncate">
+                <h3 className="text-heading-sm truncate">{asset.name || asset.filename || "Untitled"}</h3>
+                <p className="text-body-sm text-muted-foreground truncate">
                   {asset.category ? CATEGORY_DISPLAY[asset.category] || asset.category : "Uncategorized"} • {formatDate(asset.uploadedAt)}
                 </p>
               </div>
               <button
                 onClick={(e) => handleDownloadClick(e, asset)}
-                className="px-4 py-2 bg-primary/10 hover:bg-background text-primary hover:text-foreground border border-border rounded-lg text-sm font-bold flex items-center gap-2 transition-all"
+                className="btn-secondary flex items-center gap-2"
               >
                 <Download className="h-4 w-4" />
                 <span>Download</span>

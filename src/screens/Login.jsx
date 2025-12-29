@@ -24,7 +24,7 @@ export default function Login() {
   return (
     <div className="max-w-md mx-auto">
       <div className="card">
-        <h2 className="text-3xl font-bold mb-2 text-center">Welcome Back</h2>
+        <h2 className="text-heading-xl mb-2 text-center">Welcome Back</h2>
         <p className="text-muted-foreground text-center mb-6">Sign in to your BrandHub account</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -52,7 +52,7 @@ export default function Login() {
             />
           </div>
           {error && (
-            <div className="p-3 rounded-2xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
               {error}
             </div>
           )}
