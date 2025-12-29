@@ -301,6 +301,16 @@
 
 **Goal:** Allow users to download images in different formats (PNG, JPG, WebP, SVG) with format selection, and add search functionality to Asset Page.
 
+> **⚠️ IMPORTANT: Firebase Storage Setup Required**
+> 
+> Before starting work on these tasks, ensure Firebase Storage is properly set up:
+> - Enable billing on Firebase project (required even for free tier)
+> - Enable Firebase Storage in the Firebase Console
+> - Configure Storage rules for authenticated users
+> - Verify Storage bucket is accessible
+> 
+> See `FIREBASE_FREE_STORAGE_SETUP.md` for detailed setup instructions.
+
 **Key Features:**
 - Format selection when downloading images (PNG, JPG, WebP, SVG)
 - Lazy generation: Convert formats on-demand and cache in Firebase Storage
