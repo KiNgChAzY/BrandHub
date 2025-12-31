@@ -156,6 +156,13 @@ export default function AssetDetail() {
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1">
+          <div className="flex items-center gap-2 text-body-sm text-muted-foreground mb-2">
+            <Link to="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link>
+            <span>/</span>
+            <Link to="/assets" className="hover:text-primary transition-colors">Assets</Link>
+            <span>/</span>
+            <span className="text-foreground">{asset.name || "Untitled Asset"}</span>
+          </div>
           <h1 className="text-heading-xl">{asset.name || "Untitled Asset"}</h1>
           <p className="text-body-md text-muted-foreground mt-1">
             {asset.category || "uncategorized"} • {asset.fileType || "file"}

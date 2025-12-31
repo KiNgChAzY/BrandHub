@@ -740,6 +740,217 @@
 
 ---
 
+## 🏗️ Layout Restructure: Stitch Dashboard Integration
+
+**Goal:** Integrate the layout structure from `zexample/example_dashboard/code.html` (Stitch dashboard example) into BrandHub, applying it across the entire app while maintaining our design system and existing functionality.
+
+**Status:** In Progress
+
+**Key Requirements:**
+- Implement full layout structure (header with search, sidebar with brand selector, main content area)
+- Adapt Stitch's structure to our design system (typography, colors, spacing from `zexample/globals.css`)
+- Keep existing Dashboard functionality (Firestore data, recent files, stats)
+- Use Lucide React icons (where we have them), use Stitch's icons as examples for missing ones (with MVP notes)
+- Implement brand selector dropdown (MVP - can use placeholder data)
+- Add search bar to header (non-functional for MVP, with notes)
+- Light mode only for MVP
+- Apply across entire app (all pages use new layout)
+
+**Reference:** `zexample/example_dashboard/code.html`
+
+---
+
+### ✅ Step 1: Restructure Header Component (COMPLETED)
+
+**Goal:** Update Header to match Stitch dashboard structure with logo, search bar, and notifications.
+
+**Questions answered:**
+- Logo icon: Using Grid from Lucide as dataset equivalent (noted as MVP placeholder)
+- Notifications: Non-functional placeholder with MVP note
+- Search bar: Non-functional input with MVP note
+- Mobile menu toggle: Kept for mobile, removed desktop sidebar toggle
+- Search bar styling: Using bg-muted (design system)
+- Sidebar toggle: Removed desktop toggle (sidebar always visible)
+
+**Tasks:**
+- [x] Review Stitch header structure (logo + BrandHub text, search bar, notifications)
+- [x] Update Header component to match structure
+  - Logo icon (using Grid from Lucide - noted as MVP placeholder)
+  - BrandHub text with design system typography
+  - Search bar (non-functional, with MVP note comment)
+  - Notifications icon button (non-functional, with MVP note)
+  - Upload button (admin only)
+  - Logout button
+  - User avatar
+- [x] Apply design system styling (typography, colors, spacing, border radius)
+- [x] Keep mobile menu toggle functionality
+- [x] Remove desktop sidebar toggle (sidebar always visible like Stitch)
+- [x] Remove old page title display (no longer needed)
+- [x] Update App.jsx to remove unused Header props
+
+**Files modified:**
+- `src/components/Header.jsx`
+- `src/App.jsx`
+
+**Changes made:**
+- Restructured header to match Stitch layout (logo left, search center, actions right)
+- Added Grid icon as logo (MVP placeholder note)
+- Added search bar with bg-muted styling (non-functional, MVP note)
+- Added notifications button (non-functional, MVP note)
+- Removed desktop sidebar toggle button
+- Kept mobile menu toggle
+- Removed pageTitle prop from Header
+- Updated all styling to use design system classes (bg-card, border-border, text-foreground, etc.)
+- Added MVP placeholder comments for non-functional features
+
+---
+
+### ✅ Step 2: Restructure Sidebar Component with Brand Selector (COMPLETED)
+
+**Goal:** Update Sidebar to match Stitch structure with brand selector dropdown and updated navigation.
+
+**Questions answered:**
+- Brand selector: Using real user data (brandName from user profile), handles gracefully when Firebase not configured
+- Navigation items: Using Lucide icons (Home, Grid, CheckCircle, Wand2, Users) with MVP placeholder notes
+- "Add New Brand": Visible but non-functional with MVP note
+- "Presentations" and "Social Media": Excluded (not ready to implement)
+- "Team": Included but non-functional with MVP note
+- "My Brand": Links to `/brand` route
+
+**Tasks:**
+- [x] Review Stitch sidebar structure (brand selector, navigation items, settings, user profile)
+- [x] Implement brand selector dropdown
+  - Uses brandName from user profile (or "BrandHub" as fallback)
+  - Gracefully handles Firebase not configured
+  - Placeholder "Add New Brand" option (non-functional, with MVP note)
+  - Uses design system styling
+- [x] Update navigation items to match Stitch structure
+  - Dashboard (Home icon)
+  - Assets (Grid icon, with sub-items: All Assets, Logos, Typography)
+  - My Brand (CheckCircle icon - MVP placeholder note, links to /brand)
+  - AI Sweep (Wand2 icon - MVP placeholder note)
+  - Team (Users icon - MVP placeholder note, non-functional)
+- [x] Add Settings and User Profile at bottom
+- [x] Remove old search bar from sidebar (moved to header)
+- [x] Apply design system styling (typography, colors, spacing, border radius)
+- [x] Keep expandable menu functionality for Assets
+- [x] Update active state styling to match design system
+- [x] Handle mobile vs desktop layouts (mobile shows header with close button, desktop shows brand selector)
+
+**Files modified:**
+- `src/components/Sidebar.jsx`
+
+**Changes made:**
+- Added brand selector dropdown with real brandName from Firestore
+- Restructured navigation to match Stitch layout
+- Updated all icons to match Stitch structure
+- Added MVP placeholder notes for non-functional features
+- Applied design system styling throughout (bg-card, border-border, text-body-sm, rounded-lg, rounded-xl)
+- Separate mobile and desktop layouts (mobile header doesn't duplicate brand selector)
+- Added User Profile button at bottom (alongside Settings)
+
+---
+
+### Step 3: Update App.jsx Layout Structure
+
+**Goal:** Update App.jsx to use new layout structure matching Stitch dashboard.
+
+**Questions to ask before starting:**
+- Should main content area have max-width container like Stitch (max-w-[1400px])?
+- Should we maintain current padding/spacing or use Stitch's approach?
+
+**Tasks:**
+- [ ] Review Stitch layout structure (flex layout, header, sidebar, main content area)
+- [ ] Update App.jsx layout to match structure
+  - Remove pageTitle prop passing (no longer needed)
+  - Update main content area styling (max-width container if applicable)
+  - Ensure proper flex layout (header fixed, sidebar fixed, main scrollable)
+- [ ] Apply design system styling
+- [ ] Test layout on all screen sizes
+- [ ] Verify all routes still work correctly
+
+**Files to modify:**
+- `src/App.jsx`
+
+---
+
+### Step 4: Update Dashboard Content to Match Stitch Structure
+
+**Goal:** Restructure Dashboard page content to match Stitch dashboard layout while keeping existing functionality.
+
+**Questions to ask before starting:**
+- Should hero section match Stitch's brand status card style?
+- How should we map existing quick access cards to Stitch's structure?
+- Should "Recent Activity" use real Firestore data or placeholder?
+
+**Tasks:**
+- [ ] Review Stitch dashboard content structure
+  - Brand status hero section (with brand name, status, last updated)
+  - Quick access cards grid (5 cards)
+  - Brand Status card (left column)
+  - Asset Authority Snapshot (4 metric cards)
+  - Recent Activity feed (right column)
+  - Suggested Actions (right column)
+- [ ] Map existing Dashboard functionality to new structure
+  - Hero section: Use brandName from user profile, add status indicator
+  - Quick access cards: Update to match Stitch's 5-card grid
+  - Asset Authority Snapshot: Use real stats from Firestore (logos, colors, typography, guidelines counts)
+  - Recent Activity: Use existing recent files data, format as activity feed
+  - Suggested Actions: Add placeholder suggestions (with MVP notes)
+- [ ] Apply design system styling (typography, colors, spacing, border radius, cards)
+- [ ] Keep all existing Firestore data loading
+- [ ] Test Dashboard functionality and visual appearance
+- [ ] Verify responsive behavior
+
+**Files to modify:**
+- `src/screens/Dashboard.jsx`
+
+**Note:** Some sections from Stitch (like "Brand Status" details) may need placeholder data - add MVP comments.
+
+---
+
+### Step 5: Testing & Validation
+
+**Goal:** Comprehensive testing of new layout structure across all pages.
+
+**Tasks:**
+- [ ] Test Header on all pages (functionality, styling, responsive)
+- [ ] Test Sidebar on all pages (navigation, brand selector, styling, responsive)
+- [ ] Test Dashboard with new structure (data loading, styling, responsive)
+- [ ] Test layout on mobile, tablet, desktop
+- [ ] Verify all navigation links work correctly
+- [ ] Check for any layout issues or styling inconsistencies
+- [ ] Verify design system tokens are applied correctly
+- [ ] Test with/without user authentication
+- [ ] Check console for errors or warnings
+
+**Files to review:**
+- All page components (should work with new layout automatically)
+- Header and Sidebar components
+- App.jsx layout structure
+
+---
+
+### Step 6: Update Documentation & Notes
+
+**Goal:** Document MVP placeholders and future improvements.
+
+**Tasks:**
+- [ ] Add MVP notes in code comments where functionality is placeholder
+  - Search bar (non-functional)
+  - Notifications (non-functional)
+  - Brand selector "Add New Brand" (non-functional)
+  - Icon placeholders (where we used different icons than Stitch)
+  - Suggested Actions (placeholder data)
+- [ ] Update README or documentation if needed
+- [ ] Mark task as complete in todo.md
+
+**Files to modify:**
+- Code comments in Header.jsx, Sidebar.jsx, Dashboard.jsx
+- `tasks/todo.md` (mark tasks complete)
+
+---
+
 ### Step 3: Update Firestore Schema for New Uploads
 
 **Goal:** Ensure new asset uploads initialize the `availableFormats` structure

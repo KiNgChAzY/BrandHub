@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { collection, query, orderBy, getDocs, doc, updateDoc } from "firebase/firestore";
 import {
   FileText,
@@ -49,6 +49,7 @@ const CATEGORY_DISPLAY = {
 
 export default function AssetPage() {
   const { user, role } = useAuth();
+  const location = useLocation();
   const [assets, setAssets] = useState([]);
   const [filteredAssets, setFilteredAssets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -229,12 +230,28 @@ export default function AssetPage() {
     { id: "audio", label: "Audio" },
   ];
 
+  // Get current category from URL search params
+  const urlParams = new URLSearchParams(location.search);
+  const urlCategory = urlParams.get("category");
+  const currentCategoryLabel = urlCategory === "logo" ? "Logos" : "All Assets";
+
   return (
     <div className="flex flex-col gap-6">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-heading-xl">All Assets</h1>
+          <div className="flex items-center gap-2 text-body-sm text-muted-foreground">
+            <Link to="/dashboard" className="hover:text-primary transition-colors">Dashboard</Link>
+            <span>/</span>
+            <Link to="/assets" className="hover:text-primary transition-colors">Assets</Link>
+            {urlCategory && (
+              <>
+                <span>/</span>
+                <span className="text-foreground">{currentCategoryLabel}</span>
+              </>
+            )}
+          </div>
+          <h1 className="text-heading-xl">{currentCategoryLabel}</h1>
           <p className="text-body-md text-muted-foreground">
             Manage, organize and download company branding materials
           </p>

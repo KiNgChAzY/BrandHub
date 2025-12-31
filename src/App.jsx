@@ -105,29 +105,6 @@ function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { user } = useAuth();
-
-  // Page titles mapping
-  const pageTitles = {
-    "/dashboard": "Dashboard",
-    "/assets": "Asset Page",
-    "/brand": "Brand Guidelines",
-    "/brand/colors": "Color Palette",
-    "/brand/typography": "Typography",
-    "/templates": "Templates",
-    "/sweep": "Brand Sweep",
-    "/upload": "Upload Asset",
-  };
-
-  // Handle dynamic routes like /assets/:assetId
-  const getPageTitle = () => {
-    if (location.pathname.startsWith("/assets/") && location.pathname !== "/assets") {
-      return "Asset Details";
-    }
-    return pageTitles[location.pathname] || "BrandHub";
-  };
-
-  const pageTitle = getPageTitle();
 
   // Don't show sidebar on auth pages
   const isAuthPage = location.pathname === "/login" || location.pathname === "/signup";
@@ -154,17 +131,14 @@ function AppContent() {
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
       />
+      <Header
+        setMobileMenuOpen={setMobileMenuOpen}
+      />
       <div
-        className={`min-h-screen transition-all duration-300 ease-in-out ${
+        className={`min-h-screen transition-all duration-300 ease-in-out pt-16 ${
           sidebarOpen ? "md:pl-64" : "md:pl-0"
         }`}
       >
-        <Header
-          sidebarOpen={sidebarOpen}
-          setSidebarOpen={setSidebarOpen}
-          setMobileMenuOpen={setMobileMenuOpen}
-          pageTitle={pageTitle}
-        />
         <main className="flex-1 p-4 md:p-6">
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
