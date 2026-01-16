@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrandHub - AI Brand Sweep</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0f4bc4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white flex flex-col h-screen overflow-hidden font-display">
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#151b2b] px-6 py-3 z-20">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-[#0d121b] dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">BrandHub</h2>
+</div>
+<label class="hidden md:flex flex-col min-w-64 h-10 w-96">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-[#f0f2f5] dark:bg-gray-800 overflow-hidden focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<div class="text-[#4c669a] dark:text-gray-400 flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="flex w-full min-w-0 flex-1 resize-none bg-transparent border-none text-sm text-[#0d121b] dark:text-white placeholder:text-[#4c669a] dark:placeholder:text-gray-500 focus:outline-0 focus:ring-0 h-full" placeholder="Search assets, campaigns..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center size-8 rounded-full text-[#4c669a] dark:text-gray-400 hover:bg-[#e7ebf3] dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-64 flex-col bg-white dark:bg-[#151b2b] border-r border-[#e7ebf3] dark:border-gray-800 hidden md:flex flex-shrink-0 justify-between">
+<div class="flex flex-col gap-6 p-4 overflow-y-auto">
+<div class="relative z-20">
+<details class="group relative">
+<summary class="flex items-center justify-between w-full p-2.5 rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#1f2937] hover:border-primary/50 dark:hover:border-gray-600 cursor-pointer transition-all shadow-sm outline-none list-none">
+<div class="flex items-center gap-3 min-w-0">
+<div class="size-10 bg-gradient-to-br from-gray-900 to-black dark:from-gray-700 dark:to-gray-900 rounded-lg flex items-center justify-center text-white shrink-0 shadow-inner border border-white/10">
+<span class="font-bold text-sm tracking-tight">Ac</span>
+</div>
+<div class="flex flex-col text-left min-w-0">
+<span class="text-sm font-bold text-[#0d121b] dark:text-white leading-none truncate">Acme Inc.</span>
+<span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium mt-1 truncate">Enterprise Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-[20px] shrink-0 transition-transform duration-200 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-[#1f2937] border border-[#e7ebf3] dark:border-gray-800 rounded-xl shadow-xl overflow-hidden flex flex-col p-1">
+<div class="px-3 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Switch Brand</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 text-[#0d121b] dark:text-white transition-colors mb-1" href="#">
+<div class="size-6 bg-black dark:bg-gray-700 rounded flex items-center justify-center text-white shrink-0 text-[10px] font-bold">Ac</div>
+<span class="text-sm font-medium truncate">Acme Inc.</span>
+<span class="material-symbols-outlined text-[16px] text-primary ml-auto">check</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-gray-600 dark:text-gray-400 hover:text-[#0d121b] dark:hover:text-white mb-1" href="#">
+<div class="size-6 bg-blue-600 rounded flex items-center justify-center text-white shrink-0 text-[10px] font-bold">Be</div>
+<span class="text-sm font-medium truncate">Beta Corp</span>
+</a>
+<div class="h-px bg-gray-100 dark:bg-gray-800 my-1 mx-2"></div>
+<a class="flex items-center gap-2 px-3 py-2 text-gray-500 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-xs font-medium" href="#">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                                Add New Brand
+                            </a>
+</div>
+</details>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<details class="group">
+<summary class="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white cursor-pointer select-none transition-colors">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="text-sm font-medium">Assets</span>
+</div>
+<span class="material-symbols-outlined text-[20px] transition-transform duration-200 group-open:rotate-180">keyboard_arrow_down</span>
+</summary>
+<div class="flex flex-col pl-9 pt-1 pb-1 gap-1">
+<a class="block py-1.5 text-sm text-[#4c669a] dark:text-gray-400 hover:text-primary dark:hover:text-white font-medium" href="#">All Assets</a>
+<a class="block py-1.5 text-sm text-[#4c669a] dark:text-gray-400 hover:text-primary dark:hover:text-white font-medium" href="#">Logos</a>
+<a class="block py-1.5 text-sm text-[#4c669a] dark:text-gray-400 hover:text-primary dark:hover:text-white font-medium" href="#">Typography</a>
+<a class="block py-1.5 text-sm text-[#4c669a] dark:text-gray-400 hover:text-primary dark:hover:text-white font-medium" href="#">Presentations</a>
+<a class="block py-1.5 text-sm text-[#4c669a] dark:text-gray-400 hover:text-primary dark:hover:text-white font-medium" href="#">Social Media</a>
+</div>
+</details>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+<span class="text-sm font-medium">My Brand</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-white dark:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined fill text-[20px]">auto_awesome</span>
+<span class="text-sm font-semibold">AI Sweep</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Team</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="p-4 border-t border-[#e7ebf3] dark:border-gray-800 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth">
+<div class="max-w-4xl mx-auto w-full pt-16 pb-20 px-6 flex flex-col items-center">
+<div class="mb-12 text-center flex flex-col items-center">
+<div class="inline-flex items-center justify-center size-14 bg-white dark:bg-gray-800 rounded-2xl mb-5 text-primary shadow-sm border border-gray-100 dark:border-gray-700">
+<span class="material-symbols-outlined fill text-3xl">auto_awesome</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-bold text-[#0d121b] dark:text-white tracking-tight mb-3">AI Brand Sweep</h1>
+<p class="text-lg text-gray-500 dark:text-gray-400 max-w-lg mx-auto">Scan a page to review brand asset usage.</p>
+</div>
+<div class="w-full bg-white dark:bg-[#151b2b] rounded-2xl border border-[#e7ebf3] dark:border-gray-800 shadow-xl overflow-hidden">
+<div class="p-8 md:p-10 border-b border-[#e7ebf3] dark:border-gray-800 bg-gray-50/50 dark:bg-[#1a202c]/50 flex justify-between items-center">
+<div>
+<h2 class="text-xl font-bold text-[#0d121b] dark:text-white mb-1">Run a Brand Sweep</h2>
+<p class="text-gray-500 dark:text-gray-400 text-sm">Enter a URL to scan for logo and color usage.</p>
+</div>
+<div class="hidden sm:block">
+<span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-4xl">radar</span>
+</div>
+</div>
+<div class="p-8 md:p-10 flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-[#0d121b] dark:text-white" for="scan-url">Page URL</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">link</span>
+</div>
+<input class="block w-full pl-11 pr-4 py-3.5 bg-white dark:bg-[#101622] border border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-[#0d121b] dark:text-white placeholder-gray-400 transition-all shadow-sm outline-none font-medium" id="scan-url" placeholder="https://www.yourwebsite.com" type="url"/>
+</div>
+<p class="text-xs text-gray-500 dark:text-gray-400">Start with your homepage or key landing pages.</p>
+</div>
+<div class="grid md:grid-cols-2 gap-8 md:gap-12 pt-2">
+<div class="flex-1">
+<h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">What Will Be Checked</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<div class="size-6 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400 shrink-0 border border-green-100 dark:border-green-900/30">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+<span class="text-sm font-semibold text-[#0d121b] dark:text-white">Logo usage</span>
+</li>
+<li class="flex items-center gap-3">
+<div class="size-6 rounded-full bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-600 dark:text-green-400 shrink-0 border border-green-100 dark:border-green-900/30">
+<span class="material-symbols-outlined text-[16px] font-bold">check</span>
+</div>
+<span class="text-sm font-semibold text-[#0d121b] dark:text-white">Color usage</span>
+</li>
+</ul>
+</div>
+<div class="flex-1">
+<div class="bg-blue-50 dark:bg-blue-900/10 rounded-xl p-5 border border-blue-100 dark:border-blue-900/20 h-full">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400 shrink-0 mt-0.5">info</span>
+<div class="flex flex-col gap-1.5">
+<h4 class="text-sm font-bold text-blue-900 dark:text-blue-300">How it works</h4>
+<p class="text-xs text-blue-800 dark:text-blue-400/80 leading-relaxed">
+                                                The sweep scans the selected page, detects logos and colors, and highlights inconsistencies against your brand guidelines.
+                                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-[#e7ebf3] dark:border-gray-800 mt-2">
+<button class="w-full md:w-auto md:min-w-[200px] py-4 px-8 bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-bold rounded-lg cursor-not-allowed border border-transparent transition-all flex items-center justify-center gap-2 uppercase text-sm tracking-wide" disabled="">
+<span class="material-symbols-outlined text-[20px]">radar</span>
+                                    Run Sweep
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -43,10 +43,10 @@ export default function OverviewTab() {
           {/* Logos Card */}
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow group cursor-pointer flex flex-col h-full">
             <div className="flex items-start justify-between mb-4">
-              <div className="size-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <div className="size-10 rounded-lg bg-blue-50 dark:bg-blue-500/12 text-blue-600 dark:text-blue-400 flex items-center justify-center">
                 <Layers className="h-5 w-5" />
               </div>
-              <div className="px-2 py-1 rounded bg-green-50 dark:bg-green-900/30 border border-green-100 dark:border-green-800/50 text-xs font-bold text-green-700 dark:text-green-400">
+              <div className="px-2 py-1 rounded bg-green-50 dark:bg-emerald-500/12 border border-green-100 dark:border-emerald-500/25 text-xs font-bold text-green-700 dark:text-emerald-400">
                 Defined
               </div>
             </div>
@@ -64,10 +64,10 @@ export default function OverviewTab() {
           {/* Colors Card */}
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow group cursor-pointer flex flex-col h-full">
             <div className="flex items-start justify-between mb-4">
-              <div className="size-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+              <div className="size-10 rounded-lg bg-purple-50 dark:bg-purple-500/12 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                 <Palette className="h-5 w-5" />
               </div>
-              <div className="px-2 py-1 rounded bg-green-50 dark:bg-green-900/30 border border-green-100 dark:border-green-800/50 text-xs font-bold text-green-700 dark:text-green-400">
+              <div className="px-2 py-1 rounded bg-green-50 dark:bg-emerald-500/12 border border-green-100 dark:border-emerald-500/25 text-xs font-bold text-green-700 dark:text-emerald-400">
                 Defined
               </div>
             </div>
@@ -89,10 +89,10 @@ export default function OverviewTab() {
           {/* Typography Card */}
           <div className="bg-card border border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow group cursor-pointer flex flex-col h-full">
             <div className="flex items-start justify-between mb-4">
-              <div className="size-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+              <div className="size-10 rounded-lg bg-orange-50 dark:bg-amber-500/12 text-orange-600 dark:text-amber-400 flex items-center justify-center">
                 <Type className="h-5 w-5" />
               </div>
-              <div className="px-2 py-1 rounded bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-100 dark:border-yellow-800/50 text-xs font-bold text-yellow-700 dark:text-yellow-400">
+              <div className="px-2 py-1 rounded bg-yellow-50 dark:bg-amber-500/12 border border-yellow-100 dark:border-amber-500/25 text-xs font-bold text-yellow-700 dark:text-amber-400">
                 Missing
               </div>
             </div>

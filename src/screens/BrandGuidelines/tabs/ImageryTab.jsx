@@ -32,10 +32,10 @@ export default function ImageryTab() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="size-6 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 flex items-center justify-center">
+              <div className="size-6 rounded-full bg-green-100 dark:bg-emerald-500/15 text-green-600 dark:text-emerald-400 flex items-center justify-center">
                 <CheckCircle className="h-3 w-3 font-bold" />
               </div>
-              <span className="text-base font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Do</span>
+              <span className="text-base font-bold text-green-700 dark:text-emerald-400 uppercase tracking-wide">Do</span>
             </div>
             <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border-4 border-green-500/10 dark:border-green-500/20 bg-muted">
               <div className="absolute inset-0 flex items-center justify-center">
@@ -46,15 +46,15 @@ export default function ImageryTab() {
               </div>
             </div>
             <ul className="space-y-3 mt-2">
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
                 Use natural lighting to create warmth.
               </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
                 Capture authentic, unposed moments.
               </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
                 Favor clean backgrounds that don't distract.
               </li>
@@ -62,10 +62,10 @@ export default function ImageryTab() {
           </div>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="size-6 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+              <div className="size-6 rounded-full bg-red-100 dark:bg-rose-500/15 text-red-600 dark:text-rose-400 flex items-center justify-center">
                 <X className="h-3 w-3 font-bold" />
               </div>
-              <span className="text-base font-bold text-red-700 dark:text-red-400 uppercase tracking-wide">Don't</span>
+              <span className="text-base font-bold text-red-700 dark:text-rose-400 uppercase tracking-wide">Don't</span>
             </div>
             <div className="relative aspect-video rounded-xl overflow-hidden shadow-sm border-4 border-red-500/10 dark:border-red-500/20 bg-muted">
               <div className="absolute inset-0 flex items-center justify-center grayscale opacity-80">
@@ -78,15 +78,15 @@ export default function ImageryTab() {
               </div>
             </div>
             <ul className="space-y-3 mt-2">
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <X className="h-5 w-5 text-red-500 shrink-0" />
                 Use overly staged, generic stock photos.
               </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <X className="h-5 w-5 text-red-500 shrink-0" />
                 Apply heavy, unnatural filters or effects.
               </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3 text-sm text-muted-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <X className="h-5 w-5 text-red-500 shrink-0" />
                 Use cluttered scenes that hide the subject.
               </li>

@@ -58,11 +58,11 @@ export default function ActivityTab() {
         {activities.map((activity, idx) => {
           const getColorClasses = (color) => {
             const classes = {
-              blue: "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-800/30",
-              orange: "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 border-orange-100 dark:border-orange-800/30",
-              purple: "bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-800/30",
+              blue: "bg-blue-50 dark:bg-blue-500/12 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-500/20",
+              orange: "bg-orange-50 dark:bg-amber-500/12 text-orange-600 dark:text-amber-400 border-orange-100 dark:border-amber-500/20",
+              purple: "bg-purple-50 dark:bg-purple-500/12 text-purple-600 dark:text-purple-400 border-purple-100 dark:border-purple-500/20",
               gray: "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-gray-200 dark:border-gray-700",
-              green: "bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-100 dark:border-green-800/30",
+              green: "bg-green-50 dark:bg-emerald-500/12 text-green-600 dark:text-emerald-400 border-green-100 dark:border-emerald-500/20",
             };
             return classes[color] || classes.blue;
           };
@@ -75,7 +75,7 @@ export default function ActivityTab() {
               <p className="text-sm text-foreground truncate">
                 <span className="font-bold">{activity.action}</span> {activity.verb}{" "}
                 {activity.badge ? (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 uppercase tracking-wide ml-1">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 dark:bg-emerald-500/15 text-green-700 dark:text-emerald-400 uppercase tracking-wide ml-1">
                     {activity.by}
                   </span>
                 ) : (

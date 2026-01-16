@@ -27,21 +27,21 @@ export default function VoiceToneTab() {
       <section className="grid md:grid-cols-2 gap-8">
         <div className="bg-card rounded-xl p-6 md:p-8 border border-l-4 border-l-green-500 shadow-sm">
           <h3 className="flex items-center gap-2 text-lg font-bold text-foreground mb-6">
-            <span className="flex items-center justify-center size-6 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400">
+            <span className="flex items-center justify-center size-6 rounded-full bg-green-100 dark:bg-emerald-500/15 text-green-600 dark:text-emerald-400">
               <CheckCircle className="h-3 w-3" />
             </span>
             Do this
           </h3>
           <ul className="space-y-4">
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Write clearly and directly, getting straight to the point.</span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Use plain language that anyone can understand.</span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <CheckCircle className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Sound human and empathetic, not like a corporation.</span>
             </li>
@@ -49,21 +49,21 @@ export default function VoiceToneTab() {
         </div>
         <div className="bg-card rounded-xl p-6 md:p-8 border border-l-4 border-l-red-500 shadow-sm">
           <h3 className="flex items-center gap-2 text-lg font-bold text-foreground mb-6">
-            <span className="flex items-center justify-center size-6 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400">
+            <span className="flex items-center justify-center size-6 rounded-full bg-red-100 dark:bg-rose-500/15 text-red-600 dark:text-rose-400">
               <X className="h-3 w-3" />
             </span>
             Don't do this
           </h3>
           <ul className="space-y-4">
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <X className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Use insider jargon, buzzwords, or acronyms without explaining.</span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <X className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Overcomplicate explanations to sound "smart".</span>
             </li>
-            <li className="flex gap-3">
+            <li className="flex gap-3 px-3 py-2 rounded border border-black/20 dark:border-white/20">
               <X className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
               <span className="text-muted-foreground">Sound robotic, cold, or overly casual (e.g. "hey guys").</span>
             </li>
@@ -84,23 +84,23 @@ export default function VoiceToneTab() {
             const getColorClasses = (color) => {
               const classes = {
                 blue: {
-                  bg: "bg-blue-50 dark:bg-blue-900/20",
+                  bg: "bg-blue-50 dark:bg-blue-500/12",
                   text: "text-blue-600 dark:text-blue-400",
                   border: "hover:border-blue-300 dark:hover:border-blue-700",
                 },
                 purple: {
-                  bg: "bg-purple-50 dark:bg-purple-900/20",
+                  bg: "bg-purple-50 dark:bg-purple-500/12",
                   text: "text-purple-600 dark:text-purple-400",
                   border: "hover:border-purple-300 dark:hover:border-purple-700",
                 },
                 emerald: {
-                  bg: "bg-emerald-50 dark:bg-emerald-900/20",
+                  bg: "bg-emerald-50 dark:bg-emerald-500/12",
                   text: "text-emerald-600 dark:text-emerald-400",
                   border: "hover:border-emerald-300 dark:hover:border-emerald-700",
                 },
                 orange: {
-                  bg: "bg-orange-50 dark:bg-orange-900/20",
-                  text: "text-orange-600 dark:text-orange-400",
+                  bg: "bg-orange-50 dark:bg-amber-500/12",
+                  text: "text-orange-600 dark:text-amber-400",
                   border: "hover:border-orange-300 dark:hover:border-orange-700",
                 },
               };

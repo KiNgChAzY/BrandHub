@@ -9,7 +9,7 @@ export default function LogosTab() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h3 className="text-xl font-bold text-foreground">Primary Logo</h3>
-            <span className="px-2 py-0.5 rounded-full bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-xs font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">
+            <span className="px-2 py-0.5 rounded-full bg-green-50 dark:bg-emerald-500/12 border border-green-200 dark:border-emerald-500/25 text-xs font-bold text-green-700 dark:text-emerald-400 uppercase tracking-wide">
               Approved
             </span>
           </div>
@@ -83,7 +83,7 @@ export default function LogosTab() {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
         <div className="flex flex-col gap-6">
           <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="flex items-center justify-center size-6 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400">
+            <span className="flex items-center justify-center size-6 rounded-full bg-green-100 dark:bg-emerald-500/15 text-green-600 dark:text-emerald-400">
               <CheckCircle className="h-3 w-3 font-bold" />
             </span>
             Do
@@ -94,13 +94,13 @@ export default function LogosTab() {
               { icon: CheckCircle, title: "Maintain clear space", desc: "Ensure there is enough breathing room around the logo." },
               { icon: CheckCircle, title: "Match logo to background", desc: "Use the light logo on dark backgrounds and vice-versa." },
             ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-green-50/50 dark:bg-green-900/10 border border-green-100 dark:border-green-800/30">
-                <div className="bg-card p-2 rounded-lg shadow-sm shrink-0 border border-green-100 dark:border-green-800/30">
-                  <item.icon className="h-5 w-5 text-green-600 dark:text-green-400" />
+              <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-green-50/50 dark:bg-emerald-500/8 border border-green-100 dark:border-emerald-500/20">
+                <div className="bg-card p-2 rounded-lg shadow-sm shrink-0 border border-green-100 dark:border-emerald-500/20">
+                  <item.icon className="h-5 w-5 text-green-600 dark:text-emerald-400" />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-sm text-green-900 dark:text-green-300 mb-0.5">{item.title}</h4>
-                  <p className="text-xs text-green-800/70 dark:text-green-400/70">{item.desc}</p>
+                <div className="px-3 py-2 rounded border border-black/20 dark:border-white/20">
+                  <h4 className="font-semibold text-sm text-green-900 dark:text-emerald-300 mb-0.5">{item.title}</h4>
+                  <p className="text-xs text-green-800/70 dark:text-emerald-400/80">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -108,7 +108,7 @@ export default function LogosTab() {
         </div>
         <div className="flex flex-col gap-6">
           <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <span className="flex items-center justify-center size-6 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400">
+            <span className="flex items-center justify-center size-6 rounded-full bg-red-100 dark:bg-rose-500/15 text-red-600 dark:text-rose-400">
               <X className="h-3 w-3 font-bold" />
             </span>
             Don't
@@ -119,13 +119,13 @@ export default function LogosTab() {
               { icon: X, title: "Change colors", desc: "Do not apply unauthorized colors or gradients." },
               { icon: X, title: "Add effects", desc: "Avoid shadows, outlines, or other decorative effects." },
             ].map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-800/30">
-                <div className="bg-card p-2 rounded-lg shadow-sm shrink-0 border border-red-100 dark:border-red-800/30">
-                  <item.icon className="h-5 w-5 text-red-600 dark:text-red-400" />
+              <div key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 dark:bg-rose-500/8 border border-black/30 dark:border-white/30">
+                <div className="bg-card p-2 rounded-lg shadow-sm shrink-0 border border-black/30 dark:border-white/30">
+                  <item.icon className="h-5 w-5 text-red-600 dark:text-rose-400" />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-sm text-red-900 dark:text-red-300 mb-0.5">{item.title}</h4>
-                  <p className="text-xs text-red-800/70 dark:text-red-400/70">{item.desc}</p>
+                <div className="px-3 py-2 rounded border border-black/20 dark:border-white/20">
+                  <h4 className="font-semibold text-sm text-red-900 dark:text-rose-300 mb-0.5">{item.title}</h4>
+                  <p className="text-xs text-red-800/70 dark:text-rose-400/80">{item.desc}</p>
                 </div>
               </div>
             ))}

@@ -52,24 +52,24 @@ export default function DownloadsTab() {
             const getColorClasses = (color) => {
               const classes = {
                 blue: {
-                  bg: "bg-blue-50 dark:bg-blue-900/20",
+                  bg: "bg-blue-50 dark:bg-blue-500/12",
                   text: "text-blue-600 dark:text-blue-400",
-                  hover: "group-hover:border-blue-200 group-hover:bg-blue-50/50 dark:group-hover:bg-blue-900/10",
+                  hover: "group-hover:border-blue-200 group-hover:bg-blue-50/50 dark:group-hover:bg-blue-500/8",
                 },
                 indigo: {
-                  bg: "bg-indigo-50 dark:bg-indigo-900/20",
+                  bg: "bg-indigo-50 dark:bg-indigo-500/12",
                   text: "text-indigo-600 dark:text-indigo-400",
-                  hover: "group-hover:border-indigo-200 group-hover:bg-indigo-50/50 dark:group-hover:bg-indigo-900/10",
+                  hover: "group-hover:border-indigo-200 group-hover:bg-indigo-50/50 dark:group-hover:bg-indigo-500/8",
                 },
                 emerald: {
-                  bg: "bg-emerald-50 dark:bg-emerald-900/20",
+                  bg: "bg-emerald-50 dark:bg-emerald-500/12",
                   text: "text-emerald-600 dark:text-emerald-400",
-                  hover: "group-hover:border-emerald-200 group-hover:bg-emerald-50/50 dark:group-hover:bg-emerald-900/10",
+                  hover: "group-hover:border-emerald-200 group-hover:bg-emerald-50/50 dark:group-hover:bg-emerald-500/8",
                 },
                 orange: {
-                  bg: "bg-orange-50 dark:bg-orange-900/20",
-                  text: "text-orange-600 dark:text-orange-400",
-                  hover: "group-hover:border-orange-200 group-hover:bg-orange-50/50 dark:group-hover:bg-orange-900/10",
+                  bg: "bg-orange-50 dark:bg-amber-500/12",
+                  text: "text-orange-600 dark:text-amber-400",
+                  hover: "group-hover:border-orange-200 group-hover:bg-orange-50/50 dark:group-hover:bg-amber-500/8",
                 },
               };
               return classes[color] || classes.blue;

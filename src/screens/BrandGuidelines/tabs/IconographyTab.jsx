@@ -50,50 +50,50 @@ export default function IconographyTab() {
       <section className="flex flex-col gap-6">
         <h4 className="text-xl font-bold text-foreground">Usage Guidelines</h4>
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="flex flex-col gap-4 rounded-xl border border-green-200 dark:border-green-900 bg-green-50/50 dark:bg-green-900/10 p-6">
-            <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-bold uppercase tracking-wide text-xs">
+          <div className="flex flex-col gap-4 rounded-xl border border-green-200 dark:border-emerald-500/20 bg-green-50/50 dark:bg-emerald-500/8 p-6">
+            <div className="flex items-center gap-2 text-green-700 dark:text-emerald-400 font-bold uppercase tracking-wide text-xs">
               <CheckCircle className="h-4 w-4" />
               Do
             </div>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-green-500 mt-1.5 shrink-0"></span>
                 Use icons from the approved set only.
               </li>
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-green-500 mt-1.5 shrink-0"></span>
                 Maintain consistent stroke weight (2px).
               </li>
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-green-500 mt-1.5 shrink-0"></span>
                 Use brand colors where appropriate for emphasis.
               </li>
             </ul>
-            <div className="mt-2 p-4 bg-card rounded-lg border border-green-100 dark:border-green-900/30 flex items-center justify-center gap-8">
+            <div className="mt-2 p-4 bg-card rounded-lg border border-green-100 dark:border-emerald-500/20 flex items-center justify-center gap-8">
               <Settings className="h-12 w-12 text-muted-foreground" />
               <Heart className="h-12 w-12 text-primary" />
             </div>
           </div>
-          <div className="flex flex-col gap-4 rounded-xl border border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-900/10 p-6">
-            <div className="flex items-center gap-2 text-red-700 dark:text-red-400 font-bold uppercase tracking-wide text-xs">
+          <div className="flex flex-col gap-4 rounded-xl border border-black/30 dark:border-white/30 bg-red-50/50 dark:bg-rose-500/8 p-6">
+            <div className="flex items-center gap-2 text-red-700 dark:text-rose-400 font-bold uppercase tracking-wide text-xs border-b border-black/30 dark:border-white/30 pb-2">
               <X className="h-4 w-4" />
               Don't
             </div>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-red-500 mt-1.5 shrink-0"></span>
                 Mix icon styles (e.g. filled and outline).
               </li>
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-red-500 mt-1.5 shrink-0"></span>
                 Fill outline icons arbitrarily.
               </li>
-              <li className="flex items-start gap-3 text-sm text-foreground">
+              <li className="flex items-start gap-3 text-sm text-foreground px-2 py-1.5 rounded border border-black/20 dark:border-white/20">
                 <span className="size-1.5 rounded-full bg-red-500 mt-1.5 shrink-0"></span>
                 Use icons with mismatched stroke widths.
               </li>
             </ul>
-            <div className="mt-2 p-4 bg-card rounded-lg border border-red-100 dark:border-red-900/30 flex items-center justify-center gap-8 opacity-50">
+            <div className="mt-2 p-4 bg-card rounded-lg border border-black/30 dark:border-white/30 flex items-center justify-center gap-8 opacity-50">
               <Settings className="h-12 w-12 text-muted-foreground" />
               <Settings className="h-12 w-12 text-muted-foreground fill-current" />
             </div>
