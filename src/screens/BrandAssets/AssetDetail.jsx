@@ -85,10 +85,7 @@ export default function AssetDetail() {
 
       const newUrl = await getDownloadURL(uploadTask.snapshot.ref);
 
-      // Note: Old file deletion skipped for MVP - Firebase Storage cleanup can be handled separately
-      // The old file URL will remain in storage but won't be referenced in Firestore
-
-      // Note: Old file deletion skipped for MVP - Firebase Storage cleanup can be handled separately
+      // PLACEHOLDER: Old file deletion - implement Firebase Storage cleanup when files are updated
       // The old file URL will remain in storage but won't be referenced in Firestore
 
       // Update Firestore document

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrandHub - Brand Guidelines</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0f4bc4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white flex flex-col h-screen overflow-hidden font-display">
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#151b2b] px-6 py-3 z-20 h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-[#0d121b] dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">BrandHub</h2>
+</div>
+<div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+<div class="flex items-center gap-3">
+<h1 class="text-base font-bold text-[#0d121b] dark:text-white">Acme Global</h1>
+<span class="text-gray-400">/</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Brand Guidelines</span>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 ml-2">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[11px] font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Stable</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-64 flex-col bg-white dark:bg-[#151b2b] border-r border-[#e7ebf3] dark:border-gray-800 hidden md:flex flex-shrink-0 justify-between">
+<div class="flex flex-col gap-6 p-4 overflow-y-auto">
+<div class="relative z-20">
+<details class="group relative">
+<summary class="flex items-center justify-between w-full p-2.5 rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#1f2937] hover:border-primary/50 dark:hover:border-gray-600 cursor-pointer transition-all shadow-sm outline-none list-none">
+<div class="flex items-center gap-3 min-w-0">
+<div class="size-10 bg-gradient-to-br from-gray-900 to-black dark:from-gray-700 dark:to-gray-900 rounded-lg flex items-center justify-center text-white shrink-0 shadow-inner border border-white/10">
+<span class="font-bold text-sm tracking-tight">Ac</span>
+</div>
+<div class="flex flex-col text-left min-w-0">
+<span class="text-sm font-bold text-[#0d121b] dark:text-white leading-none truncate">Acme Inc.</span>
+<span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium mt-1 truncate">Enterprise Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-[20px] shrink-0 transition-transform duration-200 group-open:rotate-180">expand_more</span>
+</summary>
+</details>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-white dark:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined fill text-[20px]">verified</span>
+<span class="text-sm font-semibold">Brand Guidelines</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="text-sm font-medium">AI Sweep</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Team</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="p-4 border-t border-[#e7ebf3] dark:border-gray-800 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth relative">
+<div class="sticky top-0 z-10 bg-background-light dark:bg-background-dark/95 backdrop-blur-sm border-b border-[#e7ebf3] dark:border-gray-800 px-6 md:px-12 pt-6">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-end gap-3 shrink-0">
+<button class="text-sm font-medium text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Guide
+                    </button>
+<div class="h-4 w-px bg-gray-200 dark:bg-gray-700 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-semibold text-[#0d121b] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Download Brand Guide
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shadow-sm shadow-primary/20 whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share Brand Guide
+                    </button>
+</div>
+<nav aria-label="Tabs" class="flex gap-6 overflow-x-auto no-scrollbar w-full">
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Overview
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Logos
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Colors
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Typography
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Imagery
+                    </button>
+<button class="pb-3 border-b-2 border-primary text-primary dark:text-white font-semibold text-sm whitespace-nowrap">
+                        Voice &amp; Tone
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Iconography
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Downloads
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap flex items-center gap-1">
+                        Activity <span class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px] px-1.5 py-0.5 rounded font-bold">INT</span>
+</button>
+</nav>
+</div>
+</div>
+<div class="max-w-5xl mx-auto px-6 py-10 md:px-12 md:py-12 flex flex-col gap-12">
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-3">
+<h3 class="text-3xl font-bold text-[#0d121b] dark:text-white tracking-tight">Our Voice</h3>
+<p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
+                        Acme Global speaks with the confidence of a market leader and the clarity of an expert. We are human, direct, and focused on solutions.
+                    </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="px-5 py-4 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm flex flex-col gap-1">
+<span class="font-bold text-[#0d121b] dark:text-white">Confident</span>
+<span class="text-xs text-gray-500">We know our value.</span>
+</div>
+<div class="px-5 py-4 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm flex flex-col gap-1">
+<span class="font-bold text-[#0d121b] dark:text-white">Clear</span>
+<span class="text-xs text-gray-500">No jargon allowed.</span>
+</div>
+<div class="px-5 py-4 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm flex flex-col gap-1">
+<span class="font-bold text-[#0d121b] dark:text-white">Human</span>
+<span class="text-xs text-gray-500">Talk like a person.</span>
+</div>
+<div class="px-5 py-4 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm flex flex-col gap-1">
+<span class="font-bold text-[#0d121b] dark:text-white">Direct</span>
+<span class="text-xs text-gray-500">Respect their time.</span>
+</div>
+</div>
+</section>
+<hr class="border-gray-200 dark:border-gray-800"/>
+<section class="grid md:grid-cols-2 gap-8">
+<div class="bg-white dark:bg-[#1f2937] rounded-xl p-6 md:p-8 border border-l-4 border-gray-200 border-l-green-500 dark:border-gray-700 dark:border-l-green-500 shadow-sm">
+<h3 class="flex items-center gap-2 text-lg font-bold text-[#0d121b] dark:text-white mb-6">
+<span class="flex items-center justify-center size-6 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400">
+<span class="material-symbols-outlined text-sm">check</span>
+</span>
+                        Do this
+                    </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0 mt-0.5">check</span>
+<span class="text-gray-600 dark:text-gray-300">Write clearly and directly, getting straight to the point.</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0 mt-0.5">check</span>
+<span class="text-gray-600 dark:text-gray-300">Use plain language that anyone can understand.</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0 mt-0.5">check</span>
+<span class="text-gray-600 dark:text-gray-300">Sound human and empathetic, not like a corporation.</span>
+</li>
+</ul>
+</div>
+<div class="bg-white dark:bg-[#1f2937] rounded-xl p-6 md:p-8 border border-l-4 border-gray-200 border-l-red-500 dark:border-gray-700 dark:border-l-red-500 shadow-sm">
+<h3 class="flex items-center gap-2 text-lg font-bold text-[#0d121b] dark:text-white mb-6">
+<span class="flex items-center justify-center size-6 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined text-sm">close</span>
+</span>
+                        Don't do this
+                    </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0 mt-0.5">close</span>
+<span class="text-gray-600 dark:text-gray-300">Use insider jargon, buzzwords, or acronyms without explaining.</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0 mt-0.5">close</span>
+<span class="text-gray-600 dark:text-gray-300">Overcomplicate explanations to sound "smart".</span>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0 mt-0.5">close</span>
+<span class="text-gray-600 dark:text-gray-300">Sound robotic, cold, or overly casual (e.g. "hey guys").</span>
+</li>
+</ul>
+</div>
+</section>
+<section class="flex flex-col gap-6">
+<h3 class="text-xl font-bold text-[#0d121b] dark:text-white">Tone by Context</h3>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+<div class="size-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<h4 class="font-bold text-[#0d121b] dark:text-white mb-1">Marketing</h4>
+<div class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-3">Bold &amp; Inspiring</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">
+                            Focus on the vision and the value we bring. Inspire them to act.
+                        </p>
+</div>
+<div class="p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-xl hover:border-purple-300 dark:hover:border-purple-700 transition-colors">
+<div class="size-10 rounded-lg bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">toggle_on</span>
+</div>
+<h4 class="font-bold text-[#0d121b] dark:text-white mb-1">Product UI</h4>
+<div class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider mb-3">Clear &amp; Concise</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">
+                            Get out of the way. Guide the user efficiently without friction.
+                        </p>
+</div>
+<div class="p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-xl hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors">
+<div class="size-10 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">support_agent</span>
+</div>
+<h4 class="font-bold text-[#0d121b] dark:text-white mb-1">Support</h4>
+<div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-3">Calm &amp; Helpful</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">
+                            Be reassuring. Acknowledge the problem and offer the solution.
+                        </p>
+</div>
+<div class="p-6 bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-xl hover:border-orange-300 dark:hover:border-orange-700 transition-colors">
+<div class="size-10 rounded-lg bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">badge</span>
+</div>
+<h4 class="font-bold text-[#0d121b] dark:text-white mb-1">Internal</h4>
+<div class="text-xs font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider mb-3">Direct &amp; Open</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-snug">
+                            Collaborative and straightforward. We are all on the same team.
+                        </p>
+</div>
+</div>
+</section>
+<section class="bg-gray-50 dark:bg-[#1c222e] rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+<div class="p-6 border-b border-gray-200 dark:border-gray-700">
+<h3 class="text-lg font-bold text-[#0d121b] dark:text-white">Language Guidelines</h3>
+</div>
+<div class="divide-y divide-gray-200 dark:divide-gray-700">
+<div class="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-white dark:hover:bg-[#1f2937] transition-colors">
+<div class="size-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div class="flex-1">
+<h4 class="text-base font-bold text-[#0d121b] dark:text-white">Use Active Voice</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Put the subject first. Say "We launched the feature" instead of "The feature was launched by us." It's stronger and shorter.
+                            </p>
+</div>
+</div>
+<div class="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-white dark:hover:bg-[#1f2937] transition-colors">
+<div class="size-10 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">chat_bubble_outline</span>
+</div>
+<div class="flex-1">
+<h4 class="text-base font-bold text-[#0d121b] dark:text-white">Avoid Slang</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Our audience is global. Avoid idioms or local slang that might not translate well or could be confusing.
+                            </p>
+</div>
+</div>
+<div class="p-6 flex flex-col md:flex-row md:items-center gap-4 hover:bg-white dark:hover:bg-[#1f2937] transition-colors">
+<div class="size-10 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">mood</span>
+</div>
+<div class="flex-1">
+<h4 class="text-base font-bold text-[#0d121b] dark:text-white">Emojis? Sparingly.</h4>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Acceptable in Slack and casual marketing. Never in legal docs, error messages, or core product UI.
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<section class="flex flex-col gap-6">
+<h3 class="text-xl font-bold text-[#0d121b] dark:text-white">Before &amp; After</h3>
+<div class="bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm">
+<div class="grid md:grid-cols-11 items-stretch">
+<div class="md:col-span-5 p-6 md:p-8 bg-gray-50/50 dark:bg-black/10 flex flex-col justify-center">
+<div class="text-xs font-bold text-red-500 uppercase tracking-wider mb-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">block</span> Instead of this
+                            </div>
+<p class="text-lg text-gray-400 dark:text-gray-500 font-medium line-through decoration-red-400/50">
+                                "We strive to deliver best-in-class solutions to facilitate your workflow optimization."
+                            </p>
+</div>
+<div class="md:col-span-1 flex items-center justify-center bg-white dark:bg-[#1f2937] border-y md:border-y-0 md:border-x border-gray-100 dark:border-gray-800 py-4 md:py-0">
+<div class="size-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400">
+<span class="material-symbols-outlined text-sm md:rotate-0 rotate-90">arrow_forward</span>
+</div>
+</div>
+<div class="md:col-span-5 p-6 md:p-8 bg-white dark:bg-[#1f2937] flex flex-col justify-center">
+<div class="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider mb-3 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">check_circle</span> Use this
+                            </div>
+<p class="text-xl text-[#0d121b] dark:text-white font-semibold">
+                                "We build tools that make brand management simple."
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<div class="h-12"></div>
+</div>
+</main>
+</div>
+
+</body></html>

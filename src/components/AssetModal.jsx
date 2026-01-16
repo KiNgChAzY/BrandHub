@@ -113,7 +113,7 @@ export default function AssetModal({ assetId, asset: providedAsset, isOpen, onCl
   useEffect(() => {
     if (!asset || !asset.fileUrl) return;
 
-    // TODO: File size fetching - Currently not stored in Firestore
+    // PLACEHOLDER: File size fetching - implement file size storage in Firestore when uploading
     // For full implementation, we should:
     // 1. Store file size in Firestore when uploading (in bytes)
     // 2. Or fetch file size via HEAD request to the file URL
@@ -153,7 +153,7 @@ export default function AssetModal({ assetId, asset: providedAsset, isOpen, onCl
   }
 
   function handleDelete() {
-    // TODO: Implement delete functionality with confirmation
+    // PLACEHOLDER: Delete functionality - implement delete with confirmation dialog
     console.log("Delete asset:", asset?.id);
   }
 
@@ -359,7 +359,7 @@ export default function AssetModal({ assetId, asset: providedAsset, isOpen, onCl
                       <span className="text-sm font-medium text-muted-foreground">Size</span>
                       <span className="text-sm text-foreground">
                         {fileSize ? formatFileSize(fileSize) : "Not available"}
-                        {/* TODO: File size not currently stored. For full implementation:
+                        {/* PLACEHOLDER: File size not currently stored. For full implementation:
                             1. Store file size in bytes when uploading asset
                             2. Or fetch via HEAD request to file URL
                         */}

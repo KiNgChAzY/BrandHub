@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrandHub - Brand Guidelines</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0f4bc4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white flex flex-col h-screen overflow-hidden font-display">
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#151b2b] px-6 py-3 z-20 h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-[#0d121b] dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">BrandHub</h2>
+</div>
+<div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+<div class="flex items-center gap-3">
+<h1 class="text-base font-bold text-[#0d121b] dark:text-white">Acme Global</h1>
+<span class="text-gray-400">/</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Brand Guidelines</span>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 ml-2">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[11px] font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Stable</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-64 flex-col bg-white dark:bg-[#151b2b] border-r border-[#e7ebf3] dark:border-gray-800 hidden md:flex flex-shrink-0 justify-between">
+<div class="flex flex-col gap-6 p-4 overflow-y-auto">
+<div class="relative z-20">
+<details class="group relative">
+<summary class="flex items-center justify-between w-full p-2.5 rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#1f2937] hover:border-primary/50 dark:hover:border-gray-600 cursor-pointer transition-all shadow-sm outline-none list-none">
+<div class="flex items-center gap-3 min-w-0">
+<div class="size-10 bg-gradient-to-br from-gray-900 to-black dark:from-gray-700 dark:to-gray-900 rounded-lg flex items-center justify-center text-white shrink-0 shadow-inner border border-white/10">
+<span class="font-bold text-sm tracking-tight">Ac</span>
+</div>
+<div class="flex flex-col text-left min-w-0">
+<span class="text-sm font-bold text-[#0d121b] dark:text-white leading-none truncate">Acme Inc.</span>
+<span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium mt-1 truncate">Enterprise Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-[20px] shrink-0 transition-transform duration-200 group-open:rotate-180">expand_more</span>
+</summary>
+</details>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-white dark:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined fill text-[20px]">verified</span>
+<span class="text-sm font-semibold">Brand Guidelines</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="text-sm font-medium">AI Sweep</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Team</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="p-4 border-t border-[#e7ebf3] dark:border-gray-800 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth relative">
+<div class="sticky top-0 z-10 bg-background-light dark:bg-background-dark/95 backdrop-blur-sm border-b border-[#e7ebf3] dark:border-gray-800 px-6 md:px-12 pt-6">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-end gap-3 shrink-0">
+<button class="text-sm font-medium text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Guide
+                    </button>
+<div class="h-4 w-px bg-gray-200 dark:bg-gray-700 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-semibold text-[#0d121b] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Download Brand Guide
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shadow-sm shadow-primary/20 whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share Brand Guide
+                    </button>
+</div>
+<nav aria-label="Tabs" class="flex gap-6 overflow-x-auto no-scrollbar w-full">
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Overview
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Logos
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Colors
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Typography
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Imagery
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Voice &amp; Tone
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Iconography
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Downloads
+                    </button>
+<button class="pb-3 border-b-2 border-primary text-primary dark:text-white font-semibold text-sm whitespace-nowrap flex items-center gap-1">
+                        Activity <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-[10px] px-1.5 py-0.5 rounded font-bold">INT</span>
+</button>
+</nav>
+</div>
+</div>
+<div class="max-w-5xl mx-auto px-6 py-10 md:px-12 md:py-12 flex flex-col gap-8">
+<section class="flex flex-col gap-2">
+<h3 class="text-2xl font-bold text-[#0d121b] dark:text-white">Activity</h3>
+<p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
+                        Track recent changes and updates to the brand guide.
+                    </p>
+</section>
+<div class="bg-white dark:bg-[#1f2937] border border-[#e7ebf3] dark:border-gray-800 rounded-xl shadow-sm flex flex-col overflow-hidden">
+<div class="group flex items-center gap-4 p-5 border-b border-[#e7ebf3] dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 border border-blue-100 dark:border-blue-800/30">
+<span class="material-symbols-outlined text-[20px]">token</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<p class="text-sm text-[#0d121b] dark:text-white truncate">
+<span class="font-bold">Primary logo</span> updated by <span class="font-semibold text-gray-700 dark:text-gray-300">Sam</span>
+</p>
+<span class="text-xs font-medium text-gray-400 shrink-0">2 days ago</span>
+</div>
+</div>
+<div class="group flex items-center gap-4 p-5 border-b border-[#e7ebf3] dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="size-10 rounded-full bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 border border-orange-100 dark:border-orange-800/30">
+<span class="material-symbols-outlined text-[20px]">text_fields</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<p class="text-sm text-[#0d121b] dark:text-white truncate">
+<span class="font-bold">Typography</span> defined by <span class="font-semibold text-gray-700 dark:text-gray-300">Kaelynn</span>
+</p>
+<span class="text-xs font-medium text-gray-400 shrink-0">Jan 14</span>
+</div>
+</div>
+<div class="group flex items-center gap-4 p-5 border-b border-[#e7ebf3] dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="size-10 rounded-full bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0 border border-purple-100 dark:border-purple-800/30">
+<span class="material-symbols-outlined text-[20px]">forward_to_inbox</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<p class="text-sm text-[#0d121b] dark:text-white truncate">
+<span class="font-bold">Brand guide</span> shared with <span class="font-semibold text-gray-700 dark:text-gray-300">marketing@company.com</span>
+</p>
+<span class="text-xs font-medium text-gray-400 shrink-0">Yesterday</span>
+</div>
+</div>
+<div class="group flex items-center gap-4 p-5 border-b border-[#e7ebf3] dark:border-gray-800 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="size-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 flex items-center justify-center shrink-0 border border-gray-200 dark:border-gray-700">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<p class="text-sm text-[#0d121b] dark:text-white truncate">
+<span class="font-bold">Downloads</span> updated by <span class="font-semibold text-gray-700 dark:text-gray-300">Sam</span>
+</p>
+<span class="text-xs font-medium text-gray-400 shrink-0">Jan 10</span>
+</div>
+</div>
+<div class="group flex items-center gap-4 p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+<div class="size-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center shrink-0 border border-green-100 dark:border-green-800/30">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4">
+<p class="text-sm text-[#0d121b] dark:text-white truncate">
+<span class="font-bold">Brand status</span> changed to <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 uppercase tracking-wide ml-1">Stable</span>
+</p>
+<span class="text-xs font-medium text-gray-400 shrink-0">Jan 9</span>
+</div>
+</div>
+</div>
+<div class="h-12"></div>
+</div>
+</main>
+</div>
+</body></html>

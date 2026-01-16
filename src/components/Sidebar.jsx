@@ -27,7 +27,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
   // Load brand name from user profile
   useEffect(() => {
     if (!user || !db) {
-      setBrandName("Example Brand");
+      setBrandName("Example Brand"); // PLACEHOLDER: Replace with actual brand name from user data
       return;
     }
 
@@ -39,11 +39,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
           const userData = userSnap.data();
           setBrandName(userData.brandName || "Example Brand");
         } else {
-          setBrandName("Example Brand");
+          setBrandName("Example Brand"); // PLACEHOLDER: Replace with actual brand name from user data
         }
       } catch (err) {
         console.error("Error loading brand name:", err);
-        setBrandName("Example Brand");
+        setBrandName("Example Brand"); // PLACEHOLDER: Replace with actual brand name from user data
       }
     };
 
@@ -59,7 +59,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
 
   // Get initials for brand avatar
   const getBrandInitials = (name) => {
-    if (!name || name === "Example Brand") return "EB";
+    if (!name || name === "Example Brand") return "EB"; // PLACEHOLDER: "Example Brand" is placeholder text
     const words = name.split(" ");
     if (words.length >= 2) {
       return (words[0][0] + words[1][0]).toUpperCase();
@@ -95,7 +95,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
             <span className="text-body-sm font-medium truncate">{brandName}</span>
             <Check className="text-[16px] text-primary ml-auto" />
           </button>
-          {/* MVP Placeholder: Add New Brand functionality not implemented yet - add brand creation logic when ready */}
+          {/* PLACEHOLDER: Add New Brand functionality - implement brand creation logic */}
           <button className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-lg transition-colors text-label-sm font-medium" disabled>
             <Plus className="text-[16px]" />
             Add New Brand
@@ -138,11 +138,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
             <span className="text-body-sm font-medium">Assets</span>
           </Link>
 
-          {/* MVP Placeholder: My Brand icon (CheckCircle) used as verified equivalent - replace with actual brand verification icon when available */}
-          <details className="group" open={expandedItems["My Brand"] || location.pathname.startsWith("/brand/")}>
+          {/* PLACEHOLDER: CheckCircle icon - replace with actual brand verification icon */}
+          <details className="group" open={expandedItems["My Brand"] || location.pathname.startsWith("/brand/") || location.pathname.startsWith("/brand/guidelines")}>
             <summary
               className={`flex items-center justify-between gap-3 px-3 py-2 rounded-lg cursor-pointer select-none transition-colors list-none ${
-                location.pathname === "/brand" || location.pathname.startsWith("/brand/")
+                location.pathname === "/brand" || location.pathname.startsWith("/brand/") || location.pathname.startsWith("/brand/guidelines")
                   ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               }`}
@@ -158,6 +158,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
               <ChevronDown className={`text-[20px] transition-transform duration-200 ${expandedItems["My Brand"] || location.pathname.startsWith("/brand/") ? "rotate-180" : ""}`} />
             </summary>
             <div className="flex flex-col pl-9 pt-1 pb-1 gap-1">
+              <Link
+                to="/brand/guidelines"
+                className={`block py-1.5 text-body-sm font-medium transition-colors ${
+                  location.pathname === "/brand/guidelines" || location.pathname.startsWith("/brand/guidelines")
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
+                }`}
+              >
+                Brand Guidelines
+              </Link>
               <Link
                 to="/brand/colors"
                 className={`block py-1.5 text-body-sm font-medium transition-colors ${
@@ -191,7 +201,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
             </div>
           </details>
 
-          {/* MVP Placeholder: AI Sweep icon (Wand2) used as auto_awesome equivalent - replace with AI-specific icon when available */}
+          {/* PLACEHOLDER: Wand2 icon - replace with AI-specific icon */}
           <Link
             to="/sweep"
             className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
@@ -204,7 +214,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, mobileMenuOpen, setMobileMenuOpe
             <span className="text-body-sm font-medium">AI Sweep</span>
           </Link>
 
-          {/* MVP Placeholder: Team functionality not implemented yet - add team management logic when ready */}
+          {/* PLACEHOLDER: Team functionality - implement team management logic */}
           <button
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
             disabled

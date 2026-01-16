@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrandHub - Brand Guidelines</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0f4bc4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#0d121b] dark:text-white flex flex-col h-screen overflow-hidden font-display">
+<header class="flex shrink-0 items-center justify-between whitespace-nowrap border-b border-solid border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#151b2b] px-6 py-3 z-20 h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-[#0d121b] dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">dataset</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">BrandHub</h2>
+</div>
+<div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+<div class="flex items-center gap-3">
+<h1 class="text-base font-bold text-[#0d121b] dark:text-white">Acme Global</h1>
+<span class="text-gray-400">/</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Brand Guidelines</span>
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 ml-2">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[11px] font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Stable</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="w-64 flex-col bg-white dark:bg-[#151b2b] border-r border-[#e7ebf3] dark:border-gray-800 hidden md:flex flex-shrink-0 justify-between">
+<div class="flex flex-col gap-6 p-4 overflow-y-auto">
+<div class="relative z-20">
+<details class="group relative">
+<summary class="flex items-center justify-between w-full p-2.5 rounded-xl border border-[#e7ebf3] dark:border-gray-800 bg-white dark:bg-[#1f2937] hover:border-primary/50 dark:hover:border-gray-600 cursor-pointer transition-all shadow-sm outline-none list-none">
+<div class="flex items-center gap-3 min-w-0">
+<div class="size-10 bg-gradient-to-br from-gray-900 to-black dark:from-gray-700 dark:to-gray-900 rounded-lg flex items-center justify-center text-white shrink-0 shadow-inner border border-white/10">
+<span class="font-bold text-sm tracking-tight">Ac</span>
+</div>
+<div class="flex flex-col text-left min-w-0">
+<span class="text-sm font-bold text-[#0d121b] dark:text-white leading-none truncate">Acme Inc.</span>
+<span class="text-[10px] text-gray-500 dark:text-gray-400 font-medium mt-1 truncate">Enterprise Plan</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-[20px] shrink-0 transition-transform duration-200 group-open:rotate-180">expand_more</span>
+</summary>
+</details>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">folder</span>
+<span class="text-sm font-medium">Assets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary dark:text-white dark:bg-white/10 transition-colors" href="#">
+<span class="material-symbols-outlined fill text-[20px]">verified</span>
+<span class="text-sm font-semibold">Brand Guidelines</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+<span class="text-sm font-medium">AI Sweep</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-sm font-medium">Team</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="p-4 border-t border-[#e7ebf3] dark:border-gray-800 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#4c669a] dark:text-gray-400 hover:bg-[#f8f9fc] dark:hover:bg-gray-800 hover:text-[#0d121b] dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">User Profile</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark scroll-smooth relative">
+<div class="sticky top-0 z-10 bg-background-light dark:bg-background-dark/95 backdrop-blur-sm border-b border-[#e7ebf3] dark:border-gray-800 px-6 md:px-12 pt-6">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-end gap-3 shrink-0">
+<button class="text-sm font-medium text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                        Edit Guide
+                    </button>
+<div class="h-4 w-px bg-gray-200 dark:bg-gray-700 mx-1"></div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-semibold text-[#0d121b] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Download Brand Guide
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors shadow-sm shadow-primary/20 whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">share</span>
+                        Share Brand Guide
+                    </button>
+</div>
+<nav aria-label="Tabs" class="flex gap-6 overflow-x-auto no-scrollbar w-full">
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Overview
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Logos
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Colors
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Typography
+                    </button>
+<button class="pb-3 border-b-2 border-primary text-primary dark:text-white font-semibold text-sm whitespace-nowrap">
+                        Imagery
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Voice &amp; Tone
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Usage Rules
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap">
+                        Downloads
+                    </button>
+<button class="pb-3 border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 font-medium text-sm transition-colors whitespace-nowrap flex items-center gap-1">
+                        Activity <span class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px] px-1.5 py-0.5 rounded font-bold">INT</span>
+</button>
+</nav>
+</div>
+</div>
+<div class="max-w-5xl mx-auto px-6 py-10 md:px-12 md:py-12 flex flex-col gap-16">
+<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-3">
+<h3 class="text-2xl font-bold text-[#0d121b] dark:text-white">Imagery</h3>
+<p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">
+                        Our imagery reflects the human side of logistics. It should feel candid, dynamic, and grounded in reality, showcasing real people solving real problems in natural environments.
+                    </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<div class="px-4 py-1.5 rounded-full bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm flex items-center gap-1.5">
+<span class="size-1.5 rounded-full bg-emerald-500"></span> Authentic
+                    </div>
+<div class="px-4 py-1.5 rounded-full bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm flex items-center gap-1.5">
+<span class="size-1.5 rounded-full bg-orange-500"></span> Natural lighting
+                    </div>
+<div class="px-4 py-1.5 rounded-full bg-white dark:bg-[#1f2937] border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 shadow-sm flex items-center gap-1.5">
+<span class="size-1.5 rounded-full bg-blue-500"></span> Modern, uncluttered
+                    </div>
+</div>
+</section>
+<hr class="border-gray-200 dark:border-gray-800"/>
+<section class="flex flex-col gap-6">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-[#0d121b] dark:text-white">Photography Style</h3>
+<span class="text-sm font-medium text-gray-500">Approved Assets</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-400 border-l-4 border-primary pl-3 py-0.5">
+                    Photography should feel natural, candid, and human — never staged or stock-heavy.
+                </p>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Team collaboration" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5hY5WwViBX2_rvMn1WCR4bkMpf47qukIxWb4pamfkTm-TIyNkuH5IKk3KIzgGF-lydVjmQzryYHFBEKtpSXGdmJxLFbI4XvRXJnVy42MFUzdc5gvtEL0_tyblMVVqNe8PJYxrmSdpY3iYA5cAsZ7Nx7hZw8_hZDmjoROkDKXomZ5C8nAuzq-_7oxOoVvr5hd-MK8zjuK9a9aEEbsW-0cm4p8eYTcePEPC6Ix8NJcHNwezi-mFQGK-j67u39hIn3UsCrJP76FQgTrT"/>
+</div>
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Warehouse operations" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_9g7rhBDfpO5c5VLZC3y_Y1pZjVsi_QGlZI6jI3SZe3Ik4J7j0VKA1wzKtIut2wm_G_ZqfjFh8Wp52DHlnLpM7warpQT1OCteOyWh_S5n6ezZvEKFc-MJwPWAvHcM8__P-1Vp-t6qKtDuEI_plFNht4iyUM-NXRSjh__L305IAj2hp1hexXJPJsU5GE-VFRGuVYzBfUEguBVUZQ8gJTpcXaimWxl6zon-MNB6hoenObY9zO_fV2_TpCsgtsoxmb289lQgr7dekUTx"/>
+</div>
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Logistics delivery" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJQaAZS4hh1ggmpGd46tBuMjYzMj6O6H_tTXrvMALTld8ru0BE7NI9kUn423Q5sxvGU9jxTnYxaJ7dTJ_r-njy09TUMVvMPDUDROHvZflnGlMDzBI8UEVFC8-XXI1bVAke3kNstWiOKolY9Fngt8W5M1HdTEBBehKaNbg2bDk7ZoOhTa1ABkXOhrdE-BRJW_Kk3WvlM5C3P2jhEeUxwOHHlbE_qXft-FEzjRaKiXGoycRAIsqMCGPF7lQbsfiXhT5MriURG5xfS4TT"/>
+</div>
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Office meeting" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv4cqpRGA7g242OoE_h_QZEUMubKUIxdiFNhwLk8znixg3Da1qVvP2NTV-2f1ACcYKYbJJdlE2rtBeNrJCicgqw3nyS5w-zfAZILntcH4pqD37uLKTwUhteBTo5mSYTNqIbgd9muvZdTBjinZtTtp-7657z6joXjRQu_Zh7YDALEki1PCnhqOsh2W8nIzqUgkoBjzpCEdZHSCas5tY5uREs7Lnl-QdZm8LL5xmraVR0xr-lUyxHMNd0Qlyp0gNjuv6UUh6UnsTeynt"/>
+</div>
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Technology integration" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGsLWc7iKm9lRXwqeTyW3tFoZILWIItCj2je07LOCmf7WkKrBAgVsUC8OM5rGV5opW0rG4YOo3fNeO0Q76mqQXWKyRWeG3j5XPoyMvdv7bChxz4FSegbTbbqDL8SRlrCj2i6XgQyt9qyz2e-9gqME2fBR2a4tbPWaxH7ONsERpTT0IH5lW0x7t2rP8mgXLVQp6Q41OVBc4dUxuOwXuPRYW5a9LbngVWSIOPp5H9qF0iZt23z2g-osAS9HKbW6Th0ttzwQoYZ-yWxm0"/>
+</div>
+<div class="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-sm bg-gray-100 dark:bg-gray-800">
+<img alt="Modern architecture" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOzGEoMqF3pBKvupK26zAssX3Yt6XlfzOnRpPZ2I_sVEyBH5aTX3LkNSwp5GkZJLxtH0PzqY4lANODf73KK3bekuShiVJpdNNkEk9f_Pelmee9gnq2EiGtwbsVJLYihiCUJbDQ2z9okQpPO5m4MXDulaeIoydSRFjsPi8xGCRiImCW7PMCiaJTUHyzmByoGtfhpuzNkfXPvZVMIyUNlXS1GzNvBwa5Bf2zviM-SbywJgoW4mkxEMAAtWYng3BDmgMq1AtzXnmtbL1C"/>
+</div>
+</div>
+</section>
+<hr class="border-gray-200 dark:border-gray-800"/>
+<section class="flex flex-col gap-8">
+<h3 class="text-xl font-bold text-[#0d121b] dark:text-white">Do's &amp; Don'ts</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="size-6 rounded-full bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<span class="text-base font-bold text-green-700 dark:text-green-400 uppercase tracking-wide">Do</span>
+</div>
+<div class="relative aspect-video rounded-xl overflow-hidden shadow-sm border-4 border-green-500/10 dark:border-green-500/20">
+<img alt="Do example" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCN8Ivc82XBMezN2pDUmWDAKaHRNCnv8JsQl3UzNQJD35DvVH9UYGPBIA5XsseASfjJjIm7CReiWBDcMF09OsniraJspDhVIoiWlsLwTxvcslpbN90nJcpiEH-O0SkWkUFqA-0W9RbU5QfsfBpoLVB7hSvxA0qBGkj3XMRR3k919DFy_Bmna1jLs8qodkk0YMSmnLDcB-yoG1UA-rrdh7SPX4xqQSlJ9eFICio-ByfUqrXlwTXlIOtNMEdGyRbA3Wzij73fbcJk-QCq"/>
+<div class="absolute top-3 left-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                            Approved
+                        </div>
+</div>
+<ul class="space-y-3 mt-2">
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0">check_circle</span>
+                            Use natural lighting to create warmth.
+                        </li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0">check_circle</span>
+                            Capture authentic, unposed moments.
+                        </li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-green-500 text-lg shrink-0">check_circle</span>
+                            Favor clean backgrounds that don't distract.
+                        </li>
+</ul>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<div class="size-6 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm font-bold">close</span>
+</div>
+<span class="text-base font-bold text-red-700 dark:text-red-400 uppercase tracking-wide">Don't</span>
+</div>
+<div class="relative aspect-video rounded-xl overflow-hidden shadow-sm border-4 border-red-500/10 dark:border-red-500/20">
+<img alt="Don't example" class="absolute inset-0 w-full h-full object-cover grayscale opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbjw70g0JS0ourbElre0rlluct1ywLPu98gphtwX01hrjleByHrs7Rm8ouluUZXzkyWPrXqMFSomOd1ejI7jMo6vOfAxUVNYIAtHZk5jXNSIYseIH92Cq_DzhaURwl_BN9j4cCavfJN7IhBkqjAFTMgfAoednwoU4Tior2KcRQGKiGZQhnKcugKdAAKDDptBXlXboZteXADgH-vcM9Gf7KX5PYuiTLUVuvieRghTqfEa9KeperZV5A5HBK3MxF8kxc6du_MIEtR2uK"/>
+<div class="absolute inset-0 bg-red-500/10 flex items-center justify-center">
+<div class="bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold shadow-lg transform -rotate-6 border-2 border-white">
+                                REJECTED
+                            </div>
+</div>
+</div>
+<ul class="space-y-3 mt-2">
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0">cancel</span>
+                            Use overly staged, generic stock photos.
+                        </li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0">cancel</span>
+                            Apply heavy, unnatural filters or effects.
+                        </li>
+<li class="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-red-500 text-lg shrink-0">cancel</span>
+                            Use cluttered scenes that hide the subject.
+                        </li>
+</ul>
+</div>
+</div>
+</section>
+<hr class="border-gray-200 dark:border-gray-800"/>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+<section class="flex flex-col gap-6">
+<h3 class="text-lg font-bold text-[#0d121b] dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">camera_alt</span>
+                    Subject Matter Guidance
+                </h3>
+<div class="bg-white dark:bg-[#1f2937] border border-[#e7ebf3] dark:border-gray-800 rounded-xl p-6 shadow-sm">
+<ul class="flex flex-col gap-4">
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Focus on <strong>people over products</strong> (when applicable) to emphasize our human-centric approach.</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Show <strong>real environments</strong> like active warehouses, modern offices, or transport hubs.</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Avoid <strong>clichés</strong> like handshakes against white backgrounds or generic "thumbs up" poses.</span>
+</li>
+</ul>
+</div>
+</section>
+<section class="flex flex-col gap-6">
+<h3 class="text-lg font-bold text-[#0d121b] dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">crop</span>
+                    Composition &amp; Treatment
+                </h3>
+<div class="bg-white dark:bg-[#1f2937] border border-[#e7ebf3] dark:border-gray-800 rounded-xl p-6 shadow-sm h-full">
+<ul class="flex flex-col gap-4">
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Favor <strong>wide shots</strong> with breathing room to convey scale and openness.</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Use <strong>depth of field</strong> naturally to draw focus to the subject without blurring context entirely.</span>
+</li>
+<li class="flex items-start gap-3 text-sm text-gray-700 dark:text-gray-300">
+<div class="size-1.5 mt-2 rounded-full bg-primary shrink-0"></div>
+<span>Avoid <strong>aggressive cropping</strong> that removes essential context.</span>
+</li>
+</ul>
+<div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+<p class="text-xs text-gray-500 italic">
+                            * Tip: Always leave sufficient negative space for typography when images are used in marketing headers.
+                        </p>
+</div>
+</div>
+</section>
+</div>
+<hr class="border-gray-200 dark:border-gray-800"/>
+<section class="flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<h3 class="text-lg font-bold text-[#0d121b] dark:text-white">Illustration &amp; Graphics</h3>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-gray-100 dark:bg-gray-800 text-gray-500 border border-gray-200 dark:border-gray-700">Restricted</span>
+</div>
+<div class="bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800/30 rounded-lg p-4 flex gap-4">
+<span class="material-symbols-outlined text-yellow-600 dark:text-yellow-500 shrink-0">info</span>
+<div class="text-sm text-yellow-800 dark:text-yellow-200">
+<strong class="block mb-1 font-semibold">Limited Use Only</strong>
+                    Illustrations should generally be avoided in favor of photography. If graphics are necessary for abstract concepts (e.g., data flow, server architecture), use the approved icon set or simple, geometric vector lines in brand colors.
+                </div>
+</div>
+</section>
+<div class="h-12"></div>
+</div>
+</main>
+</div>
+</body></html>

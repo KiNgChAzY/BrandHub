@@ -20,7 +20,7 @@ function Header({ setMobileMenuOpen }) {
 
         {/* Logo and BrandHub text */}
         <div className="flex items-center gap-3 text-foreground">
-          {/* MVP Placeholder: Using Grid icon as dataset equivalent - replace with actual logo when available */}
+          {/* PLACEHOLDER: Grid icon - replace with actual BrandHub logo */}
           <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-primary-foreground">
             <Grid className="text-xl" />
           </div>
@@ -33,7 +33,7 @@ function Header({ setMobileMenuOpen }) {
             <div className="text-muted-foreground flex items-center justify-center pl-4 pr-2">
               <Search className="text-xl" />
             </div>
-            {/* MVP Placeholder: Search functionality not implemented yet - add search logic when ready */}
+            {/* PLACEHOLDER: Search functionality - implement search logic for assets and campaigns */}
             <input
               className="flex w-full min-w-0 flex-1 resize-none bg-transparent border-none text-sm text-foreground placeholder:text-muted-foreground focus:outline-0 focus:ring-0 h-full"
               placeholder="Search assets, campaigns..."
@@ -47,7 +47,7 @@ function Header({ setMobileMenuOpen }) {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              {/* MVP Placeholder: Notifications functionality not implemented yet - add notifications logic when ready */}
+              {/* PLACEHOLDER: Notifications functionality - implement notifications system */}
               <button
                 className="flex items-center justify-center size-8 rounded-full text-muted-foreground hover:bg-muted transition-colors"
                 aria-label="Notifications"

@@ -2,7 +2,7 @@ import React from "react";
 import { Layers, FileText, Download } from "lucide-react";
 
 export default function Templates() {
-  // Placeholder templates (will be replaced with real data later)
+  // PLACEHOLDER: Template data - replace with actual templates from database
   const templates = [
     {
       name: "Brand Identity Package",

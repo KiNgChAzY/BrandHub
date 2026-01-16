@@ -12,11 +12,11 @@
   --popover: #ffffff;
   --popover-foreground: #0f172a;
 
-  /* Primary Action - Dark almost black for sleek buttons */
-  --primary: #111827;
+  /* Primary Action - Blue for brand consistency */
+  --primary: #135bec;
   --primary-foreground: #ffffff;
-  --primary-hover: #1f2937;
-  --primary-active: #374151;
+  --primary-hover: #0f4bc2;
+  --primary-active: #0d3fa0;
 
   /* Primary Accent - Electric blue for highlights */
   --primary-accent: #3b82f6;
@@ -115,11 +115,11 @@
   --popover: #1e293b;
   --popover-foreground: #f1f5f9;
 
-  /* Primary - White for dark mode */
-  --primary: #ffffff;
-  --primary-foreground: #0f172a;
-  --primary-hover: #f1f5f9;
-  --primary-active: #e2e8f0;
+  /* Primary - Blue for dark mode */
+  --primary: #135bec;
+  --primary-foreground: #ffffff;
+  --primary-hover: #0f4bc2;
+  --primary-active: #0d3fa0;
 
   /* Primary Accent */
   --primary-accent: #3b82f6;

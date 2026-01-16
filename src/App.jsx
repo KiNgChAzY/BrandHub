@@ -14,6 +14,7 @@ import TypographyShowcase from "./screens/BrandAssets/TypographyShowcase";
 import BrandSweep from "./screens/BrandSweep";
 import Templates from "./screens/Templates";
 import ShareBrandPage from "./screens/ShareBrandPage";
+import BrandGuidelines from "./screens/BrandGuidelines/BrandGuidelines";
 
 function BrandLandingPage() {
   return (
@@ -197,6 +198,14 @@ function AppContent() {
               element={
                 <PrivateRoute>
                   <TypographyShowcase />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/brand/guidelines"
+              element={
+                <PrivateRoute>
+                  <BrandGuidelines />
                 </PrivateRoute>
               }
             />

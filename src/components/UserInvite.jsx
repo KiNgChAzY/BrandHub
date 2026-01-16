@@ -15,9 +15,9 @@ import { X, UserPlus } from "lucide-react";
  * - Add email sending functionality
  * - Track invitation status (pending/accepted/expired)
  * 
- * TODO: Add Firestore integration in handleSubmit function
- * TODO: Add duplicate invitation check (query Firestore before creating)
- * TODO: Add email sending service integration
+ * PLACEHOLDER: Firestore integration - add in handleSubmit function
+ * PLACEHOLDER: Duplicate invitation check - query Firestore before creating
+ * PLACEHOLDER: Email sending service - integrate email service for invitations
  */
 
 const MAX_EMAIL_LENGTH = 254;
@@ -65,7 +65,7 @@ export default function UserInvite({ isOpen, onClose }) {
   /**
    * Handles form submission
    * 
-   * MVP: Currently only validates and shows success message
+   * PLACEHOLDER: Currently only validates and shows success message - implement Firestore and email integration
    * Future: Will store invitation in Firestore and send email
    */
   async function handleSubmit(e) {
@@ -82,7 +82,7 @@ export default function UserInvite({ isOpen, onClose }) {
       // Simulate API call delay (for better UX)
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // TODO: Firestore Integration
+      // PLACEHOLDER: Firestore Integration - implement invitation storage
       // 1. Check for duplicate invitation:
       //    const invitationsRef = collection(db, "invitations");
       //    const q = query(invitationsRef, where("email", "==", sanitizedEmail));

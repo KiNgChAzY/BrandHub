@@ -256,15 +256,13 @@ export default function AssetPage() {
             Manage, organize and download company branding materials
           </p>
         </div>
-        {role === "admin" && (
-          <Link
-            to="/upload"
-            className="whitespace-nowrap shrink-0 flex items-center gap-2 btn-primary w-fit"
-          >
-            <Upload className="h-5 w-5" />
-            <span>Upload New Asset</span>
-          </Link>
-        )}
+        <Link
+          to="/upload"
+          className="whitespace-nowrap shrink-0 flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm shadow-blue-200 dark:shadow-none transition-all transform active:scale-95 w-fit"
+        >
+          <Upload className="text-[20px]" />
+          <span className="text-sm font-bold">Upload New Asset</span>
+        </Link>
       </div>
 
       {/* Category Filter Buttons */}
@@ -287,17 +285,17 @@ export default function AssetPage() {
       {/* Filters and View Toggle */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border pb-4">
         <div className="flex flex-wrap gap-2">
-          {/* File Type Filter - UI Placeholder */}
+          {/* PLACEHOLDER: File Type Filter - implement filter functionality */}
           <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
             <span className="text-foreground text-label-md font-medium">File Type</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </button>
-          {/* Date Modified Filter - UI Placeholder */}
+          {/* PLACEHOLDER: Date Modified Filter - implement filter functionality */}
           <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
             <span className="text-foreground text-label-md font-medium">Date Modified</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
           </button>
-          {/* Owner Filter - UI Placeholder */}
+          {/* PLACEHOLDER: Owner Filter - implement filter functionality */}
           <button className="flex h-10 items-center justify-center gap-x-2 rounded-lg bg-card border border-border hover:border-text-tertiary/50 pl-3 pr-2 transition-all">
             <span className="text-foreground text-label-md font-medium">Owner</span>
             <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -362,14 +360,14 @@ export default function AssetPage() {
                       alt={asset.name || "Asset preview"}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       onError={(e) => {
-                        // Fallback to placeholder if image fails to load
+                        // PLACEHOLDER: Fallback image URL - replace with actual placeholder service or remove
                         e.target.onerror = null;
                         e.target.src = "https://via.placeholder.com/400x300/cccccc/666666?text=Asset+Preview";
                       }}
                     />
                   ) : asset.fileUrl ? (
-                    // Show placeholder for non-image assets with fileUrl
                     <div className="w-full h-full flex items-center justify-center">
+                      {/* PLACEHOLDER: Placeholder image for non-image assets - replace with actual preview generation */}
                       <img
                         src="https://via.placeholder.com/400x300/cccccc/666666?text=Asset+Preview"
                         alt="Placeholder preview"
