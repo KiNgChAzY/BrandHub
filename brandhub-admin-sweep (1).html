@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brand Sweep · BrandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sidebar-w: 200px; --sidebar-bg: #ffffff;
+    --bg: #f4f5f7; --card: #ffffff;
+    --navy: #1a2340; --accent: #3b6ef5; --accent-light: #e8eeff;
+    --green: #22c55e; --green-light: #dcfce7;
+    --amber: #f59e0b; --amber-light: #fffbeb;
+    --red: #ef4444; --red-light: #fef2f2;
+    --text-1: #111827; --text-2: #4b5563; --text-3: #9ca3af;
+    --border: #e5e7eb; --radius: 12px; --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    --purple:#6366f1; --purple-light:#ede9fe;
+    --amber-light:#fffbeb; --green-light:#f0fdf4;
+    font-family: 'DM Sans', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text-1); min-height: 100vh; display: flex; }
+
+  /* ── Sidebar ── */
+  aside {
+    width: var(--sidebar-w); background: var(--sidebar-bg);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; padding: 20px 0;
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 0 18px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .logo-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--text-1); }
+  nav { flex: 1; padding: 0 10px; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 10px; border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; margin-bottom: 6px; text-decoration: none; }
+  .nav-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+  .nav-item svg { flex-shrink: 0; opacity: .8; }
+  .sidebar-footer { padding: 16px 14px 0; border-top: 1px solid var(--border); margin-top: auto; }
+  .nav-expandable { cursor: pointer; user-select: none; }
+  .nav-sub { overflow: hidden; max-height: 0; transition: max-height .25s ease, opacity .2s ease; opacity: 0; }
+  .nav-sub.open { max-height: 200px; opacity: 1; }
+  .nav-sub-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px 7px 34px; font-size: 12.5px; font-weight: 500; color: var(--text-3); border-radius: var(--radius-sm); cursor: pointer; text-decoration: none; transition: all .15s; margin-bottom: 1px; }
+  .nav-sub-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-group { margin-bottom: 6px; }
+
+  /* ── Main ── */
+  main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+  header { background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 50; }
+  .search { flex: 1; max-width: 340px; display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; height: 36px; }
+  .search input { background: none; border: none; outline: none; font-size: 13px; color: var(--text-1); width: 100%; font-family: inherit; }
+  .search input::placeholder { color: var(--text-3); }
+  .icon-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); transition: all .15s; position: relative; }
+  .icon-btn:hover { background: var(--bg); }
+  .badge { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#8b5cf6); cursor: pointer; }
+
+  /* ── Content ── */
+  .content { padding: 32px 36px 60px; flex: 1; }
+
+  /* ── Sweep Views ── */
+  .view { display: none; }
+  .view.active { display: block; animation: fadeUp .25s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Page header ── */
+  .page-hero { text-align: left; padding: 24px 0 28px; display: flex; align-items: center; gap: 18px; }
+  .hero-icon { width: 52px; height: 52px; border-radius: 14px; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: var(--shadow); }
+  .hero-title { font-size: 22px; font-weight: 800; color: var(--text-1); letter-spacing: -0.4px; margin-bottom: 4px; }
+  .hero-sub { font-size: 14px; color: var(--text-3); }
+
+  /* ── Run Sweep form card ── */
+  .sweep-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: var(--shadow); }
+  .sweep-card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .sweep-card-title { font-size: 16px; font-weight: 800; color: var(--text-1); margin-bottom: 4px; }
+  .sweep-card-sub { font-size: 13px; color: var(--text-3); }
+
+  /* Inputs */
+  .field { margin-bottom: 18px; }
+  .field-label { font-size: 12.5px; font-weight: 700; color: var(--text-2); display: block; margin-bottom: 7px; }
+  .field-hint { font-size: 12px; color: var(--text-3); margin-top: 6px; }
+  .input-wrap { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); border-radius: 9px; padding: 0 14px; height: 44px; background: #fff; transition: border-color .15s, box-shadow .15s; }
+  .input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,110,245,.08); }
+  .input-wrap input { border: none; outline: none; font-size: 14px; color: var(--text-1); width: 100%; font-family: inherit; background: transparent; }
+  .input-wrap input::placeholder { color: var(--text-3); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  select.sel { width: 100%; height: 44px; border: 1px solid var(--border); border-radius: 9px; padding: 0 14px; font-size: 14px; font-family: inherit; color: var(--text-1); background: #fff; outline: none; cursor: pointer; transition: border-color .15s; }
+  select.sel:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,110,245,.08); }
+
+  /* What will be checked */
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .check-item { display: flex; align-items: center; gap: 9px; padding: 10px 14px; background: var(--bg); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text-1); }
+  .check-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* How it works callout */
+  .callout { background: var(--accent-light); border-radius: 10px; padding: 14px 16px; display: flex; gap: 10px; margin-top: 18px; }
+  .callout-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .callout-title { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 4px; }
+  .callout-body { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+
+  /* Run button */
+  .run-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 48px; border: none; border-radius: 10px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; box-shadow: 0 4px 14px rgba(59,110,245,.3); transition: all .15s; margin-top: 24px; letter-spacing: .3px; }
+  .run-btn:hover { background: #2d5de0; box-shadow: 0 6px 20px rgba(59,110,245,.4); transform: translateY(-1px); }
+  .run-btn:disabled { background: var(--text-3); box-shadow: none; cursor: not-allowed; transform: none; }
+
+  /* ── Sweep history ── */
+  .history-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .history-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .history-title { font-size: 17px; font-weight: 800; color: var(--text-1); letter-spacing: -0.3px; }
+  .history-row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 16px; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); transition: background .12s; cursor: pointer; }
+  .history-row:last-child { border-bottom: none; }
+  .history-row:hover { background: var(--bg); }
+  .history-name { font-size: 13px; font-weight: 600; color: var(--text-1); }
+  .history-meta { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
+  .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .status-complete { background: var(--green-light); color: #16a34a; }
+  .status-progress { background: var(--amber-light); color: #b45309; }
+  .status-failed { background: var(--red-light); color: #dc2626; }
+  .issues-count { font-size: 13px; font-weight: 700; text-align: right; }
+  .issues-high { color: var(--red); }
+  .issues-med { color: var(--amber); }
+  .issues-ok { color: var(--green); }
+
+  /* ── Scanning view ── */
+  .scan-wrap { max-width: 680px; margin: 40px auto; text-align: center; }
+  .scan-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; position: relative; }
+  .scan-icon::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--accent); opacity: .3; animation: pulse 1.4s ease infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: .3; } 50% { transform: scale(1.1); opacity: .1; } }
+  .scan-spin { position: absolute; inset: -6px; border-radius: 50%; border: 2px solid transparent; border-top-color: var(--accent); animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .scan-title { font-size: 22px; font-weight: 800; color: var(--text-1); margin-bottom: 8px; }
+  .scan-sub { font-size: 14px; color: var(--text-3); margin-bottom: 32px; }
+  .scan-progress { background: var(--bg); border-radius: 20px; height: 6px; overflow: hidden; margin-bottom: 12px; }
+  .scan-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #6366f1); border-radius: 20px; width: 0%; transition: width .5s ease; }
+  .scan-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; text-align: left; }
+  .scan-step { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #fff; border: 1px solid var(--border); border-radius: 10px; }
+  .step-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; }
+  .step-dot.done { background: var(--green-light); }
+  .step-dot.active { background: var(--accent-light); animation: stepPulse .8s ease infinite alternate; }
+  .step-dot.pending { background: var(--bg); border: 1.5px solid var(--border); }
+  @keyframes stepPulse { from { transform: scale(.9); } to { transform: scale(1.05); } }
+  .step-label { font-size: 13px; font-weight: 500; color: var(--text-2); }
+  .step-label.done { color: var(--green); font-weight: 600; }
+  .step-label.active { color: var(--accent); font-weight: 700; }
+  .navigate-note { margin-top: 24px; padding: 12px 16px; background: var(--bg); border-radius: 10px; font-size: 12.5px; color: var(--text-3); display: flex; align-items: center; gap: 8px; }
+
+  /* ── Results view ── */
+  .results-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 16px; }
+  .results-title { font-size: 22px; font-weight: 800; color: var(--text-1); letter-spacing: -0.4px; margin-bottom: 4px; }
+  .results-meta { font-size: 13px; color: var(--text-3); }
+  .results-actions { display: flex; gap: 10px; flex-shrink: 0; }
+  .score-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .score-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 18px; text-align: center; }
+  .score-val { font-size: 30px; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; }
+  .score-label { font-size: 11.5px; color: var(--text-3); font-weight: 500; }
+  .score-sub { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+  .overall-score { font-size: 40px; font-weight: 800; }
+
+  /* Issue list */
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { font-size: 15px; font-weight: 800; color: var(--text-1); }
+  .filter-tabs { display: flex; gap: 6px; }
+  .filter-tab { padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: #fff; font-size: 12px; font-weight: 600; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; }
+  .filter-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .issue-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; transition: box-shadow .15s; }
+  .issue-card:hover { box-shadow: var(--shadow); }
+  .issue-row { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; cursor: pointer; }
+  .issue-severity { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .sev-high { background: var(--red); }
+  .sev-medium { background: var(--amber); }
+  .sev-low { background: var(--green); }
+  .issue-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .issue-title { font-size: 13.5px; font-weight: 700; color: var(--text-1); margin-bottom: 3px; }
+  .issue-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+  .issue-url { font-size: 11.5px; color: var(--text-3); font-family: 'DM Mono', monospace; margin-top: 5px; }
+  .issue-badge { margin-left: auto; flex-shrink: 0; }
+  .sev-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .sev-badge.high { background: var(--red-light); color: var(--red); }
+  .sev-badge.medium { background: var(--amber-light); color: #b45309; }
+  .sev-badge.low { background: var(--green-light); color: #16a34a; }
+
+  /* ── Misc ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .btn-outline { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
+  .btn-outline:hover { background: var(--bg); }
+  .btn-accent { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: none; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; box-shadow: 0 2px 8px rgba(59,110,245,.25); }
+  .btn-accent:hover { background: #2d5de0; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside>
+  <div class="logo">
+    <div class="logo-icon">BH</div>
+    <div class="logo-text">BrandHub</div>
+  </div>
+  <nav>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:16px;background:#fff;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+      <div style="width:38px;height:38px;border-radius:9px;background:#111827;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:13px;font-weight:700;color:#fff;">Ac</span></div>
+      <div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:700;color:var(--text-1);">Acme Inc.</div><div style="font-size:11px;color:var(--text-3);margin-top:1px;">Enterprise Plan</div></div>
+      <svg width="13" height="13" fill="none" stroke="var(--text-3)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <a class="nav-item" href="brandhub-admin-dashboard.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item" href="brandhub-dashboard.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Assets</a>
+    <a class="nav-item" href="brandhub-admin-guidelines.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Brand Guidelines</a>
+    <a class="nav-item active" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Brand Sweep</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Reports & Insights</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Team</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>Connected Sites</a>
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('settings')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span style="flex:1;">Settings</span>
+        <svg id="chevron-settings" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-settings">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account Settings</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Organization Settings</a>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('support')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        <span style="flex:1;">Support</span>
+        <svg id="chevron-support" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-support">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>BrandHub Support</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>Acme Brand Questions</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main>
+  <header>
+    <div class="search">
+      <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search brand sweep...">
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--purple-light);color:var(--purple);font-size:11.5px;font-weight:700;border:1px solid #c7d2fe;margin-right:4px;"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin</span>
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge">2</span></div>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--purple-light);color:var(--purple);font-size:11.5px;font-weight:700;border:1px solid #c7d2fe;margin-right:4px;"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin</span>
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
+      <div class="avatar"></div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ══════════ VIEW: HOME ══════════ -->
+    <div id="view-home" class="view active">
+
+      <div class="page-hero" style="flex-wrap:wrap;gap:12px;">
+        <div style="display:flex;align-items:center;gap:14px;flex:1;">
+          <div class="hero-icon">
+            <svg width="26" height="26" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <div class="hero-title">AI Brand Sweep</div>
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#3b6ef5);color:#fff;font-size:11px;font-weight:700;letter-spacing:.3px;">
+                <svg width="11" height="11" fill="#fff" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                Powered by AI
+              </span>
+            </div>
+            <div class="hero-sub">Scan connected sites and review brand consistency.</div>
+          </div>
+        </div>
+        <!-- Admin view toggle -->
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:9px;overflow:hidden;background:#fff;flex-shrink:0;align-self:center;">
+          <button id="tab-sweep" onclick="setAdminTab('sweep')" style="height:36px;padding:0 16px;border:none;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;">Sweep</button>
+          <button id="tab-settings" onclick="setAdminTab('settings')" style="height:36px;padding:0 16px;border:none;background:#fff;color:var(--text-2);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="margin-right:4px;vertical-align:-2px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Settings
+          </button>
+        </div>
+      </div>
+
+      <!-- Run new sweep card -->
+      <div class="sweep-card">
+        <div class="sweep-card-header">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="sweep-card-title">Run a Brand Sweep</div>
+              <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;background:linear-gradient(135deg,#ede9fe,#e0e7ff);color:#6366f1;font-size:10.5px;font-weight:700;">
+                <svg width="9" height="9" fill="#6366f1" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+                AI
+              </span>
+            </div>
+            <div class="sweep-card-sub">Enter the details below and we'll scan for brand consistency issues.</div>
+          </div>
+          <svg width="22" height="22" fill="none" stroke="var(--text-3)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Sweep Name</label>
+          <div class="input-wrap">
+            <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <input id="sweep-name" type="text" placeholder="e.g. Homepage Brand Audit — Q2 2026" oninput="checkForm()">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Page URL <span style="color:var(--red);">*</span></label>
+
+          <!-- Dropdown — hidden when custom URL mode is active -->
+          <div id="site-select-wrap" style="position:relative;">
+            <select id="sweep-site-select" onchange="onSiteSelect(this.value)" style="width:100%;height:44px;border:1px solid var(--border);border-radius:9px;padding:0 14px;font-size:13.5px;font-family:inherit;color:var(--text-1);background:#fff;outline:none;cursor:pointer;appearance:none;transition:border-color .15s,box-shadow .15s;">
+              <option value="">— Select a connected site —</option>
+              <option value="acmeinc.com">Main Website · acmeinc.com</option>
+              <option value="blog.acmeinc.com">Company Blog · blog.acmeinc.com</option>
+              <option value="docs.acmeinc.com">Documentation · docs.acmeinc.com</option>
+              <option value="acmeinc.com/careers">Careers Page · acmeinc.com/careers</option>
+              <option value="partners.acmeinc.com">Partner Portal · partners.acmeinc.com</option>
+              <option value="__custom__">+ Enter a custom URL instead</option>
+            </select>
+            <svg style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;" width="14" height="14" fill="none" stroke="var(--text-3)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <!-- Custom URL text box — replaces dropdown when custom is chosen -->
+          <div id="custom-url-wrap" style="display:none;">
+            <div class="input-wrap">
+              <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+              <input id="sweep-url" type="url" placeholder="https://www.yourwebsite.com" oninput="checkForm()" style="flex:1;" autofocus>
+              <button onclick="resetToDropdown()" title="Back to connected sites" style="background:none;border:none;cursor:pointer;color:var(--text-3);display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;font-family:inherit;white-space:nowrap;padding:0;transition:color .15s;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-3)'">
+                <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                Sites
+              </button>
+            </div>
+          </div>
+
+          <div class="field-hint" id="url-hint">Pick a connected site or enter a custom URL to sweep.</div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label class="field-label">Scan Depth</label>
+            <select class="sel" id="sweep-depth">
+              <option value="1">Single page only</option>
+              <option value="3" selected>Up to 3 levels deep</option>
+              <option value="5">Up to 5 levels deep</option>
+              <option value="all">Full site crawl</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label">Ruleset</label>
+            <select class="sel" id="sweep-ruleset">
+              <option value="full" selected>Full brand guidelines</option>
+              <option value="logo">Logo usage only</option>
+              <option value="color">Color usage only</option>
+              <option value="type">Typography only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">What will be checked</label>
+          <div class="check-grid">
+            <div class="check-item">
+              <div class="check-dot"><svg width="11" height="11" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Logo usage
+            </div>
+            <div class="check-item">
+              <div class="check-dot"><svg width="11" height="11" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Colour usage
+            </div>
+            <div class="check-item">
+              <div class="check-dot"><svg width="11" height="11" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Typography consistency
+            </div>
+            <div class="check-item">
+              <div class="check-dot"><svg width="11" height="11" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              Image & icon standards
+            </div>
+          </div>
+        </div>
+
+        <div class="callout">
+          <div class="callout-icon"><svg width="11" height="11" fill="#fff" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="#3b6ef5" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="#3b6ef5" stroke-width="2"/></svg></div>
+          <div>
+            <div class="callout-title">How it works — Powered by AI</div>
+            <div class="callout-body">Our AI engine crawls the selected page, renders it like a real browser, then analyses logos, colours, and typography against your Acme Inc. brand guidelines. Issues are scored by severity automatically. You can navigate away freely — the sweep runs in the background.</div>
+          </div>
+        </div>
+
+        <button class="run-btn" id="run-btn" onclick="startSweep()" disabled>
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          RUN SWEEP
+        </button>
+      </div>
+
+      <!-- Sweep History -->
+      <div class="history-card">
+        <div class="history-header">
+          <div class="history-title">Sweep History</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:12px;color:var(--text-3);">5 sweeps total</span>
+            <button onclick="openClearHistoryModal()" style="height:28px;padding:0 10px;border:1px solid #fecaca;border-radius:6px;background:#fff;font-size:12px;font-weight:600;color:#ef4444;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>Clear History
+            </button>
+          </div>
+        </div>
+        <div class="history-row" onclick="showResults('Homepage Full Audit','acmeinc.com','Mar 29, 2026','complete',7,3,2,94)">
+          <div><div class="history-name">Homepage Full Audit</div><div class="history-meta">acmeinc.com · Mar 29, 2026</div></div>
+          <span class="status-badge status-complete">● Completed</span>
+          <div class="issues-count issues-ok">7 issues</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+            <button onclick="event.stopPropagation();rerunSweep('Homepage Full Audit','acmeinc.com')" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Rerun
+            </button>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);">View →</span>
+          </div>
+        </div>
+        <div class="history-row" onclick="showScanView()">
+          <div><div class="history-name">Blog Section Sweep</div><div class="history-meta">blog.acmeinc.com · Today, 10:42 AM</div></div>
+          <span class="status-badge status-progress">⏳ In Progress</span>
+          <div class="issues-count issues-med">—</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+            <button onclick="event.stopPropagation();rerunSweep('Blog Section Sweep','blog.acmeinc.com')" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Rerun
+            </button>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);">View →</span>
+          </div>
+        </div>
+        <div class="history-row" onclick="showResults('Product Page Audit','acmeinc.com/product','Mar 22, 2026','complete',14,8,4,78)">
+          <div><div class="history-name">Product Page Audit</div><div class="history-meta">acmeinc.com/product · Mar 22, 2026</div></div>
+          <span class="status-badge status-complete">● Completed</span>
+          <div class="issues-count issues-high">14 issues</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+            <button onclick="event.stopPropagation();rerunSweep('Product Page Audit','acmeinc.com/product')" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Rerun
+            </button>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);">View →</span>
+          </div>
+        </div>
+        <div class="history-row" onclick="showResults('Careers Page','acmeinc.com/careers','Mar 15, 2026','complete',3,1,1,97)">
+          <div><div class="history-name">Careers Page Check</div><div class="history-meta">acmeinc.com/careers · Mar 15, 2026</div></div>
+          <span class="status-badge status-complete">● Completed</span>
+          <div class="issues-count issues-ok">3 issues</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+            <button onclick="event.stopPropagation();rerunSweep('Careers Page Check','acmeinc.com/careers')" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Rerun
+            </button>
+            <span style="font-size:12px;font-weight:700;color:var(--accent);">View →</span>
+          </div>
+        </div>
+        <div class="history-row">
+          <div><div class="history-name">Partner Portal Scan</div><div class="history-meta">partners.acmeinc.com · Mar 8, 2026</div></div>
+          <span class="status-badge status-failed">✕ Failed</span>
+          <div class="issues-count" style="color:var(--text-3);">—</div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+            <button onclick="event.stopPropagation();rerunSweep('Partner Portal Scan','partners.acmeinc.com')" style="padding:5px 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+              Rerun
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ══════════ VIEW: SETTINGS (ADMIN) ══════════ -->
+    <div id="view-settings" class="view" style="display:none;">
+      <div style="margin-bottom:20px;">
+        <button onclick="setAdminTab('sweep')" style="display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--text-3);font-family:inherit;padding:0;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-3)'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to Sweeps
+        </button>
+      </div>
+
+      <!-- Score Thresholds — read-only for MVP -->
+      <div class="sweep-card">
+        <div class="sweep-card-header">
+          <div>
+            <div class="sweep-card-title">Brand Score Thresholds</div>
+            <div class="sweep-card-sub">How sweep scores are classified and when alerts fire.</div>
+          </div>
+          <svg width="20" height="20" fill="none" stroke="var(--text-3)" stroke-width="1.5" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+          <div style="padding:18px;background:#fef2f2;border-radius:12px;border:1px solid #fecaca;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:#ef4444;flex-shrink:0;"></div>
+              <span style="font-size:12px;font-weight:700;color:#ef4444;">Critical</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:#ef4444;font-family:DM Mono,monospace;line-height:1;">Below 70%</div>
+            <div style="font-size:12px;color:#b91c1c;margin-top:6px;line-height:1.4;">Immediate alert sent. Serious brand consistency issues that need urgent attention.</div>
+          </div>
+          <div style="padding:18px;background:var(--amber-light);border-radius:12px;border:1px solid #fde68a;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0;"></div>
+              <span style="font-size:12px;font-weight:700;color:#b45309;">Needs Review</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:#b45309;font-family:DM Mono,monospace;line-height:1;">70 – 89%</div>
+            <div style="font-size:12px;color:#b45309;margin-top:6px;line-height:1.4;">Issues present that should be reviewed and resolved soon.</div>
+          </div>
+          <div style="padding:18px;background:var(--green-light);border-radius:12px;border:1px solid #bbf7d0;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;"></div>
+              <span style="font-size:12px;font-weight:700;color:#16a34a;">Passing</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:#16a34a;font-family:DM Mono,monospace;line-height:1;">90%+</div>
+            <div style="font-size:12px;color:#16a34a;margin-top:6px;line-height:1.4;">Brand compliant. Looking good — minor issues only.</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Notifications — just 2 key toggles -->
+      <div class="sweep-card">
+        <div class="sweep-card-header">
+          <div>
+            <div class="sweep-card-title">Notifications</div>
+            <div class="sweep-card-sub">How the team gets notified about sweep results.</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;">
+            <div><div style="font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:2px;">Email on sweep completion</div><div style="font-size:12px;color:var(--text-3);">Send a results summary to all admins</div></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;">
+          </label>
+          <label style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid var(--border);border-radius:10px;cursor:pointer;">
+            <div><div style="font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:2px;">Alert on critical score drop</div><div style="font-size:12px;color:var(--text-3);">Immediate notification when score falls below your critical threshold</div></div>
+            <input type="checkbox" checked style="width:18px;height:18px;accent-color:var(--accent);cursor:pointer;">
+          </label>
+        </div>
+        <button onclick="showSettingsToast('Notification preferences saved!')" style="height:40px;padding:0 20px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Preferences</button>
+      </div>
+
+    </div>
+
+    <!-- ══════════ VIEW: SCANNING ══════════ -->
+    <div id="view-scan" class="view">
+      <div class="scan-wrap">
+        <div class="scan-icon">
+          <div class="scan-spin"></div>
+          <svg width="30" height="30" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;">
+          <div class="scan-title" style="margin-bottom:0;">Sweep In Progress</div>
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,#6366f1,#3b6ef5);color:#fff;font-size:11px;font-weight:700;">
+            <svg width="10" height="10" fill="#fff" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+            AI Analysing
+          </span>
+        </div>
+        <div class="scan-sub" id="scan-url-label">Scanning acmeinc.com...</div>
+        <div class="scan-progress"><div class="scan-bar" id="scan-bar"></div></div>
+        <div style="font-size:12px;color:var(--text-3);margin-bottom:0;" id="scan-pct">0%</div>
+
+        <div class="scan-steps" id="scan-steps">
+          <div class="scan-step"><div class="step-dot pending" id="step0-dot"></div><span class="step-label" id="step0-lbl">Connecting to page...</span></div>
+          <div class="scan-step"><div class="step-dot pending" id="step1-dot"></div><span class="step-label" id="step1-lbl">Extracting assets and styles...</span></div>
+          <div class="scan-step"><div class="step-dot pending" id="step2-dot"></div><span class="step-label" id="step2-lbl">Checking logo usage...</span></div>
+          <div class="scan-step"><div class="step-dot pending" id="step3-dot"></div><span class="step-label" id="step3-lbl">Analysing colour palette...</span></div>
+          <div class="scan-step"><div class="step-dot pending" id="step4-dot"></div><span class="step-label" id="step4-lbl">Reviewing typography...</span></div>
+          <div class="scan-step"><div class="step-dot pending" id="step5-dot"></div><span class="step-label" id="step5-lbl">Scoring brand consistency...</span></div>
+        </div>
+
+        <div class="navigate-note">
+          <svg width="14" height="14" fill="none" stroke="var(--text-3)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          You can navigate away — this sweep will continue running in the background.
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ VIEW: RESULTS ══════════ -->
+    <div id="view-results" class="view">
+      <div class="results-header">
+        <div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-3);margin-bottom:6px;cursor:pointer;" onclick="showView('home')">← Back to sweeps</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="results-title" id="res-title">Homepage Full Audit</div>
+            <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,#ede9fe,#e0e7ff);color:#6366f1;font-size:11px;font-weight:700;flex-shrink:0;">
+              <svg width="10" height="10" fill="#6366f1" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+              AI Generated
+            </span>
+          </div>
+          <div class="results-meta" id="res-meta">acmeinc.com · Completed Mar 29, 2026 · 3 pages scanned</div>
+        </div>
+        <div class="results-actions">
+          <button class="btn-outline" onclick="exportReport()"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export Report</button>
+          <button class="btn-accent" onclick="showView('home')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>New Sweep</button>
+        </div>
+      </div>
+
+      <!-- Score summary -->
+      <div class="score-grid">
+        <div class="score-card" style="border-top: 3px solid var(--accent);">
+          <div class="score-val overall-score" id="res-score" style="color:var(--accent);">94%</div>
+          <div class="score-label">Brand Score</div>
+          <div class="score-sub">Overall consistency</div>
+        </div>
+        <div class="score-card">
+          <div class="score-val issues-high" id="res-high">3</div>
+          <div class="score-label">High Severity</div>
+          <div class="score-sub">Needs immediate fix</div>
+        </div>
+        <div class="score-card">
+          <div class="score-val issues-med" id="res-med">2</div>
+          <div class="score-label">Medium Severity</div>
+          <div class="score-sub">Should be addressed</div>
+        </div>
+        <div class="score-card">
+          <div class="score-val issues-ok" id="res-low">2</div>
+          <div class="score-label">Low Severity</div>
+          <div class="score-sub">Minor inconsistencies</div>
+        </div>
+      </div>
+
+      <!-- Issues list -->
+      <div class="section-head">
+        <div class="section-title">Issues Found</div>
+        <div class="filter-tabs">
+          <button class="filter-tab active" onclick="filterIssues(this,'all')">All</button>
+          <button class="filter-tab" onclick="filterIssues(this,'high')">High</button>
+          <button class="filter-tab" onclick="filterIssues(this,'medium')">Medium</button>
+          <button class="filter-tab" onclick="filterIssues(this,'low')">Low</button>
+        </div>
+      </div>
+
+      <div id="issues-list">
+        <!-- Issues rendered by JS -->
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<script>
+
+  function onSiteSelect(val) {
+    const hint = document.getElementById('url-hint');
+    if (val === '__custom__') {
+      document.getElementById('site-select-wrap').style.display = 'none';
+      document.getElementById('custom-url-wrap').style.display = 'block';
+      hint.textContent = "Enter any URL — it doesn't need to be a connected site.";
+      document.getElementById('sweep-url').value = '';
+      setTimeout(() => document.getElementById('sweep-url').focus(), 50);
+      document.getElementById('run-btn').disabled = true;
+    } else {
+      hint.textContent = val ? '● Sweeping: ' + val : 'Pick a connected site or enter a custom URL to sweep.';
+      document.getElementById('run-btn').disabled = !val;
+    }
+  }
+
+  function resetToDropdown() {
+    document.getElementById('custom-url-wrap').style.display = 'none';
+    document.getElementById('site-select-wrap').style.display = 'block';
+    document.getElementById('sweep-site-select').value = '';
+    document.getElementById('url-hint').textContent = 'Pick a connected site or enter a custom URL to sweep.';
+    document.getElementById('run-btn').disabled = true;
+  }
+
+
+
+  function rerunSweep(name, url) {
+    document.getElementById('sweep-name').value = name + ' (Rerun)';
+    document.getElementById('sweep-url').value = 'https://' + url;
+    checkForm();
+    showView('home');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => document.getElementById('sweep-url').focus(), 300);
+  }
+
+  function exportReport() {
+    const title = document.getElementById('res-title').textContent;
+    const toast = document.getElementById('export-toast');
+    const icon = document.getElementById('export-toast-icon');
+    const msg = document.getElementById('export-toast-msg');
+
+    // Preparing state
+    icon.innerHTML = '<svg width="15" height="15" fill="none" stroke="#60a5fa" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+    msg.textContent = 'Preparing export...';
+    toast.style.background = 'var(--navy)';
+    toast.style.display = 'flex';
+
+    setTimeout(() => {
+      // Success state
+      icon.innerHTML = '<svg width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+      msg.innerHTML = '<strong>' + title + '</strong> exported as PDF successfully!';
+    }, 900);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity .3s';
+      setTimeout(() => { toast.style.display = 'none'; toast.style.opacity = '1'; toast.style.transition = ''; }, 300);
+    }, 3500);
+  }
+
+  function toggleNav(id) {
+    const sub = document.getElementById('sub-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    const isOpen = sub.classList.contains('open');
+    sub.classList.toggle('open', !isOpen);
+    chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
+
+  function showView(id) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + id).classList.add('active');
+  }
+
+  function checkForm() {
+    const sel = document.getElementById('sweep-site-select').value;
+    if (sel === '__custom__') {
+      const url = document.getElementById('sweep-url')?.value.trim();
+      document.getElementById('run-btn').disabled = !url;
+    } else {
+      document.getElementById('run-btn').disabled = !sel;
+    }
+  }
+
+  // ── SCAN FLOW ──
+
+  const CONNECTED_SITES = [
+    { name:'Main Website', url:'acmeinc.com', color:'#3b6ef5', initial:'MW', status:'live' },
+    { name:'Company Blog', url:'blog.acmeinc.com', color:'#6366f1', initial:'CB', status:'live' },
+    { name:'Documentation', url:'docs.acmeinc.com', color:'#f59e0b', initial:'DC', status:'staging' },
+    { name:'Careers Page', url:'acmeinc.com/careers', color:'#22c55e', initial:'CP', status:'live' },
+    { name:'Partner Portal', url:'partners.acmeinc.com', color:'#9ca3af', initial:'PP', status:'paused' },
+  ];
+
+  let urlMode = 'connected';
+  let selectedSite = null;
+
+  function renderConnectedSites() {
+    document.getElementById('connected-sites-list').innerHTML = CONNECTED_SITES.map((s, i) => `
+      <div id="site-opt-${i}" onclick="selectSite(${i})" style="display:flex;align-items:center;gap:12px;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .15s;background:#fff;" onmouseover="if(selectedSite!=${i})this.style.borderColor='var(--accent)';if(selectedSite!=${i})this.style.background='var(--accent-light)'" onmouseout="if(selectedSite!=${i})this.style.borderColor='var(--border)';if(selectedSite!=${i})this.style.background='#fff'">
+        <div style="width:34px;height:34px;border-radius:8px;background:${s.color};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;">${s.initial}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:13px;font-weight:700;color:var(--text-1);">${s.name}</div>
+          <div style="font-size:11.5px;color:var(--text-3);font-family:'DM Mono',monospace;">${s.url}</div>
+        </div>
+        <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;background:${s.status==='live'?'var(--green-light)':s.status==='staging'?'var(--amber-light)':'var(--bg)'};color:${s.status==='live'?'#16a34a':s.status==='staging'?'#b45309':'var(--text-3)'}">${s.status==='live'?'● Live':s.status==='staging'?'⏳ Staging':'⏸ Paused'}</span>
+        <div id="site-check-${i}" style="display:none;width:20px;height:20px;border-radius:50%;background:var(--accent);display:none;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>`).join('');
+  }
+
+  function selectSite(i) {
+    selectedSite = i;
+    CONNECTED_SITES.forEach((_, j) => {
+      const el = document.getElementById('site-opt-' + j);
+      const check = document.getElementById('site-check-' + j);
+      if (j === i) {
+        el.style.borderColor = 'var(--accent)';
+        el.style.background = 'var(--accent-light)';
+        check.style.display = 'flex';
+      } else {
+        el.style.borderColor = 'var(--border)';
+        el.style.background = '#fff';
+        check.style.display = 'none';
+      }
+    });
+    document.getElementById('run-btn').disabled = false;
+  }
+
+  function setUrlMode(mode) {
+    urlMode = mode;
+    const connectedEl = document.getElementById('url-connected');
+    const customEl = document.getElementById('url-custom');
+    const btnConn = document.getElementById('toggle-connected');
+    const btnCustom = document.getElementById('toggle-custom');
+    if (mode === 'connected') {
+      connectedEl.style.display = 'block';
+      customEl.style.display = 'none';
+      btnConn.style.background = 'var(--accent)'; btnConn.style.color = '#fff';
+      btnCustom.style.background = '#fff'; btnCustom.style.color = 'var(--text-2)';
+      if (selectedSite !== null) document.getElementById('run-btn').disabled = false;
+      else document.getElementById('run-btn').disabled = true;
+    } else {
+      connectedEl.style.display = 'none';
+      customEl.style.display = 'block';
+      btnCustom.style.background = 'var(--accent)'; btnCustom.style.color = '#fff';
+      btnConn.style.background = '#fff'; btnConn.style.color = 'var(--text-2)';
+      checkForm();
+    }
+  }
+
+  const SCAN_STEPS = [
+    { pct: 10, label: 'Connecting to page...' },
+    { pct: 28, label: 'Extracting assets and styles...' },
+    { pct: 46, label: 'Checking logo usage...' },
+    { pct: 64, label: 'Analysing colour palette...' },
+    { pct: 82, label: 'Reviewing typography...' },
+    { pct: 100, label: 'Scoring brand consistency...' },
+  ];
+
+  function startSweep() {
+    const sel = document.getElementById('sweep-site-select').value;
+    let url = sel === '__custom__'
+      ? (document.getElementById('sweep-url')?.value.trim() || 'yourwebsite.com')
+      : sel || 'yourwebsite.com';
+    const name = document.getElementById('sweep-name').value.trim() || url;
+    document.getElementById('scan-url-label').textContent = 'Scanning ' + url + '...';
+    showView('scan');
+    runScanAnimation(name, url);
+  }
+
+  function showScanView() {
+    document.getElementById('scan-url-label').textContent = 'Scanning blog.acmeinc.com...';
+    showView('scan');
+    runScanAnimation('Blog Section Sweep', 'blog.acmeinc.com');
+  }
+
+  function runScanAnimation(name, url) {
+    const bar = document.getElementById('scan-bar');
+    const pctLabel = document.getElementById('scan-pct');
+    // Reset all steps
+    SCAN_STEPS.forEach((_, i) => {
+      document.getElementById('step' + i + '-dot').className = 'step-dot pending';
+      document.getElementById('step' + i + '-lbl').className = 'step-label';
+    });
+    bar.style.width = '0%';
+    pctLabel.textContent = '0%';
+
+    let step = 0;
+    function runStep() {
+      if (step >= SCAN_STEPS.length) {
+        setTimeout(() => showResults(name, url, 'Today', 'complete', 7, 3, 2, 94), 800);
+        return;
+      }
+      // Mark previous as done
+      if (step > 0) {
+        document.getElementById('step' + (step-1) + '-dot').className = 'step-dot done';
+        document.getElementById('step' + (step-1) + '-dot').innerHTML = '<svg width="11" height="11" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+        document.getElementById('step' + (step-1) + '-lbl').className = 'step-label done';
+      }
+      // Activate current
+      document.getElementById('step' + step + '-dot').className = 'step-dot active';
+      document.getElementById('step' + step + '-dot').innerHTML = '<svg width="10" height="10" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+      document.getElementById('step' + step + '-lbl').className = 'step-label active';
+      bar.style.width = SCAN_STEPS[step].pct + '%';
+      pctLabel.textContent = SCAN_STEPS[step].pct + '%';
+      step++;
+      setTimeout(runStep, 700);
+    }
+    setTimeout(runStep, 400);
+  }
+
+  // ── RESULTS ──
+  const ALL_ISSUES = [
+    { sev:'high', icon:'#fce7f3', iconStroke:'#db2777', type:'Logo', title:'Wrong logo variant used', desc:'The dark background logo is being used on a white section of the homepage hero. Should use the light background variant.', url:'acmeinc.com/#hero' },
+    { sev:'high', icon:'#fef2f2', iconStroke:'var(--red)', type:'Color', title:'Unapproved colour detected', desc:'Background color #2563EB found on the CTA button — not part of the approved Acme palette. Should be #3B6EF5.', url:'acmeinc.com/#cta' },
+    { sev:'high', icon:'#fef2f2', iconStroke:'var(--red)', type:'Color', title:'Low contrast ratio on footer text', desc:'Text on the dark footer fails WCAG AA contrast requirements. Contrast ratio: 2.8:1, minimum required: 4.5:1.', url:'acmeinc.com/#footer' },
+    { sev:'medium', icon:'var(--amber-light)', iconStroke:'var(--amber)', type:'Typography', title:'Incorrect font weight in headline', desc:'H2 heading uses font-weight 600 instead of the approved 700. Found on the Features section.', url:'acmeinc.com/#features' },
+    { sev:'medium', icon:'var(--amber-light)', iconStroke:'var(--amber)', type:'Logo', title:'Logo too small — below minimum size', desc:'The icon mark in the nav bar is rendered at 14px wide — below the approved 16px minimum for digital use.', url:'acmeinc.com/#nav' },
+    { sev:'low', icon:'var(--green-light)', iconStroke:'var(--green)', type:'Typography', title:'Caption font size inconsistency', desc:'Caption text in the testimonials section uses 11px — slightly below the 12px minimum. Minor readability concern.', url:'acmeinc.com/#testimonials' },
+    { sev:'low', icon:'var(--accent-light)', iconStroke:'var(--accent)', type:'Icon', title:'Mixed icon styles detected', desc:'Two filled icons found alongside outlined icons in the Features grid. All icons should use the outlined style.', url:'acmeinc.com/#features' },
+  ];
+
+  let currentFilter = 'all';
+
+  function filterIssues(el, filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    renderIssues();
+  }
+
+  function renderIssues() {
+    const list = document.getElementById('issues-list');
+    const filtered = currentFilter === 'all' ? ALL_ISSUES : ALL_ISSUES.filter(i => i.sev === currentFilter);
+    list.innerHTML = filtered.map((issue, idx) => `
+      <div class="issue-card" id="issue-card-${idx}" style="${issue.status==='resolved'?'opacity:.5;':''}">
+        <div class="issue-row">
+          <div class="issue-severity sev-${issue.sev}"></div>
+          <div class="issue-icon" style="background:${issue.icon};">
+            <svg width="16" height="16" fill="none" stroke="${issue.iconStroke}" stroke-width="2" viewBox="0 0 24 24">
+              ${issue.type==='Logo' ? '<path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>' : ''}
+              ${issue.type==='Color' ? '<circle cx="12" cy="12" r="10"/>' : ''}
+              ${issue.type==='Typography' ? '<polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/>' : ''}
+              ${issue.type==='Icon' ? '<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/>' : ''}
+            </svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="issue-title">${issue.title}</div>
+              ${issue.status==='resolved'?'<span style="font-size:11px;font-weight:700;color:#16a34a;background:#dcfce7;padding:2px 8px;border-radius:20px;">&#10003; Resolved</span>':''}
+              ${issue.status==='dismissed'?'<span style="font-size:11px;font-weight:700;color:var(--text-3);background:var(--bg);padding:2px 8px;border-radius:20px;">Dismissed</span>':''}
+              ${issue.assignee?'<span style="font-size:11px;font-weight:600;color:var(--purple);background:var(--purple-light);padding:2px 8px;border-radius:20px;">&#8594; '+issue.assignee+'</span>':''}
+            </div>
+            <div class="issue-desc">${issue.desc}</div>
+            <div class="issue-url">${issue.url}</div>
+            ${issue.note?'<div style="margin-top:6px;padding:6px 10px;background:var(--amber-light);border-radius:6px;font-size:12px;color:#92400e;border-left:3px solid var(--amber);"><strong>Note:</strong> '+issue.note+'</div>':''}
+          </div>
+          <div class="issue-badge" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+            <span class="sev-badge ${issue.sev}">${issue.sev.charAt(0).toUpperCase()+issue.sev.slice(1)}</span>
+            <div style="display:flex;gap:4px;">
+              <button onclick="resolveIssue(${idx})" title="${issue.status==='resolved'?'Mark as open':'Mark resolved'}" style="height:26px;padding:0 8px;border:1px solid ${issue.status==='resolved'?'#bbf7d0':'var(--border)'};border-radius:6px;background:${issue.status==='resolved'?'var(--green-light)':'#fff'};font-size:11px;font-weight:600;color:${issue.status==='resolved'?'#16a34a':'var(--text-2)'};cursor:pointer;font-family:inherit;white-space:nowrap;">
+                ${issue.status==='resolved'?'&#10003; Done':'&#10003; Fix'}
+              </button>
+              <button onclick="openIssueActions(${idx})" title="More actions" style="height:26px;width:26px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:16px;color:var(--text-2);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&#8943;</button>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function showResults(name, url, date, status, total, high, med, low, score) {
+    document.getElementById('res-title').textContent = name;
+    document.getElementById('res-meta').textContent = url + ' · Completed ' + date + ' · 3 pages scanned';
+    document.getElementById('res-score').textContent = score + '%';
+    document.getElementById('res-high').textContent = high;
+    document.getElementById('res-med').textContent = med;
+    document.getElementById('res-low').textContent = low;
+    // Score colour
+    const scoreEl = document.getElementById('res-score');
+    scoreEl.style.color = score >= 90 ? 'var(--green)' : score >= 70 ? 'var(--amber)' : 'var(--red)';
+    currentFilter = 'all';
+    document.querySelectorAll('.filter-tab').forEach((t,i) => t.classList.toggle('active', i===0));
+    renderIssues();
+    showView('results');
+  }
+</script>
+
+<!-- ── EXPORT TOAST ── -->
+<div id="export-toast" style="display:none;position:fixed;bottom:28px;right:28px;background:var(--navy);color:#fff;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:500;z-index:700;box-shadow:var(--shadow-lg);align-items:center;gap:10px;min-width:260px;max-width:360px;">
+  <span id="export-toast-icon" style="flex-shrink:0;display:flex;"></span>
+  <span id="export-toast-msg" style="flex:1;line-height:1.4;"></span>
+</div>
+
+</body>
+</html>
+
+<!-- Admin Modals -->
+<div id="issue-actions-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:910;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:420px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);">
+    <div style="padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <h2 style="font-size:15px;font-weight:800;color:var(--text-1);" id="issue-action-title">Issue Actions</h2>
+      <button onclick="document.getElementById('issue-actions-modal').style.display='none'" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;">x</button>
+    </div>
+    <div style="padding:16px 24px 24px;display:flex;flex-direction:column;gap:10px;">
+      <button id="btn-resolve" onclick="resolveFromModal()" style="width:100%;height:44px;border:1px solid #bbf7d0;border-radius:10px;background:#f0fdf4;font-size:13.5px;font-weight:700;color:#16a34a;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;padding:0 16px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Mark as Resolved
+      </button>
+      <button onclick="assignFromModal()" style="width:100%;height:44px;border:1px solid #c7d2fe;border-radius:10px;background:var(--purple-light);font-size:13.5px;font-weight:700;color:var(--purple);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;padding:0 16px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Assign to Team Member
+      </button>
+      <button onclick="addNoteFromModal()" style="width:100%;height:44px;border:1px solid #fde68a;border-radius:10px;background:var(--amber-light);font-size:13.5px;font-weight:700;color:#b45309;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;padding:0 16px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>Add Internal Note
+      </button>
+      <button onclick="dismissFromModal()" style="width:100%;height:44px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:13.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;padding:0 16px;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Dismiss as False Positive
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="assign-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:920;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:380px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);">
+    <div style="padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <h2 style="font-size:15px;font-weight:800;color:var(--text-1);">Assign to Team Member</h2>
+      <button onclick="document.getElementById('assign-modal').style.display='none'" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;">x</button>
+    </div>
+    <div style="padding:16px 24px 24px;">
+      <div id="team-member-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+      <button onclick="confirmAssign()" style="width:100%;height:42px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Assign</button>
+    </div>
+  </div>
+</div>
+
+<div id="note-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:920;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:420px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);">
+    <div style="padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <h2 style="font-size:15px;font-weight:800;color:var(--text-1);">Add Internal Note</h2>
+      <button onclick="document.getElementById('note-modal').style.display='none'" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;">x</button>
+    </div>
+    <div style="padding:16px 24px 24px;">
+      <textarea id="note-input" rows="4" placeholder="e.g. Dev team notified — expected fix in next sprint..." style="width:100%;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13.5px;font-family:inherit;outline:none;resize:none;margin-bottom:14px;"></textarea>
+      <button onclick="saveNote()" style="width:100%;height:42px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<div id="settings-toast" style="display:none;position:fixed;bottom:28px;right:28px;background:#111827;color:#fff;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:700;box-shadow:0 8px 32px rgba(0,0,0,.2);align-items:center;gap:10px;">
+  <svg width="16" height="16" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="settings-toast-msg"></span>
+</div>
+
+<script>
+// ── ADMIN SWEEP JS ──
+
+var TEAM_MEMBERS = ['Alex Chen', 'Jamie Park', 'Sam Rivera', 'Morgan Lee', 'Taylor Wu'];
+var _currentIssueIdx = -1;
+var _selectedAssignee = null;
+
+// Admin tab switching
+function setAdminTab(tab) {
+  var sweepBtn    = document.getElementById('tab-sweep');
+  var settingsBtn = document.getElementById('tab-settings');
+  var homeView    = document.getElementById('view-home');
+  var settingsView = document.getElementById('view-settings');
+
+  if (tab === 'sweep') {
+    homeView.classList.add('active'); homeView.style.display = '';
+    settingsView.style.display = 'none'; settingsView.classList.remove('active');
+    sweepBtn.style.background = 'var(--accent)'; sweepBtn.style.color = '#fff';
+    settingsBtn.style.background = '#fff'; settingsBtn.style.color = 'var(--text-2)';
+  } else {
+    settingsView.style.display = ''; settingsView.classList.add('active');
+    homeView.classList.remove('active'); homeView.style.display = 'none';
+    settingsBtn.style.background = 'var(--accent)'; settingsBtn.style.color = '#fff';
+    sweepBtn.style.background = '#fff'; sweepBtn.style.color = 'var(--text-2)';
+  }
+}
+
+
+// Issue management
+function resolveIssue(idx) {
+  var issue = ALL_ISSUES[idx];
+  issue.status = issue.status === 'resolved' ? 'open' : 'resolved';
+  renderIssues();
+  showSettingsToast(issue.status === 'resolved' ? 'Issue marked as resolved' : 'Issue reopened');
+}
+
+function openIssueActions(idx) {
+  _currentIssueIdx = idx;
+  var issue = ALL_ISSUES[idx];
+  document.getElementById('issue-action-title').textContent = issue.title;
+  var resolveBtn = document.getElementById('btn-resolve');
+  if (resolveBtn) {
+    if (issue.status === 'resolved') {
+      resolveBtn.textContent = '↩ Reopen Issue';
+      resolveBtn.style.background = '#fff'; resolveBtn.style.color = 'var(--text-2)';
+      resolveBtn.style.borderColor = 'var(--border)';
+    } else {
+      resolveBtn.innerHTML = '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Mark as Resolved';
+      resolveBtn.style.background = '#f0fdf4'; resolveBtn.style.color = '#16a34a';
+      resolveBtn.style.borderColor = '#bbf7d0';
+    }
+  }
+  document.getElementById('issue-actions-modal').style.display = 'flex';
+}
+
+function resolveFromModal() {
+  if (_currentIssueIdx < 0) return;
+  resolveIssue(_currentIssueIdx);
+  document.getElementById('issue-actions-modal').style.display = 'none';
+}
+
+function dismissFromModal() {
+  if (_currentIssueIdx < 0) return;
+  ALL_ISSUES[_currentIssueIdx].status = 'dismissed';
+  document.getElementById('issue-actions-modal').style.display = 'none';
+  renderIssues();
+  showSettingsToast('Issue dismissed as false positive');
+}
+
+function assignFromModal() {
+  document.getElementById('issue-actions-modal').style.display = 'none';
+  _selectedAssignee = ALL_ISSUES[_currentIssueIdx].assignee || null;
+  var list = document.getElementById('team-member-list');
+  list.innerHTML = TEAM_MEMBERS.map(function(m) {
+    var active = m === _selectedAssignee;
+    return '<div onclick="selectAssignee(this,\'' + m + '\')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid ' + (active?'var(--accent)':'var(--border)') + ';border-radius:9px;background:' + (active?'var(--accent-light)':'#fff') + ';cursor:pointer;transition:all .12s;">'
+      + '<div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">' + m.split(' ').map(function(n){return n[0];}).join('') + '</div>'
+      + '<span style="font-size:13.5px;font-weight:600;color:var(--text-1);">' + m + '</span>'
+      + (active ? '<svg width="13" height="13" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24" style="margin-left:auto;"><polyline points="20 6 9 17 4 12"/></svg>' : '')
+      + '</div>';
+  }).join('');
+  document.getElementById('assign-modal').style.display = 'flex';
+}
+
+function selectAssignee(el, name) {
+  _selectedAssignee = name;
+  el.parentElement.querySelectorAll('div').forEach(function(d) {
+    d.style.borderColor = 'var(--border)'; d.style.background = '#fff';
+  });
+  el.style.borderColor = 'var(--accent)'; el.style.background = 'var(--accent-light)';
+}
+
+function confirmAssign() {
+  if (!_selectedAssignee || _currentIssueIdx < 0) return;
+  ALL_ISSUES[_currentIssueIdx].assignee = _selectedAssignee;
+  document.getElementById('assign-modal').style.display = 'none';
+  renderIssues();
+  showSettingsToast('Assigned to ' + _selectedAssignee);
+}
+
+function addNoteFromModal() {
+  document.getElementById('issue-actions-modal').style.display = 'none';
+  document.getElementById('note-input').value = ALL_ISSUES[_currentIssueIdx].note || '';
+  document.getElementById('note-modal').style.display = 'flex';
+}
+
+function saveNote() {
+  var note = document.getElementById('note-input').value.trim();
+  if (_currentIssueIdx >= 0) ALL_ISSUES[_currentIssueIdx].note = note;
+  document.getElementById('note-modal').style.display = 'none';
+  renderIssues();
+  showSettingsToast('Note saved');
+}
+
+function openAssignAllModal() {
+  _currentIssueIdx = -1;
+  _selectedAssignee = null;
+  var list = document.getElementById('team-member-list');
+  list.innerHTML = TEAM_MEMBERS.map(function(m) {
+    return '<div onclick="selectAssignee(this,\'' + m + '\')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;background:#fff;cursor:pointer;transition:all .12s;">'
+      + '<div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;">' + m.split(' ').map(function(n){return n[0];}).join('') + '</div>'
+      + '<span style="font-size:13.5px;font-weight:600;color:var(--text-1);">' + m + '</span>'
+      + '</div>';
+  }).join('');
+  document.getElementById('assign-modal').style.display = 'flex';
+  // Override confirm to assign all
+  document.querySelector('#assign-modal button[onclick="confirmAssign()"]').onclick = function() {
+    if (!_selectedAssignee) return;
+    ALL_ISSUES.forEach(function(issue) { issue.assignee = _selectedAssignee; });
+    document.getElementById('assign-modal').style.display = 'none';
+    renderIssues();
+    showSettingsToast('All issues assigned to ' + _selectedAssignee);
+  };
+}
+
+function openClearHistoryModal() {
+  if (window.confirm) {
+    showSettingsToast('Sweep history cleared.');
+  } else {
+    showSettingsToast('Sweep history cleared.');
+  }
+}
+
+function showSettingsToast(msg) {
+  var t = document.getElementById('settings-toast');
+  var m = document.getElementById('settings-toast-msg');
+  if (!t || !m) return;
+  m.textContent = msg;
+  t.style.display = 'flex'; t.style.opacity = '1'; t.style.transition = '';
+  clearTimeout(window._stTimer);
+  window._stTimer = setTimeout(function() {
+    t.style.opacity = '0'; t.style.transition = 'opacity .3s';
+    setTimeout(function() { t.style.display = 'none'; t.style.opacity = '1'; t.style.transition = ''; }, 300);
+  }, 3000);
+}
+
+// Add status field to all issues
+ALL_ISSUES.forEach(function(issue) {
+  if (!issue.status) issue.status = 'open';
+  if (!issue.assignee) issue.assignee = null;
+  if (!issue.note) issue.note = null;
+});
+</script>

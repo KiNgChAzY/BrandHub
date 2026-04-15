@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team · BrandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sidebar-w: 200px; --sidebar-bg: #ffffff;
+    --bg: #f4f5f7; --card: #ffffff;
+    --navy: #1a2340; --accent: #3b6ef5; --accent-light: #e8eeff;
+    --green: #22c55e; --green-light: #dcfce7;
+    --amber: #f59e0b; --amber-light: #fffbeb;
+    --red: #ef4444; --red-light: #fef2f2;
+    --purple: #6366f1; --purple-light: #ede9fe;
+    --text-1: #111827; --text-2: #4b5563; --text-3: #9ca3af;
+    --border: #e5e7eb; --radius: 12px; --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    --purple:#6366f1; --purple-light:#ede9fe;
+    --amber-light:#fffbeb; --green-light:#f0fdf4; --red-light:#fef2f2;
+    font-family: 'DM Sans', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text-1); min-height: 100vh; display: flex; }
+
+  /* ── Sidebar ── */
+  aside { width: var(--sidebar-w); background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 0 18px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .logo-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--text-1); }
+  nav { flex: 1; padding: 0 10px; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; margin-bottom: 6px; text-decoration: none; }
+  .nav-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+  .nav-item svg { flex-shrink: 0; opacity: .8; }
+  .sidebar-footer { padding: 16px 14px 0; border-top: 1px solid var(--border); margin-top: auto; }
+  .nav-expandable { cursor: pointer; user-select: none; }
+  .nav-sub { overflow: hidden; max-height: 0; transition: max-height .25s ease, opacity .2s ease; opacity: 0; }
+  .nav-sub.open { max-height: 200px; opacity: 1; }
+  .nav-sub-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px 7px 34px; font-size: 12.5px; font-weight: 500; color: var(--text-3); border-radius: var(--radius-sm); cursor: pointer; text-decoration: none; transition: all .15s; margin-bottom: 1px; }
+  .nav-sub-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-group { margin-bottom: 6px; }
+
+  /* ── Main ── */
+  main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+  header { background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 50; }
+  .search { flex: 1; max-width: 340px; display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; height: 36px; }
+  .search input { background: none; border: none; outline: none; font-size: 13px; color: var(--text-1); width: 100%; font-family: inherit; }
+  .search input::placeholder { color: var(--text-3); }
+  .icon-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); transition: all .15s; position: relative; }
+  .icon-btn:hover { background: var(--bg); }
+  .badge { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+  .avatar-hdr { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#8b5cf6); cursor: pointer; }
+
+  /* ── Content ── */
+  .content { padding: 32px 36px 60px; flex: 1; }
+
+  /* ── Tab nav ── */
+  .tab-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .tab { padding: 12px 18px; font-size: 13px; font-weight: 500; color: var(--text-3); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .tab:hover { color: var(--text-1); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+  .tab-count { background: var(--bg); color: var(--text-3); font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+  .tab.active .tab-count { background: var(--accent-light); color: var(--accent); }
+
+  /* ── Panel ── */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeUp .2s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── Member list ── */
+  .member-list { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .member-list-head { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 80px; gap: 12px; padding: 10px 20px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .member-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr 80px; gap: 12px; padding: 13px 20px; border-bottom: 1px solid var(--border); align-items: center; cursor: pointer; transition: background .12s; }
+  .member-row:last-child { border-bottom: none; }
+  .member-row:hover { background: var(--bg); }
+  .member-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .member-name { font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+  .member-role-text { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+  .role-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .role-admin { background: var(--purple-light); color: var(--purple); }
+  .role-user { background: var(--accent-light); color: var(--accent); }
+  .role-viewer { background: var(--bg); color: var(--text-3); border: 1px solid var(--border); }
+  .admin-action-btn { height:28px; padding:0 10px; border:1px solid var(--border); border-radius:6px; background:#fff; font-size:11.5px; font-weight:600; color:var(--text-2); cursor:pointer; font-family:inherit; transition:all .12s; white-space:nowrap; }
+  .admin-action-btn:hover { background:var(--bg); border-color:var(--text-2); }
+  .admin-action-btn.danger { border-color:#fecaca; color:#ef4444; }
+  .admin-action-btn.danger:hover { background:#fef2f2; }
+  .pending-row { display:grid; grid-template-columns:1fr 120px 120px 140px; align-items:center; padding:14px 20px; border-bottom:1px solid var(--border); gap:12px; }
+  .pending-row:last-child { border-bottom:none; }
+  .member-status { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-3); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* ── Invite table ── */
+  .invite-table { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .invite-head { display: grid; gap: 12px; padding: 10px 20px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .invite-row { display: grid; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); align-items: center; }
+  .invite-row:last-child { border-bottom: none; }
+  .th { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .5px; }
+  .td { font-size: 13px; color: var(--text-1); }
+
+  /* ── Settings ── */
+  .settings-section { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; }
+  .settings-section-header { padding: 18px 22px; border-bottom: 1px solid var(--border); }
+  .settings-section-title { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 3px; }
+  .settings-section-sub { font-size: 12.5px; color: var(--text-3); }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 22px; border-bottom: 1px solid var(--border); gap: 20px; }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-label { font-size: 13px; font-weight: 600; color: var(--text-1); margin-bottom: 3px; }
+  .settings-hint { font-size: 12px; color: var(--text-3); }
+  .permission-badge { padding: 5px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--border); background: var(--bg); color: var(--text-2); }
+
+  /* ── Activity ── */
+  .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .activity-item:last-child { border-bottom: none; }
+  .act-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* ── Modal ── */
+  .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15,20,40,.5); z-index: 800; align-items: center; justify-content: center; }
+
+  /* ── Buttons ── */
+  .btn-primary { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: none; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 2px 8px rgba(59,110,245,.25); transition: all .15s; white-space: nowrap; }
+  .btn-primary:hover { background: #2d5de0; }
+  .btn-outline { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
+  .btn-outline:hover { background: var(--bg); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside>
+  <div class="logo">
+    <div class="logo-icon">BH</div>
+    <div class="logo-text">BrandHub</div>
+  </div>
+  <nav>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:16px;background:#fff;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+      <div style="width:38px;height:38px;border-radius:9px;background:#111827;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:13px;font-weight:700;color:#fff;">Ac</span></div>
+      <div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:700;color:var(--text-1);">Acme Inc.</div><div style="font-size:11px;color:var(--text-3);margin-top:1px;">Enterprise Plan</div></div>
+      <svg width="13" height="13" fill="none" stroke="var(--text-3)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <a class="nav-item" href="brandhub-dashboard.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item" href="brandhub-dashboard.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Assets</a>
+    <a class="nav-item" href="brandhub-guidelines.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Brand Guidelines</a>
+    <a class="nav-item" href="brandhub-sweep.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Brand Sweep</a>
+    <a class="nav-item" href="brandhub-reports.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Reports & Insights</a>
+    <a class="nav-item active" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Team</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>Connected Sites</a>
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('settings')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span style="flex:1;">Settings</span>
+        <svg id="chevron-settings" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-settings">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account Settings</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Organization Settings</a>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('support')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        <span style="flex:1;">Support</span>
+        <svg id="chevron-support" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-support">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>BrandHub Support</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>Acme Brand Questions</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main>
+  <header>
+    <div class="search">
+      <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search team members...">
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="badge">2</span></div>
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--purple-light);color:var(--purple);font-size:11.5px;font-weight:700;border:1px solid #c7d2fe;"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin</span>
+      <div class="avatar-hdr"></div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Page header -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="font-size:22px;font-weight:800;color:var(--text-1);letter-spacing:-0.4px;margin-bottom:4px;">Team</div>
+        <div style="font-size:13px;color:var(--text-3);">Everyone with access to the Acme Inc. brand on BrandHub.</div>
+      </div>
+      <button onclick="openInviteModal()" style="display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 18px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Invite Member</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-row">
+      <button class="tab active" data-tab="members" onclick="switchTab(this,'members')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        My Team <span class="tab-count">8</span>
+      </button>
+
+      <button class="tab" data-tab="settings" onclick="switchTab(this,'settings')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Team Settings
+      </button>
+      <button class="tab" data-tab="activity" onclick="switchTab(this,'activity')">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Team Activity
+      </button>
+    </div>
+
+    <!-- ══ MY TEAM ══ -->
+    <div id="panel-members" class="panel active">
+      <!-- Search + filter bar -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:0 12px;height:38px;">
+          <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search team members..." oninput="filterMembers(this.value)" style="border:none;outline:none;font-size:13px;color:var(--text-1);width:100%;font-family:inherit;background:none;">
+        </div>
+        <select onchange="filterByRole(this.value)" style="height:38px;padding:0 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text-2);background:#fff;outline:none;cursor:pointer;">
+          <option value="all">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+          <option value="viewer">Viewer</option>
+        </select>
+        <select onchange="filterByStatus(this.value)" style="height:38px;padding:0 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;color:var(--text-2);background:#fff;outline:none;cursor:pointer;">
+          <option value="all">All Status</option>
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+        </select>
+        <div id="member-count" style="font-size:12px;color:var(--text-3);font-weight:500;white-space:nowrap;">8 members</div>
+      </div>
+
+      <div class="member-list">
+        <div class="member-list-head" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 120px;">
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Member</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Role</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Department</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Last Active</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Status</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Actions</span>
+        </div>
+        <div id="member-list-body"></div>
+      </div>
+
+      <!-- Pending Invites -->
+      <div style="margin-top:24px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="font-size:14px;font-weight:800;color:var(--text-1);">Pending Invites</div>
+            <span id="pending-count" style="font-size:11px;font-weight:700;background:var(--amber-light);color:#b45309;border:1px solid #fde68a;padding:2px 8px;border-radius:20px;">3 pending</span>
+          </div>
+          <button onclick="openInviteModal()" style="display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;border:1px solid var(--border);border-radius:7px;background:#fff;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Invite
+          </button>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 120px 120px 140px;padding:10px 20px;background:var(--bg);border-bottom:1px solid var(--border);gap:12px;">
+            <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Email</span>
+            <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Role</span>
+            <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Sent</span>
+            <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Actions</span>
+          </div>
+          <div id="pending-invites-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TEAM SETTINGS ══ -->
+    <div id="panel-settings" class="panel">
+
+
+
+      <div class="settings-section">
+        <div class="settings-section-header">
+          <div class="settings-section-title">Roles &amp; Permissions</div>
+          <div class="settings-section-sub">What each role can do within the Acme Inc. workspace.</div>
+        </div>
+
+        <!-- Role comparison table -->
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="background:var(--bg);">
+                <th style="padding:12px 22px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">Permission</th>
+                <th style="padding:12px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">Admin</th>
+                <th style="padding:12px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">User</th>
+                <th style="padding:12px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);">Viewer</th>
+              </tr>
+            </thead>
+            <tbody id="permissions-table"></tbody>
+          </table>
+        </div>
+        <div style="padding:14px 22px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:12.5px;color:var(--text-3);">Changes apply immediately to all team members.</div>
+          <button onclick="showAdminToast('Permissions saved!')" style="height:34px;padding:0 16px;border:none;border-radius:7px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;">Save Changes</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-header">
+          <div class="settings-section-title">Workspace Settings</div>
+          <div class="settings-section-sub">Configure access controls and invitation settings for Acme Inc.</div>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Allow Users to invite new members</div><div class="settings-hint">Users can send invites without admin approval</div></div>
+          <label style="display:flex;align-items:center;cursor:pointer;gap:8px;">
+            <div onclick="toggleSwitch(this)" style="width:40px;height:22px;border-radius:11px;background:var(--border);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;">
+              <div style="position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;"></div>
+            </div>
+            <span style="font-size:12.5px;color:var(--text-3);" class="switch-label">Off</span>
+          </label>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Require admin approval for new members</div><div class="settings-hint">New invites must be approved before they can access the workspace</div></div>
+          <label style="display:flex;align-items:center;cursor:pointer;gap:8px;">
+            <div onclick="toggleSwitch(this)" style="width:40px;height:22px;border-radius:11px;background:var(--accent);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;">
+              <div style="position:absolute;top:3px;left:21px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;"></div>
+            </div>
+            <span style="font-size:12.5px;color:var(--text-3);" class="switch-label">On</span>
+          </label>
+        </div>
+        <div class="settings-row" style="border-bottom:none;">
+          <div><div class="settings-label">Restrict invites to company domain</div><div class="settings-hint">Only <span style="font-family:DM Mono,monospace;font-size:12px;">@acmeinc.com</span> email addresses can be invited</div></div>
+          <label style="display:flex;align-items:center;cursor:pointer;gap:8px;">
+            <div onclick="toggleSwitch(this)" style="width:40px;height:22px;border-radius:11px;background:var(--accent);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;">
+              <div style="position:absolute;top:3px;left:21px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;"></div>
+            </div>
+            <span style="font-size:12.5px;color:var(--text-3);" class="switch-label">On</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TEAM ACTIVITY ══ -->
+    <div id="panel-activity" class="panel">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;">
+        <div style="font-size:15px;font-weight:800;color:var(--text-1);margin-bottom:18px;">Team Activity</div>
+        <div id="activity-list"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ══ MEMBER DETAIL MODAL ══ -->
+<div id="member-modal" class="modal-backdrop" onclick="if(event.target===this)closeMemberModal()">
+  <div style="background:#fff;border-radius:18px;width:460px;max-width:92vw;box-shadow:0 24px 80px rgba(0,0,0,.2);overflow:hidden;animation:fadeUp .22s ease;">
+
+    <!-- Modal header -->
+    <div id="modal-banner" style="height:80px;position:relative;">
+      <button onclick="closeMemberModal()" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:7px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Avatar overlapping banner -->
+    <div style="padding:0 28px;margin-top:-32px;position:relative;z-index:1;">
+      <div id="modal-avatar" style="width:64px;height:64px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:#fff;margin-bottom:14px;box-shadow:var(--shadow);"></div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+        <div>
+          <div id="modal-name" style="font-size:19px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;margin-bottom:4px;"></div>
+          <div id="modal-jobtitle" style="font-size:13px;color:var(--text-3);margin-bottom:10px;"></div>
+          <div id="modal-role-badge"></div>
+        </div>
+        <div id="modal-status-indicator" style="margin-top:4px;"></div>
+      </div>
+    </div>
+
+    <!-- Details -->
+    <div style="padding:18px 28px 28px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 16px;border-right:1px solid var(--border);">
+          <div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Email</div>
+          <div id="modal-email" style="font-size:12.5px;color:var(--text-1);font-family:'DM Mono',monospace;"></div>
+        </div>
+        <div style="padding:14px 16px;">
+          <div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Department</div>
+          <div id="modal-dept" style="font-size:12.5px;color:var(--text-1);"></div>
+        </div>
+        <div style="padding:14px 16px;border-top:1px solid var(--border);border-right:1px solid var(--border);">
+          <div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Member Since</div>
+          <div id="modal-since" style="font-size:12.5px;color:var(--text-1);"></div>
+        </div>
+        <div style="padding:14px 16px;border-top:1px solid var(--border);">
+          <div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Last Active</div>
+          <div id="modal-active" style="font-size:12.5px;color:var(--text-1);"></div>
+        </div>
+      </div>
+
+      <!-- Recent actions -->
+      <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Recent Activity</div>
+      <div id="modal-activity" style="display:flex;flex-direction:column;gap:8px;"></div>
+
+      <!-- Admin actions -->
+      <div id="modal-admin-actions" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Admin Actions</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <button id="modal-role-btn" onclick="openChangeRoleModal()" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid var(--purple);border-radius:7px;background:var(--purple-light);color:var(--purple);font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            Change Role
+          </button>
+          <button id="modal-remove-btn" onclick="removeMemberFromModal()" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border:1px solid #fecaca;border-radius:7px;background:#fff;color:#ef4444;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+            Remove Member
+          </button>
+        </div>
+        <button onclick="closeMemberModal()" style="width:100%;height:38px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Data ──
+  const MEMBERS = [
+    { name:'Sarah J.', initials:'SJ', color:'#6366f1', jobTitle:'Brand Director', role:'admin', dept:'Marketing', email:'sarah.j@acmeinc.com', since:'Jan 5, 2026', active:'Today, 9:42 AM', online:true,
+      activity:['Updated Voice & Tone guidelines','Approved Logo Package v3','Shared brand guide externally'] },
+    { name:'Mark T.', initials:'MT', color:'#f59e0b', jobTitle:'Creative Lead', role:'admin', dept:'Design', email:'mark.t@acmeinc.com', since:'Jan 5, 2026', active:'Yesterday, 4:15 PM', online:false,
+      activity:['Ran Homepage Full Audit sweep','Uploaded Brand Jingle asset','Reviewed Q1 deck template'] },
+    { name:'Priya L.', initials:'PL', color:'#22c55e', jobTitle:'Marketing Manager', role:'user', dept:'Marketing', email:'priya.l@acmeinc.com', since:'Mar 22, 2026', active:'Today, 11:30 AM', online:true,
+      activity:['Downloaded Primary Company Logo','Ran Product Page Audit','Viewed Brand Guidelines'] },
+    { name:'Carlos M.', initials:'CM', color:'#3b6ef5', jobTitle:'Product Designer', role:'user', dept:'Product', email:'carlos.m@acmeinc.com', since:'Feb 10, 2026', active:'Mar 28, 2:30 PM', online:false,
+      activity:['Downloaded Q1 Company Deck','Viewed Colour Guidelines','Downloaded Icon Set Library'] },
+    { name:'James K.', initials:'JK', color:'#ec4899', jobTitle:'Campaign Manager', role:'user', dept:'Marketing', email:'james.k@acmeinc.com', since:'Feb 18, 2026', active:'Today, 8:15 AM', online:true,
+      activity:['Downloaded Social Media Templates','Ran Blog Section Sweep','Shared brand guide link'] },
+    { name:'Mia R.', initials:'MR', color:'#f97316', jobTitle:'Social Media Lead', role:'user', dept:'Marketing', email:'mia.r@acmeinc.com', since:'Mar 1, 2026', active:'Mar 29, 3:20 PM', online:false,
+      activity:['Downloaded Instagram Story Template','Viewed Typography Guidelines','Downloaded Brand Jingle'] },
+    { name:'Tom A.', initials:'TA', color:'#8b5cf6', jobTitle:'Content Strategist', role:'user', dept:'Content', email:'tom.a@acmeinc.com', since:'Mar 22, 2026', active:'Mar 27, 10:00 AM', online:false,
+      activity:['Viewed Voice & Tone guidelines','Downloaded Brand Guidelines PDF','Viewed Iconography section'] },
+    { name:'You (Priya L.)', initials:'PL', color:'#22c55e', jobTitle:'Marketing Manager', role:'user', dept:'Marketing', email:'priya.l@acmeinc.com', since:'Mar 22, 2026', active:'Now', online:true, isYou:true,
+      activity:['Viewing Team page','Downloaded Primary Logo','Ran Product Page Audit'] },
+  ];
+
+  const PERMISSIONS = [
+    { label:'View brand assets',          admin:true, user:true,  viewer:true,  adminLocked:true },
+    { label:'Download assets',            admin:true, user:true,  viewer:true,  adminLocked:true },
+    { label:'View brand guidelines',      admin:true, user:true,  viewer:true,  adminLocked:true },
+    { label:'Run brand sweeps',           admin:true, user:true,  viewer:false, adminLocked:true },
+    { label:'View reports',               admin:true, user:true,  viewer:false, adminLocked:true },
+    { label:'Upload assets',              admin:true, user:false, viewer:false, adminLocked:true },
+    { label:'Edit brand guidelines',      admin:true, user:false, viewer:false, adminLocked:true },
+    { label:'Manage team members',        admin:true, user:false, viewer:false, adminLocked:true },
+    { label:'Change roles & permissions', admin:true, user:false, viewer:false, adminLocked:true },
+  ];
+
+  const ACTIVITY_LOG = [
+    { who:'Priya L.', color:'#22c55e', action:'Downloaded Primary Company Logo', time:'Today, 11:30 AM', icon:'download' },
+    { who:'Sarah J.', color:'#6366f1', action:'Updated Voice & Tone guidelines', time:'Today, 9:42 AM', icon:'edit' },
+    { who:'James K.', color:'#ec4899', action:'Ran Blog Section Sweep', time:'Today, 10:42 AM', icon:'sweep' },
+    { who:'Mark T.', color:'#f59e0b', action:'Approved Logo Package v3', time:'Yesterday, 4:15 PM', icon:'check' },
+    { who:'Carlos M.', color:'#3b6ef5', action:'Downloaded Q1 Company Deck', time:'Mar 28, 2:30 PM', icon:'download' },
+    { who:'Sarah J.', color:'#6366f1', action:'Shared brand guide externally', time:'Mar 26, 3:45 PM', icon:'share' },
+    { who:'Mia R.', color:'#f97316', action:'Downloaded Instagram Story Template', time:'Mar 29, 3:20 PM', icon:'download' },
+    { who:'Tom A.', color:'#8b5cf6', action:'Viewed Voice & Tone guidelines', time:'Mar 27, 10:00 AM', icon:'view' },
+    { who:'Priya L.', color:'#22c55e', action:'Ran Product Page Audit', time:'Mar 22, 2026', icon:'sweep' },
+    { who:'Mark T.', color:'#f59e0b', action:'Uploaded Brand Jingle asset', time:'Mar 20, 11:00 AM', icon:'upload' },
+  ];
+
+  function iconSvg(type) {
+    const icons = {
+      download: '<svg width="13" height="13" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+      edit: '<svg width="13" height="13" fill="none" stroke="var(--purple)" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+      check: '<svg width="13" height="13" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+      sweep: '<svg width="13" height="13" fill="none" stroke="var(--amber)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      share: '<svg width="13" height="13" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/></svg>',
+      view: '<svg width="13" height="13" fill="none" stroke="var(--text-3)" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+      upload: '<svg width="13" height="13" fill="none" stroke="var(--green)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+    };
+    return icons[type] || icons.view;
+  }
+
+  // ── Render members ──
+  let roleFilter = 'all', statusFilter = 'all', searchFilter = '';
+
+  function renderMembers(list) {
+    const members = list || MEMBERS;
+    const body = document.getElementById('member-list-body');
+    const count = document.getElementById('member-count');
+    if (count) count.textContent = members.length + ' member' + (members.length !== 1 ? 's' : '');
+    body.innerHTML = members.map((m, i) => `
+      <div class="member-row">
+        <div style="display:flex;align-items:center;gap:12px;min-width:0;cursor:pointer;" onclick="openMemberModal(${MEMBERS.indexOf(m)})">
+          <div class="member-avatar" style="background:${m.color};">${m.initials}</div>
+          <div style="min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <div class="member-name">${m.name}</div>
+              ${m.isYou ? '<span style="font-size:10px;font-weight:700;background:var(--accent-light);color:var(--accent);padding:2px 7px;border-radius:20px;">You</span>' : ''}
+            </div>
+            <div class="member-role-text">${m.jobTitle}</div>
+          </div>
+        </div>
+        <div>
+          <select onchange="changeRoleInline(${MEMBERS.indexOf(m)}, this.value)" style="height:30px;padding:0 8px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;color:var(--text-1);background:#fff;outline:none;cursor:pointer;" ${m.isYou ? 'disabled title="Cannot change your own role"' : ''}>
+            <option value="admin" ${m.role==='admin'?'selected':''}>⚡ Admin</option>
+            <option value="user" ${m.role==='user'?'selected':''}>👤 User</option>
+            <option value="viewer" ${m.role==='viewer'?'selected':''}>👁 Viewer</option>
+          </select>
+        </div>
+        <div style="font-size:13px;color:var(--text-2);">${m.dept}</div>
+        <div style="font-size:11.5px;color:var(--text-3);font-family:'DM Mono',monospace;">${m.active}</div>
+        <div class="member-status">
+          <div class="status-dot" style="background:${m.online ? 'var(--green)' : 'var(--border)'}"></div>
+          ${m.online ? '<span style="color:var(--green);font-weight:600;">Online</span>' : 'Offline'}
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          ${m.isYou ? '<span style="font-size:11px;color:var(--text-3);">—</span>' : `
+          <button class="admin-action-btn danger" onclick="confirmRemoveMember(${MEMBERS.indexOf(m)})" title="Remove member">
+            <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+            Remove
+          </button>`}
+        </div>
+      </div>`).join('');
+  }
+
+  function filterMembers(val) {
+    searchFilter = val.toLowerCase();
+    applyFilters();
+  }
+  function filterByRole(val) { roleFilter = val; applyFilters(); }
+  function filterByStatus(val) { statusFilter = val; applyFilters(); }
+  function applyFilters() {
+    const filtered = MEMBERS.filter(m => {
+      const matchSearch = m.name.toLowerCase().includes(searchFilter) || m.jobTitle.toLowerCase().includes(searchFilter) || m.dept.toLowerCase().includes(searchFilter);
+      const matchRole = roleFilter === 'all' || m.role === roleFilter;
+      const matchStatus = statusFilter === 'all' || (statusFilter === 'online' ? m.online : !m.online);
+      return matchSearch && matchRole && matchStatus;
+    });
+    renderMembers(filtered);
+  }
+
+  // ── Render permissions table ──
+  function renderPermissions() {
+    const tbody = document.getElementById('permissions-table');
+    tbody.innerHTML = PERMISSIONS.map((p, i) => `
+      <tr style="background:${i%2===0?'#fff':'var(--bg)'};">
+        <td style="padding:12px 22px;font-size:13px;color:var(--text-2);border-bottom:1px solid var(--border);">${p.label}</td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid var(--border);">
+          ${p.adminLocked
+            ? '<span title="Admins always have this permission" style="font-size:13px;color:#d1d5db;cursor:default;">🔒</span>'
+            : `<input type="checkbox" ${p.admin?'checked':''} onchange="togglePermission(${i},'admin',this.checked)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;">`}
+        </td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid var(--border);">
+          <input type="checkbox" ${p.user?'checked':''} onchange="togglePermission(${i},'user',this.checked)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;">
+        </td>
+        <td style="padding:12px 16px;text-align:center;border-bottom:1px solid var(--border);">
+          <input type="checkbox" ${p.viewer?'checked':''} onchange="togglePermission(${i},'viewer',this.checked)" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;">
+        </td>
+      </tr>`).join('');
+  }
+
+  function togglePermission(idx, role, val) {
+    PERMISSIONS[idx][role] = val;
+    showAdminToast('Permission updated.');
+  }
+
+  // ── Render activity ──
+  function renderActivity() {
+    const list = document.getElementById('activity-list');
+    list.innerHTML = ACTIVITY_LOG.map(a => `
+      <div class="activity-item">
+        <div class="act-dot" style="background:${a.color}20;flex-shrink:0;">
+          ${iconSvg(a.icon)}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <span style="font-size:13px;font-weight:700;color:var(--text-1);">${a.who}</span>
+          <span style="font-size:13px;color:var(--text-2);"> ${a.action}</span>
+        </div>
+        <div style="font-size:11.5px;color:var(--text-3);white-space:nowrap;flex-shrink:0;">${a.time}</div>
+      </div>`).join('');
+  }
+
+  // ── Member modal ──
+  function openMemberModal(idx) {
+    const m = MEMBERS[idx];
+    const roleColors = { admin:'linear-gradient(135deg,#6366f1,#8b5cf6)', user:'linear-gradient(135deg,#3b6ef5,#6366f1)', viewer:'linear-gradient(135deg,#9ca3af,#6b7280)' };
+    document.getElementById('modal-banner').style.background = roleColors[m.role];
+    document.getElementById('modal-avatar').style.background = m.color;
+    document.getElementById('modal-avatar').textContent = m.initials;
+    document.getElementById('modal-name').textContent = m.name + (m.isYou ? ' (You)' : '');
+    document.getElementById('modal-jobtitle').textContent = m.jobTitle;
+    document.getElementById('modal-role-badge').innerHTML = `<span class="role-badge ${m.role==='admin'?'role-admin':'role-user'}">${m.role==='admin'?'⚡ Admin':'👤 User'}</span>`;
+    document.getElementById('modal-status-indicator').innerHTML = `<div style="display:flex;align-items:center;gap:5px;font-size:12px;color:${m.online?'var(--green)':'var(--text-3)'}"><div style="width:8px;height:8px;border-radius:50%;background:${m.online?'var(--green)':'var(--border)'}"></div>${m.online?'Online now':'Offline'}</div>`;
+    document.getElementById('modal-email').textContent = m.email;
+    document.getElementById('modal-dept').textContent = m.dept;
+    document.getElementById('modal-since').textContent = m.since;
+    document.getElementById('modal-active').textContent = m.active;
+    document.getElementById('modal-activity').innerHTML = m.activity.map(a => `
+      <div style="display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--bg);border-radius:8px;font-size:12.5px;color:var(--text-2);">
+        <div style="width:6px;height:6px;border-radius:50%;background:${m.color};flex-shrink:0;"></div>
+        ${a}
+      </div>`).join('');
+    document.getElementById('member-modal').style.display = 'flex';
+  }
+  function closeMemberModal() {
+    document.getElementById('member-modal').style.display = 'none';
+  }
+
+  // ── Tab switching ──
+  function switchTab(el, tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  // ── Invite sub-tabs ──
+  function switchInviteTab(tab) {
+    const sentBtn = document.getElementById('inv-sent-btn');
+    const accBtn = document.getElementById('inv-acc-btn');
+    const sent = document.getElementById('inv-sent');
+    const acc = document.getElementById('inv-accepted');
+    if (tab === 'sent') {
+      sent.style.display = 'block'; acc.style.display = 'none';
+      sentBtn.style.cssText += ';border-color:var(--accent);color:var(--accent);background:var(--accent-light);';
+      accBtn.style.cssText += ';border-color:var(--border);color:var(--text-2);background:#fff;';
+    } else {
+      sent.style.display = 'none'; acc.style.display = 'block';
+      accBtn.style.cssText += ';border-color:var(--accent);color:var(--accent);background:var(--accent-light);';
+      sentBtn.style.cssText += ';border-color:var(--border);color:var(--text-2);background:#fff;';
+    }
+  }
+
+  function toggleNav(id) {
+    const sub = document.getElementById('sub-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    const isOpen = sub.classList.contains('open');
+    sub.classList.toggle('open', !isOpen);
+    chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
+
+  // ── Init ──
+  renderMembers();
+  renderPermissions();
+  renderActivity();
+</script>
+</body>
+</html>
+
+<!-- ══ ADMIN MODALS ══ -->
+
+<!-- Invite Member Modal -->
+<div id="invite-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:900;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:460px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);animation:fadeUp .2s ease;">
+    <div style="padding:24px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:16px;font-weight:800;color:var(--text-1);margin-bottom:2px;">Invite Team Member</div>
+        <div style="font-size:13px;color:var(--text-3);">They'll receive an email with a link to join the Acme Inc. workspace.</div>
+      </div>
+      <button onclick="document.getElementById('invite-modal').style.display='none'" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;color:var(--text-3);">x</button>
+    </div>
+    <div style="padding:20px 26px 26px;">
+      <div style="margin-bottom:14px;">
+        <label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Email Address *</label>
+        <input id="invite-email" type="email" placeholder="name@acmeinc.com" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:8px;">Role</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;" id="role-selector">
+          <div onclick="selectInviteRole(this,'user')" data-role="user" style="padding:12px;border:2px solid var(--accent);border-radius:10px;background:var(--accent-light);cursor:pointer;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">👤</div>
+            <div style="font-size:12.5px;font-weight:700;color:var(--accent);">User</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">View & download</div>
+          </div>
+          <div onclick="selectInviteRole(this,'admin')" data-role="admin" style="padding:12px;border:2px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">⚡</div>
+            <div style="font-size:12.5px;font-weight:700;color:var(--text-2);">Admin</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">Full access</div>
+          </div>
+          <div onclick="selectInviteRole(this,'viewer')" data-role="viewer" style="padding:12px;border:2px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;text-align:center;">
+            <div style="font-size:18px;margin-bottom:4px;">👁</div>
+            <div style="font-size:12.5px;font-weight:700;color:var(--text-2);">Viewer</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;">View only</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('invite-modal').style.display='none'" style="flex:1;height:42px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+        <button onclick="sendInvite()" style="flex:2;height:42px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Invite
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Change Role Modal -->
+<div id="role-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:910;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:380px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);animation:fadeUp .2s ease;">
+    <div style="padding:22px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:15px;font-weight:800;color:var(--text-1);">Change Role</div>
+      <button onclick="document.getElementById('role-modal').style.display='none'" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:16px;color:var(--text-3);">x</button>
+    </div>
+    <div style="padding:16px 24px 24px;">
+      <div id="role-modal-name" style="font-size:13px;color:var(--text-3);margin-bottom:14px;"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;" id="role-options"></div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('role-modal').style.display='none'" style="flex:1;height:40px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+        <button onclick="confirmRoleChange()" style="flex:2;height:40px;border:none;border-radius:9px;background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Save Role</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Confirm Modal -->
+<div id="remove-modal" style="display:none;position:fixed;inset:0;background:rgba(15,20,40,.55);z-index:910;align-items:center;justify-content:center;" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:18px;width:380px;max-width:95vw;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.2);animation:fadeUp .2s ease;">
+    <div style="padding:22px 24px 20px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:#fef2f2;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+        <svg width="20" height="20" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+      </div>
+      <div style="font-size:16px;font-weight:800;color:var(--text-1);margin-bottom:6px;">Remove team member?</div>
+      <div id="remove-modal-text" style="font-size:13.5px;color:var(--text-3);line-height:1.5;margin-bottom:20px;"></div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="document.getElementById('remove-modal').style.display='none'" style="flex:1;height:40px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+        <button onclick="confirmRemove()" style="flex:2;height:40px;border:none;border-radius:9px;background:#ef4444;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Remove Member</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="admin-toast" style="display:none;position:fixed;bottom:28px;right:28px;background:#111827;color:#fff;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.2);align-items:center;gap:10px;">
+  <svg width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="admin-toast-msg"></span>
+</div>
+
+<script>
+// ── ADMIN TEAM JS ──
+
+var PENDING_INVITES = [
+  {email:'nina.k@acmeinc.com',  role:'user',   sent:'Today, 9:00 AM'},
+  {email:'liam.p@acmeinc.com',  role:'admin',  sent:'Yesterday'},
+  {email:'sara.w@design.co',    role:'viewer', sent:'Mar 29, 2026'}
+];
+
+var _removeTargetIdx = -1;
+var _roleTargetIdx   = -1;
+var _selectedRole    = 'user';
+var _inviteRole      = 'user';
+var _currentModalIdx = -1;
+
+// ── Pending Invites ──
+function renderPendingInvites() {
+  var list = document.getElementById('pending-invites-list');
+  if (!list) return;
+  if (PENDING_INVITES.length === 0) {
+    list.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-3);font-size:13px;">No pending invites</div>';
+    var badge = document.getElementById('pending-count');
+    if (badge) badge.style.display = 'none';
+    return;
+  }
+  list.innerHTML = PENDING_INVITES.map(function(inv, i) {
+    var roleEmoji = inv.role === 'admin' ? '⚡' : inv.role === 'viewer' ? '👁' : '👤';
+    var roleColor = inv.role === 'admin' ? 'var(--purple)' : inv.role === 'viewer' ? 'var(--text-3)' : 'var(--accent)';
+    var roleBg    = inv.role === 'admin' ? 'var(--purple-light)' : inv.role === 'viewer' ? 'var(--bg)' : 'var(--accent-light)';
+    return '<div class="pending-row">'
+      + '<div><div style="font-size:13px;font-weight:600;color:var(--text-1);font-family:DM Mono,monospace;">' + inv.email + '</div></div>'
+      + '<span style="font-size:11.5px;font-weight:700;color:' + roleColor + ';background:' + roleBg + ';padding:3px 10px;border-radius:20px;display:inline-block;">' + roleEmoji + ' ' + inv.role.charAt(0).toUpperCase() + inv.role.slice(1) + '</span>'
+      + '<div style="font-size:12px;color:var(--text-3);">' + inv.sent + '</div>'
+      + '<div style="display:flex;gap:6px;">'
+      + '<button onclick="resendInvite(' + i + ')" class="admin-action-btn" style="font-size:11px;">Resend</button>'
+      + '<button onclick="revokeInvite(' + i + ')" class="admin-action-btn danger" style="font-size:11px;">Revoke</button>'
+      + '</div></div>';
+  }).join('');
+  var badge = document.getElementById('pending-count');
+  if (badge) badge.textContent = PENDING_INVITES.length + ' pending';
+}
+
+function resendInvite(i) {
+  showAdminToast('Invite resent to ' + PENDING_INVITES[i].email);
+}
+
+function revokeInvite(i) {
+  var email = PENDING_INVITES[i].email;
+  PENDING_INVITES.splice(i, 1);
+  renderPendingInvites();
+  showAdminToast('Invite to ' + email + ' revoked.');
+}
+
+// ── Invite Modal ──
+function openInviteModal() {
+  document.getElementById('invite-email').value = '';
+  selectInviteRole(document.querySelector('#role-selector [data-role="user"]'), 'user');
+  document.getElementById('invite-modal').style.display = 'flex';
+}
+
+function selectInviteRole(el, role) {
+  _inviteRole = role;
+  document.querySelectorAll('#role-selector > div').forEach(function(d) {
+    d.style.borderColor = 'var(--border)'; d.style.background = '#fff';
+    d.querySelector('div:nth-child(2)').style.color = 'var(--text-2)';
+  });
+  el.style.borderColor = 'var(--accent)'; el.style.background = 'var(--accent-light)';
+  el.querySelector('div:nth-child(2)').style.color = 'var(--accent)';
+}
+
+function sendInvite() {
+  var email = document.getElementById('invite-email').value.trim();
+  if (!email) { document.getElementById('invite-email').focus(); return; }
+  PENDING_INVITES.push({email:email, role:_inviteRole, sent:'Just now'});
+  document.getElementById('invite-modal').style.display = 'none';
+  renderPendingInvites();
+  showAdminToast('Invite sent to ' + email);
+}
+
+// ── Inline role change ──
+function changeRoleInline(idx, newRole) {
+  MEMBERS[idx].role = newRole;
+  showAdminToast(MEMBERS[idx].name + ' is now ' + newRole.charAt(0).toUpperCase() + newRole.slice(1));
+}
+
+// ── Remove Member ──
+function confirmRemoveMember(idx) {
+  _removeTargetIdx = idx;
+  document.getElementById('remove-modal-text').textContent = MEMBERS[idx].name + ' will lose access to the Acme Inc. workspace immediately. This cannot be undone.';
+  document.getElementById('remove-modal').style.display = 'flex';
+  document.getElementById('member-modal').style.display = 'none';
+}
+
+function removeMemberFromModal() {
+  if (_currentModalIdx < 0) return;
+  confirmRemoveMember(_currentModalIdx);
+}
+
+function confirmRemove() {
+  if (_removeTargetIdx < 0) return;
+  var name = MEMBERS[_removeTargetIdx].name;
+  MEMBERS.splice(_removeTargetIdx, 1);
+  document.getElementById('remove-modal').style.display = 'none';
+  renderMembers();
+  showAdminToast(name + ' removed from workspace.');
+}
+
+// ── Change Role Modal (from member modal) ──
+function openChangeRoleModal() {
+  if (_currentModalIdx < 0) return;
+  var m = MEMBERS[_currentModalIdx];
+  _selectedRole = m.role;
+  _roleTargetIdx = _currentModalIdx;
+  document.getElementById('role-modal-name').textContent = 'Changing role for ' + m.name;
+  var opts = document.getElementById('role-options');
+  var roles = [
+    {val:'admin',  label:'⚡ Admin',  desc:'Full access — can manage team, edit guidelines, upload assets'},
+    {val:'user',   label:'👤 User',   desc:'Can view, download and run sweeps. Cannot edit or manage team'},
+    {val:'viewer', label:'👁 Viewer', desc:'Read-only access to assets and brand guidelines'}
+  ];
+  opts.innerHTML = roles.map(function(r) {
+    var active = r.val === _selectedRole;
+    return '<div onclick="selectRole(this,\'' + r.val + '\')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid ' + (active?'var(--accent)':'var(--border)') + ';border-radius:10px;background:' + (active?'var(--accent-light)':'#fff') + ';cursor:pointer;transition:all .12s;">'
+      + '<div style="flex:1;"><div style="font-size:13.5px;font-weight:700;color:var(--text-1);">' + r.label + '</div>'
+      + '<div style="font-size:12px;color:var(--text-3);margin-top:2px;">' + r.desc + '</div></div>'
+      + (active ? '<svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>' : '')
+      + '</div>';
+  }).join('');
+  document.getElementById('member-modal').style.display = 'none';
+  document.getElementById('role-modal').style.display = 'flex';
+}
+
+function selectRole(el, role) {
+  _selectedRole = role;
+  el.parentElement.querySelectorAll('div').forEach(function(d) {
+    d.style.borderColor = 'var(--border)'; d.style.background = '#fff';
+  });
+  el.style.borderColor = 'var(--accent)'; el.style.background = 'var(--accent-light)';
+}
+
+function confirmRoleChange() {
+  if (_roleTargetIdx < 0) return;
+  MEMBERS[_roleTargetIdx].role = _selectedRole;
+  document.getElementById('role-modal').style.display = 'none';
+  renderMembers();
+  showAdminToast(MEMBERS[_roleTargetIdx].name + ' is now ' + _selectedRole.charAt(0).toUpperCase() + _selectedRole.slice(1));
+}
+
+// ── Toggle switches (settings) ──
+function toggleSwitch(el) {
+  var knob = el.querySelector('div');
+  var label = el.parentElement.querySelector('.switch-label');
+  var isOn = el.style.background === 'var(--accent)' || el.style.background.includes('3b6ef5') || el.style.background.includes('accent');
+  if (isOn) {
+    el.style.background = 'var(--border)';
+    knob.style.transform = 'translateX(0)';
+    if (label) label.textContent = 'Off';
+  } else {
+    el.style.background = 'var(--accent)';
+    knob.style.transform = 'translateX(18px)';
+    if (label) label.textContent = 'On';
+  }
+  showAdminToast('Setting updated.');
+}
+
+// Override openMemberModal to track current idx
+var _origOpenMemberModal = openMemberModal;
+openMemberModal = function(idx) {
+  _currentModalIdx = idx;
+  _origOpenMemberModal(idx);
+  var m = MEMBERS[idx];
+  var adminActions = document.getElementById('modal-admin-actions');
+  if (adminActions) adminActions.style.display = m.isYou ? 'none' : 'block';
+};
+
+// ── Toast ──
+function showAdminToast(msg) {
+  var t = document.getElementById('admin-toast');
+  var m = document.getElementById('admin-toast-msg');
+  if (!t || !m) return;
+  m.textContent = msg;
+  t.style.display = 'flex'; t.style.opacity = '1'; t.style.transition = '';
+  clearTimeout(window._atTimer);
+  window._atTimer = setTimeout(function() {
+    t.style.opacity = '0'; t.style.transition = 'opacity .3s';
+    setTimeout(function() { t.style.display = 'none'; t.style.opacity = '1'; t.style.transition = ''; }, 300);
+  }, 3000);
+}
+
+// Init
+renderPendingInvites();
+</script>

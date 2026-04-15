@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Assets · BrandHub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sidebar-w: 200px;
+    --bg: #f4f5f7; --card: #ffffff;
+    --navy: #1a2340; --accent: #3b6ef5; --accent-light: #e8eeff;
+    --green: #22c55e; --green-light: #dcfce7;
+    --amber: #f59e0b; --amber-light: #fffbeb;
+    --red: #ef4444; --red-light: #fef2f2;
+    --purple: #6366f1; --purple-light: #ede9fe;
+    --text-1: #111827; --text-2: #4b5563; --text-3: #9ca3af;
+    --border: #e5e7eb; --radius: 12px; --radius-sm: 8px;
+    --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.04);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.10);
+    font-family: 'DM Sans', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text-1); min-height: 100vh; display: flex; }
+
+  /* Sidebar */
+  aside { width: var(--sidebar-w); background: #fff; border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 0 18px 24px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .logo-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; }
+  .logo-text { font-size: 15px; font-weight: 700; color: var(--text-1); }
+  nav { flex: 1; padding: 0 10px; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius-sm); font-size: 13.5px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; margin-bottom: 6px; text-decoration: none; }
+  .nav-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+  .nav-item svg { flex-shrink: 0; opacity: .8; }
+  .sidebar-footer { padding: 16px 14px 0; border-top: 1px solid var(--border); margin-top: auto; }
+  .nav-expandable { cursor: pointer; user-select: none; }
+  .nav-sub { overflow: hidden; max-height: 0; transition: max-height .25s ease, opacity .2s ease; opacity: 0; }
+  .nav-sub.open { max-height: 200px; opacity: 1; }
+  .nav-sub-item { display: flex; align-items: center; gap: 9px; padding: 7px 10px 7px 34px; font-size: 12.5px; font-weight: 500; color: var(--text-3); border-radius: var(--radius-sm); cursor: pointer; text-decoration: none; transition: all .15s; margin-bottom: 1px; }
+  .nav-sub-item:hover { background: var(--bg); color: var(--text-1); }
+  .nav-group { margin-bottom: 6px; }
+
+  /* Main */
+  main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; }
+  header { background: #fff; border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 50; flex-shrink: 0; }
+  .search { flex: 1; max-width: 340px; display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0 12px; height: 36px; }
+  .search input { background: none; border: none; outline: none; font-size: 13px; color: var(--text-1); width: 100%; font-family: inherit; }
+  .search input::placeholder { color: var(--text-3); }
+  .icon-btn { width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); transition: all .15s; position: relative; }
+  .icon-btn:hover { background: var(--bg); }
+  .notif-badge { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; border-radius: 50%; background: var(--red); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+  .avatar-hdr { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#3b6ef5); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #fff; }
+
+  /* Views */
+  .view { display: none; flex: 1; flex-direction: column; overflow-y: auto; }
+  .view.active { display: flex; }
+
+  /* Content padding */
+  .page-content { padding: 28px 36px 60px; }
+
+  /* Category tabs */
+  .cat-tab { display: inline-flex; align-items: center; gap: 5px; padding: 7px 13px; border-radius: 20px; border: 1px solid var(--border); background: #fff; font-size: 12.5px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; }
+  .cat-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .cat-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+
+  /* Asset grid */
+  .a-card { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all .18s; }
+  .a-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+  .a-thumb { height: 110px; display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+  .a-badge { position: absolute; top: 8px; right: 8px; font-size: 9.5px; font-weight: 700; padding: 3px 7px; border-radius: 20px; }
+  .badge-approved { background: var(--green-light); color: #16a34a; }
+  .badge-pending { background: #fffbeb; color: #b45309; }
+  .badge-review { background: #eff6ff; color: #2563eb; }
+  .a-info { padding: 11px 13px; border-top: 1px solid var(--border); }
+  .a-name { font-size: 12px; font-weight: 700; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .a-meta { font-size: 10.5px; color: var(--text-3); margin-top: 2px; }
+  .admin-bar { display: flex; gap: 4px; padding: 8px 13px; border-top: 1px solid var(--border); background: var(--bg); }
+  .admin-btn { flex: 1; height: 28px; border: 1px solid var(--border); border-radius: 6px; background: #fff; font-size: 11px; font-weight: 600; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 3px; }
+  .admin-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .admin-btn.danger:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+  /* List row */
+  .list-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 120px; padding: 13px 18px; gap: 12px; border-bottom: 1px solid var(--border); align-items: center; transition: background .12s; cursor: pointer; }
+  .list-row:last-child { border-bottom: none; }
+  .list-row:hover { background: var(--bg); }
+  .list-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .dl-btn { width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); transition: all .15s; }
+  .dl-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Format buttons */
+  .fmt-btn { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 12px; border: 1.5px solid var(--border); border-radius: 12px; background: #fff; cursor: pointer; font-family: inherit; transition: all .15s; }
+  .fmt-btn:hover { border-color: var(--accent); background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59,110,245,.12); }
+  .fmt-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .fmt-label { font-size: 13px; font-weight: 700; color: var(--text-1); }
+  .fmt-sub { font-size: 10.5px; color: var(--text-3); }
+
+  /* Buttons */
+  .btn-primary { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: none; border-radius: 8px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 2px 8px rgba(59,110,245,.25); transition: all .15s; white-space: nowrap; }
+  .btn-primary:hover { background: #2d5de0; }
+  .btn-outline { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
+  .btn-outline:hover { background: var(--bg); }
+
+  /* Modals */
+  .modal-bg { display: none; position: fixed; inset: 0; background: rgba(15,20,40,.55); z-index: 800; align-items: center; justify-content: center; }
+  .modal-box { background: #fff; border-radius: 18px; box-shadow: 0 24px 80px rgba(0,0,0,.2); overflow: hidden; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  .modal-box { animation: fadeUp .22s ease; }
+
+  /* Toasts */
+  .toast { display: none; position: fixed; bottom: 28px; right: 28px; background: var(--navy); color: #fff; padding: 14px 18px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 900; box-shadow: var(--shadow-lg); align-items: center; gap: 10px; min-width: 260px; }
+
+  /* Instructions panel */
+  #instructions-panel { position: fixed; top: 58px; right: -280px; bottom: 0; width: 280px; background: #fff; border-left: 1px solid var(--border); z-index: 200; display: flex; flex-direction: column; transition: right .3s cubic-bezier(.4,0,.2,1); box-shadow: -4px 0 24px rgba(0,0,0,.08); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Slide in for instructions */
+  @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside>
+  <div class="logo"><div class="logo-icon">BH</div><div class="logo-text">BrandHub</div></div>
+  <nav>
+    <div style="display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:16px;background:#fff;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+      <div style="width:38px;height:38px;border-radius:9px;background:#111827;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:13px;font-weight:700;color:#fff;">Ac</span></div>
+      <div style="flex:1;min-width:0;"><div style="font-size:13.5px;font-weight:700;color:var(--text-1);">Acme Inc.</div><div style="font-size:11px;color:var(--text-3);margin-top:1px;">Enterprise Plan</div></div>
+      <svg width="13" height="13" fill="none" stroke="var(--text-3)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <a class="nav-item" href="brandhub-admin-dashboard.html"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
+    <a class="nav-item active" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Assets</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Brand Guidelines</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Brand Sweep</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Reports & Insights</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Team</a>
+    <a class="nav-item" href="#"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20"/></svg>Connected Sites</a>
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('settings')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        <span style="flex:1;">Settings</span>
+        <svg id="chevron-settings" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-settings">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Account Settings</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>Organization Settings</a>
+      </div>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="nav-group">
+      <div class="nav-item nav-expandable" onclick="toggleNav('support')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        <span style="flex:1;">Support</span>
+        <svg id="chevron-support" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="transition:transform .2s;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="nav-sub" id="sub-support">
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>BrandHub Support</a>
+        <a class="nav-sub-item" href="#"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>Acme Brand Questions</a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <!-- Header -->
+  <header>
+    <div class="search">
+      <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search assets...">
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;background:var(--purple-light);color:var(--purple);font-size:11.5px;font-weight:700;border:1px solid #c7d2fe;">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Admin
+      </span>
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><span class="notif-badge">4</span></div>
+      <div class="icon-btn"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg></div>
+      <div class="avatar-hdr">SJ</div>
+    </div>
+  </header>
+
+  <!-- ════ VIEW: ASSET LIST ════ -->
+  <div id="view-list" class="view active">
+    <div class="page-content">
+      <!-- Page header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+        <div>
+          <h1 style="font-size:22px;font-weight:800;color:var(--text-1);letter-spacing:-0.5px;">Brand Assets</h1>
+          <p style="font-size:13px;color:var(--text-3);margin-top:3px;">Manage and organize all of Acme Inc.'s brand assets.</p>
+        </div>
+        <button onclick="showView('upload')" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 22px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(59,110,245,.3);transition:all .15s;" onmouseover="this.style.background='#2d5de0'" onmouseout="this.style.background='var(--accent)'">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload Asset
+        </button>
+      </div>
+
+      <!-- Category tabs -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="cat-tab active" onclick="switchCategory(this,'all')">All Assets</button>
+          <button class="cat-tab" onclick="switchCategory(this,'logos')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Logos</button>
+          <button class="cat-tab" onclick="switchCategory(this,'images')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg>Images</button>
+          <button class="cat-tab" onclick="switchCategory(this,'documents')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Documents</button>
+          <button class="cat-tab" onclick="switchCategory(this,'presentations')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Presentations</button>
+          <button class="cat-tab" onclick="switchCategory(this,'social')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg>Social Media</button>
+          <button class="cat-tab" onclick="switchCategory(this,'audio')"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg>Audio</button>
+          <button onclick="showDeprecatedModal()" style="display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:20px;border:1.5px dashed #d1d5db;background:transparent;font-size:12.5px;font-weight:500;color:var(--text-3);cursor:pointer;font-family:inherit;transition:all .15s;" onmouseover="this.style.borderColor='#9ca3af';this.style.color='var(--text-2)'" onmouseout="this.style.borderColor='#d1d5db';this.style.color='var(--text-3)'">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>Deprecated Assets
+          </button>
+        </div>
+        <div style="display:flex;border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;flex-shrink:0;">
+          <button id="toggle-grid" onclick="switchView2('grid')" style="padding:7px 11px;border:none;background:var(--accent);color:#fff;cursor:pointer;display:flex;align-items:center;transition:all .15s;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </button>
+          <button id="toggle-list" onclick="switchView2('list')" style="padding:7px 11px;border:none;background:#fff;color:var(--text-3);cursor:pointer;display:flex;align-items:center;transition:all .15s;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Search + filter -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="flex:1;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:0 12px;height:38px;">
+          <svg width="14" height="14" fill="none" stroke="#9ca3af" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input id="asset-search" type="text" placeholder="Search assets..." oninput="renderAssets()" style="border:none;outline:none;font-size:13px;color:var(--text-1);width:100%;font-family:inherit;background:none;">
+        </div>
+        <select id="status-filter" onchange="renderAssets()" style="height:38px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-2);background:#fff;font-family:inherit;cursor:pointer;outline:none;">
+          <option value="all">All Status</option>
+          <option value="approved">Approved</option>
+          <option value="pending">Pending</option>
+          <option value="review">In Review</option>
+        </select>
+        <select id="sort-filter" onchange="renderAssets()" style="height:38px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-2);background:#fff;font-family:inherit;cursor:pointer;outline:none;">
+          <option value="newest">Newest First</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
+
+      <!-- Asset count + instructions -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div id="asset-count" style="font-size:12px;color:var(--text-3);font-weight:500;">Showing 12 assets</div>
+        <button id="instructions-tab" onclick="toggleInstructions()" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1px solid var(--accent);border-radius:20px;background:#fff;font-size:13px;font-weight:700;color:var(--accent);cursor:pointer;font-family:inherit;transition:all .15s;box-shadow:0 1px 4px rgba(59,110,245,.1);" onmouseover="this.style.background='var(--accent-light)'" onmouseout="this.style.background='#fff'">
+          <svg id="tab-icon" width="15" height="15" fill="none" stroke="var(--accent)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Asset Guide / Instructions
+        </button>
+      </div>
+
+      <!-- Grid -->
+      <div id="view-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;"></div>
+
+      <!-- List -->
+      <div id="view-list-body" style="display:none;background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 120px;padding:10px 18px;background:var(--bg);border-bottom:1px solid var(--border);gap:12px;">
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Asset Name</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Type</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Size</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Status</span>
+          <span style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;">Actions</span>
+        </div>
+        <div id="list-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ VIEW: UPLOAD ════ -->
+  <div id="view-upload" class="view">
+    <div class="page-content" style="flex:1;">
+      <!-- Breadcrumb -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;">
+        <button onclick="showView('list')" style="font-size:13px;font-weight:500;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;padding:0;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-3)'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Brand Assets
+        </button>
+        <svg width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <span style="font-size:13px;font-weight:600;color:var(--text-1);">Upload New Asset</span>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <h1 style="font-size:20px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;margin-bottom:4px;">Upload New Asset</h1>
+          <p style="font-size:13px;color:var(--text-3);">Add a new file to the Acme Inc. brand library.</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="showView('list')" class="btn-outline">Cancel</button>
+          <button onclick="submitUpload()" id="upload-submit-btn" class="btn-primary" disabled style="opacity:.5;cursor:not-allowed;">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload & Publish
+          </button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+        <!-- Left: form -->
+        <div>
+          <!-- Drop zone -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;">File</div>
+            <div id="upload-dropzone" style="border:2px dashed var(--border);border-radius:12px;padding:40px 24px;text-align:center;cursor:pointer;transition:all .2s;" onmouseover="if(!window._fileSelected){this.style.borderColor='var(--accent)';this.style.background='var(--accent-light)'}" onmouseout="if(!window._fileSelected){this.style.borderColor='var(--border)';this.style.background='transparent'}" onclick="document.getElementById('file-input').click()">
+              <input id="file-input" type="file" style="display:none;" onchange="onFileSelected(this)">
+              <div id="dropzone-content">
+                <div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:var(--shadow);"><svg width="22" height="22" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
+                <div style="font-size:14px;font-weight:700;color:var(--text-1);margin-bottom:5px;">Drop your file here</div>
+                <div style="font-size:12.5px;color:var(--text-3);margin-bottom:12px;">or click to browse from your computer</div>
+                <div style="display:inline-flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">SVG</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">PNG</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">JPG</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">PDF</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">PPTX</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">MP3</span>
+                  <span style="padding:3px 9px;border-radius:20px;background:var(--bg);font-size:11px;font-weight:600;color:var(--text-3);">Max 50MB</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;">Asset Details</div>
+            <div style="margin-bottom:14px;"><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Asset Name <span style="color:var(--red);">*</span></label><input id="upload-name" type="text" placeholder="e.g. Primary Logo — Dark Background" oninput="checkUploadForm()" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="margin-bottom:14px;"><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Description</label><textarea id="upload-desc" rows="3" placeholder="Describe when and how this asset should be used..." style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;resize:vertical;line-height:1.5;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Category <span style="color:var(--red);">*</span></label><select id="upload-category" onchange="checkUploadForm()" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;background:#fff;cursor:pointer;"><option value="">Select category...</option><option value="logos">Logos</option><option value="images">Images</option><option value="documents">Documents</option><option value="presentations">Presentations</option><option value="social">Social Media</option><option value="audio">Audio</option></select></div>
+              <div><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Tags <span style="font-size:11px;color:var(--text-3);font-weight:500;">(optional)</span></label><input id="upload-tags" type="text" placeholder="logo, primary, dark..." style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></div>
+            </div>
+          </div>
+
+          <!-- Status -->
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;">Publication Status</div>
+            <div style="display:flex;gap:8px;">
+              <button id="upload-status-approved" onclick="setUploadStatus('approved')" style="flex:1;padding:12px;border:1.5px solid var(--accent);border-radius:9px;background:var(--accent-light);font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;">✓ Approved<div style="font-size:11px;font-weight:400;opacity:.7;margin-top:2px;">Publish immediately</div></button>
+              <button id="upload-status-pending" onclick="setUploadStatus('pending')" style="flex:1;padding:12px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;">⏳ Pending Review<div style="font-size:11px;font-weight:400;color:var(--text-3);margin-top:2px;">Hold for approval</div></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: preview -->
+        <div style="position:sticky;top:24px;display:flex;flex-direction:column;gap:14px;">
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+            <div id="upload-preview-thumb" style="height:420px;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+              <svg width="36" height="36" fill="none" stroke="var(--text-3)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div style="font-size:12.5px;color:var(--text-3);">File preview appears here</div>
+            </div>
+            <div style="padding:14px 16px;border-top:1px solid var(--border);">
+              <div id="upload-preview-name" style="font-size:13px;font-weight:700;color:var(--text-3);margin-bottom:2px;">No file selected</div>
+              <div id="upload-preview-meta" style="font-size:11.5px;color:var(--text-3);"></div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">Before you upload</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:flex-start;gap:8px;"><svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;color:var(--text-2);">File follows naming convention</span></div>
+              <div style="display:flex;align-items:flex-start;gap:8px;"><svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;color:var(--text-2);">Correct resolution and format</span></div>
+              <div style="display:flex;align-items:flex-start;gap:8px;"><svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;color:var(--text-2);">Meets brand guidelines</span></div>
+              <div style="display:flex;align-items:flex-start;gap:8px;"><svg width="14" height="14" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12px;color:var(--text-2);">File size under 50MB</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ VIEW: EDIT ════ -->
+  <div id="view-edit" class="view">
+    <div class="page-content" style="flex:1;">
+      <!-- Breadcrumb -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;">
+        <button onclick="showView('list')" style="font-size:13px;font-weight:500;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;padding:0;" onmouseover="this.style.color='var(--text-1)'" onmouseout="this.style.color='var(--text-3)'">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Brand Assets
+        </button>
+        <svg width="14" height="14" fill="none" stroke="var(--border)" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        <span id="edit-breadcrumb" style="font-size:13px;font-weight:600;color:var(--text-1);"></span>
+      </div>
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <h1 id="edit-title" style="font-size:20px;font-weight:800;color:var(--text-1);letter-spacing:-0.3px;"></h1>
+            <span id="edit-status-pill" style="font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;"></span>
+          </div>
+          <div id="edit-filename-sub" style="font-size:12px;color:var(--text-3);font-family:'DM Mono',monospace;margin-top:3px;"></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button onclick="showView('list')" class="btn-outline">Cancel</button>
+          <button onclick="saveEdit()" class="btn-primary"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Save Changes</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+        <!-- Left: form -->
+        <div>
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;">Asset Details</div>
+            <div style="margin-bottom:14px;"><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Asset Name</label><input id="ef-title" type="text" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></div>
+            <div style="margin-bottom:14px;"><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Description</label><textarea id="ef-desc" rows="3" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;resize:vertical;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Category</label><select id="ef-category" style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13.5px;font-family:inherit;outline:none;background:#fff;cursor:pointer;"><option value="logos">Logos</option><option value="images">Images</option><option value="documents">Documents</option><option value="presentations">Presentations</option><option value="social">Social Media</option><option value="audio">Audio</option></select></div>
+              <div><label style="font-size:12.5px;font-weight:700;color:var(--text-2);display:block;margin-bottom:6px;">Filename</label><input id="ef-filename" type="text" readonly style="width:100%;height:42px;border:1px solid var(--border);border-radius:8px;padding:0 13px;font-size:13px;font-family:'DM Mono',monospace;background:var(--bg);color:var(--text-3);outline:none;"></div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;">Status & Visibility</div>
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
+              <button id="status-approved" onclick="setEditStatus('approved')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:12.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;">✓ Approved</button>
+              <button id="status-pending" onclick="setEditStatus('pending')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:12.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;">⏳ Pending</button>
+              <button id="status-review" onclick="setEditStatus('review')" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:9px;background:#fff;font-size:12.5px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;text-align:center;transition:all .15s;">🔍 In Review</button>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--bg);border-radius:9px;">
+              <div><div style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:2px;">Deprecated</div><div style="font-size:12px;color:var(--text-3);">Move to deprecated — removes from active library</div></div>
+              <button onclick="showView('list');showToast('Asset deprecated.')" style="height:32px;padding:0 14px;border:1px solid #fecaca;border-radius:7px;background:#fff;font-size:12px;font-weight:600;color:var(--red);cursor:pointer;font-family:inherit;" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='#fff'">Deprecate</button>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;">File Info</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Dimensions</div><div id="ef-dims" style="font-size:13px;font-weight:600;color:var(--text-1);"></div></div>
+              <div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:10.5px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Format</div><div id="ef-format" style="font-size:13px;font-weight:600;color:var(--text-1);"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: preview -->
+        <div style="position:sticky;top:24px;">
+          <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px;">
+            <div id="edit-preview-thumb" style="height:420px;display:flex;align-items:center;justify-content:center;"></div>
+            <div style="padding:14px 16px;border-top:1px solid var(--border);">
+              <div id="edit-preview-title" style="font-size:13px;font-weight:700;color:var(--text-1);margin-bottom:3px;"></div>
+              <div id="edit-preview-meta" style="font-size:11.5px;color:var(--text-3);"></div>
+            </div>
+          </div>
+          <div style="background:var(--amber-light);border:1px solid #fed7aa;border-radius:9px;padding:12px 14px;display:flex;gap:8px;align-items:flex-start;">
+            <svg width="14" height="14" fill="none" stroke="var(--amber)" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <p style="font-size:12px;color:#92400e;line-height:1.5;">Changes are visible to all team members immediately.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ════ ASSET PREVIEW MODAL ════ -->
+<div id="preview-modal" class="modal-bg" onclick="if(event.target===this)closeModal('preview-modal')">
+  <div class="modal-box" style="width:780px;max-width:95vw;max-height:90vh;display:flex;overflow:hidden;position:relative;">
+    <div id="preview-banner" style="width:320px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#f4f5f7;min-height:420px;">
+      <div id="preview-icon" style="display:flex;flex-direction:column;align-items:center;gap:12px;"></div>
+    </div>
+    <div style="flex:1;padding:30px 28px;overflow-y:auto;display:flex;flex-direction:column;">
+      <button onclick="closeModal('preview-modal')" style="position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:1;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div id="preview-pills" style="display:flex;align-items:center;gap:7px;margin-bottom:14px;"></div>
+      <h2 id="preview-title" style="font-size:22px;font-weight:800;color:var(--text-1);letter-spacing:-0.4px;margin-bottom:8px;line-height:1.2;"></h2>
+      <p id="preview-desc" style="font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:22px;"></p>
+      <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:22px;">
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);gap:16px;"><span style="font-size:12.5px;color:var(--text-3);font-weight:500;">File Name</span><span id="preview-filename" style="font-size:12px;font-weight:600;color:var(--text-1);font-family:'DM Mono',monospace;text-align:right;"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);gap:16px;"><span style="font-size:12.5px;color:var(--text-3);font-weight:500;">Dimensions</span><span id="preview-dims" style="font-size:13px;font-weight:600;color:var(--text-1);text-align:right;"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);gap:16px;"><span style="font-size:12.5px;color:var(--text-3);font-weight:500;">Original File Format</span><span id="preview-format" style="font-size:13px;font-weight:600;color:var(--text-1);text-align:right;"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);gap:16px;"><span style="font-size:12.5px;color:var(--text-3);font-weight:500;">Size</span><span id="preview-size" style="font-size:13px;font-weight:600;color:var(--text-1);text-align:right;"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 16px;gap:16px;"><span style="font-size:12.5px;color:var(--text-3);font-weight:500;">Uploaded by</span><span id="preview-uploader" style="font-size:13px;font-weight:600;color:var(--text-1);text-align:right;"></span></div>
+      </div>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px;">
+        <button onclick="closeModal('preview-modal');openDownloadModal(window._previewAsset)" style="width:100%;height:46px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px rgba(59,110,245,.3);" onmouseover="this.style.background='#2d5de0'" onmouseout="this.style.background='var(--accent)'">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download Asset
+        </button>
+        <div style="display:flex;gap:8px;">
+          <button onclick="closeModal('preview-modal');openEditPage(window._previewAsset)" style="flex:1;height:40px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>Edit Asset
+          </button>
+          <button onclick="closeModal('preview-modal');openDeleteModal(window._previewAsset)" style="flex:1;height:40px;border:1px solid #fecaca;border-radius:10px;background:#fff;font-size:13px;font-weight:600;color:var(--red);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='#fff'">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>Delete Asset
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DOWNLOAD MODAL ════ -->
+<div id="download-modal" class="modal-bg" onclick="if(event.target===this)closeModal('download-modal')">
+  <div class="modal-box" style="width:340px;max-width:90vw;padding:28px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+      <div><h2 style="font-size:16px;font-weight:800;color:var(--text-1);">Download Asset</h2><p id="dl-asset-name" style="font-size:11.5px;color:var(--text-3);margin-top:3px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></p></div>
+      <button onclick="closeModal('download-modal')" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <p style="font-size:12.5px;color:var(--text-2);margin-bottom:18px;">Select the file format you need:</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+      <button onclick="triggerDownload('JPEG')" class="fmt-btn"><div class="fmt-icon" style="background:#fef9c3;"><svg width="18" height="18" fill="none" stroke="#ca8a04" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg></div><div class="fmt-label">JPEG</div><div class="fmt-sub">Best for photos</div></button>
+      <button onclick="triggerDownload('SVG')" class="fmt-btn"><div class="fmt-icon" style="background:#dcfce7;"><svg width="18" height="18" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div><div class="fmt-label">SVG</div><div class="fmt-sub">Scalable vector</div></button>
+      <button onclick="triggerDownload('PNG')" class="fmt-btn"><div class="fmt-icon" style="background:#e0f2fe;"><svg width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg></div><div class="fmt-label">PNG</div><div class="fmt-sub">Transparent bg</div></button>
+      <button onclick="triggerDownload('PDF')" class="fmt-btn"><div class="fmt-icon" style="background:#fce7f3;"><svg width="18" height="18" fill="none" stroke="#db2777" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="fmt-label">PDF</div><div class="fmt-sub">Print & share</div></button>
+    </div>
+    <button onclick="closeModal('download-modal')" style="width:100%;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+  </div>
+</div>
+
+<!-- ════ DELETE MODAL ════ -->
+<div id="delete-modal" class="modal-bg" onclick="if(event.target===this)closeModal('delete-modal')">
+  <div class="modal-box" style="width:400px;max-width:94vw;padding:32px 28px;text-align:center;">
+    <div style="width:52px;height:52px;border-radius:50%;background:var(--red-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="22" height="22" fill="none" stroke="var(--red)" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg></div>
+    <div style="font-size:17px;font-weight:800;color:var(--text-1);margin-bottom:8px;">Delete Asset?</div>
+    <p style="font-size:13.5px;color:var(--text-3);margin-bottom:6px;">This will permanently remove <strong id="delete-asset-name" style="color:var(--text-2);"></strong> from the brand library.</p>
+    <p style="font-size:12.5px;color:var(--text-3);margin-bottom:24px;">This action cannot be undone.</p>
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeModal('delete-modal')" class="btn-outline" style="flex:1;justify-content:center;">Cancel</button>
+      <button onclick="confirmDelete()" style="flex:1;height:36px;border:none;border-radius:8px;background:var(--red);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ DEPRECATED MODAL ════ -->
+<div id="deprecated-modal" class="modal-bg" onclick="if(event.target===this)closeModal('deprecated-modal')">
+  <div class="modal-box" style="width:440px;max-width:94vw;">
+    <div style="padding:24px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;">
+      <div><h2 style="font-size:16px;font-weight:800;color:var(--text-1);margin-bottom:3px;">Deprecated Assets</h2><p style="font-size:13px;color:var(--text-3);">Assets retired from active use.</p></div>
+      <button onclick="closeModal('deprecated-modal')" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div style="padding:20px 26px 26px;">
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:9px;"><div style="width:36px;height:36px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" stroke="#6b7280" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-2);">Logo_Old_2024.svg</div><div style="font-size:11.5px;color:var(--text-3);">Deprecated Jan 2025</div></div><button onclick="showToast('Asset restored!')" style="height:28px;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--accent);cursor:pointer;font-family:inherit;">Restore</button></div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:9px;"><div style="width:36px;height:36px;border-radius:8px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="16" height="16" fill="none" stroke="#6b7280" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><div style="flex:1;"><div style="font-size:13px;font-weight:600;color:var(--text-2);">Banner_2023.jpg</div><div style="font-size:11.5px;color:var(--text-3);">Deprecated Mar 2025</div></div><button onclick="showToast('Asset restored!')" style="height:28px;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11.5px;font-weight:600;color:var(--accent);cursor:pointer;font-family:inherit;">Restore</button></div>
+      </div>
+      <button onclick="closeModal('deprecated-modal')" class="btn-outline" style="width:100%;justify-content:center;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ TOASTS ════ -->
+<div id="dl-toast" class="toast" style="display:none;">
+  <span id="dl-toast-icon" style="display:flex;flex-shrink:0;"></span>
+  <span id="dl-toast-msg"></span>
+</div>
+<div id="admin-toast" class="toast" style="display:none;">
+  <svg width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="admin-toast-msg"></span>
+</div>
+
+<!-- ════ INSTRUCTIONS PANEL ════ -->
+<div id="instructions-panel">
+  <div style="padding:22px 18px;overflow-y:auto;flex:1;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+      <h2 style="font-size:17px;font-weight:800;color:var(--text-1);line-height:1.2;">Asset<br>Instructions</h2>
+      <button onclick="toggleInstructions()" style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);flex-shrink:0;"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div style="margin-bottom:22px;">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px;padding:8px 10px;background:var(--accent-light);border-radius:8px;"><svg width="15" height="15" fill="none" stroke="var(--accent)" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span style="font-size:12.5px;font-weight:700;color:var(--accent);">File Formats</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--bg);border-radius:8px;padding:11px 12px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><div style="width:22px;height:22px;border-radius:5px;background:#e0f2fe;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" fill="none" stroke="#0284c7" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg></div><span style="font-size:12px;font-weight:700;color:var(--text-1);">PNG</span></div><p style="font-size:11.5px;color:var(--text-2);line-height:1.5;">Use for graphics requiring transparent backgrounds.</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:11px 12px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><div style="width:22px;height:22px;border-radius:5px;background:#fef9c3;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" fill="none" stroke="#ca8a04" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg></div><span style="font-size:12px;font-weight:700;color:var(--text-1);">JPG</span></div><p style="font-size:11.5px;color:var(--text-2);line-height:1.5;">Best for photographs with complex colors.</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:11px 12px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><div style="width:22px;height:22px;border-radius:5px;background:#dcfce7;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg></div><span style="font-size:12px;font-weight:700;color:var(--text-1);">SVG</span></div><p style="font-size:11.5px;color:var(--text-2);line-height:1.5;">Use for logos and icons to ensure scalability.</p></div>
+        <div style="background:var(--bg);border-radius:8px;padding:11px 12px;"><div style="display:flex;align-items:center;gap:7px;margin-bottom:5px;"><div style="width:22px;height:22px;border-radius:5px;background:#fce7f3;display:flex;align-items:center;justify-content:center;"><svg width="11" height="11" fill="none" stroke="#db2777" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span style="font-size:12px;font-weight:700;color:var(--text-1);">PDF</span></div><p style="font-size:11.5px;color:var(--text-2);line-height:1.5;">Best for documents and guidelines.</p></div>
+      </div>
+    </div>
+    <div style="height:1px;background:var(--border);margin-bottom:18px;"></div>
+    <div>
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:12px;padding:8px 10px;background:var(--green-light);border-radius:8px;"><svg width="15" height="15" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span style="font-size:12.5px;font-weight:700;color:#15803d;">Status Guide</span></div>
+      <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:var(--green-light);color:#16a34a;white-space:nowrap;">✓ Approved</span><span style="font-size:11px;color:var(--text-3);">Ready for use</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:#fffbeb;color:#b45309;white-space:nowrap;">⏳ Pending</span><span style="font-size:11px;color:var(--text-3);">Awaiting review</span></div>
+        <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;background:#eff6ff;color:#2563eb;white-space:nowrap;">🔍 In Review</span><span style="font-size:11px;color:var(--text-3);">Being evaluated</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Data ──
+  const ASSETS = [
+    {title:'Primary Company Logo', name:'Logo_Primary_Dark.svg', type:'logos', size:'312 kB', status:'approved', color:'#f8f9fa', icon:'#374151'},
+    {title:'Primary Logo – Light', name:'Logo_Primary_Light.svg', type:'logos', size:'298 kB', status:'approved', color:'#1a2340', icon:'#fff'},
+    {title:'Icon Mark', name:'Logo_Icon_Only.svg', type:'logos', size:'54 kB', status:'approved', color:'#eff6ff', icon:'#3b6ef5'},
+    {title:'Horizontal Wordmark', name:'Logo_Wordmark.ai', type:'logos', size:'1.2 MB', status:'pending', color:'#f3f4f6', icon:'#6b7280'},
+    {title:'Q1 Campaign Hero Banner', name:'Hero_Banner_Q1.jpg', type:'images', size:'4.5 MB', status:'approved', color:'linear-gradient(135deg,#6366f1,#8b5cf6)', icon:'#fff'},
+    {title:'Main Product Shot', name:'Product_Shot_Main.png', type:'images', size:'2.1 MB', status:'approved', color:'linear-gradient(135deg,#06b6d4,#3b82f6)', icon:'#fff'},
+    {title:'Team Photo 2026', name:'Team_Photo_2026.jpg', type:'images', size:'6.8 MB', status:'review', color:'linear-gradient(135deg,#f59e0b,#ef4444)', icon:'#fff'},
+    {title:'Core Brand Color Palette', name:'Core_Palette_2026.pdf', type:'documents', size:'5.2 MB', status:'approved', color:'#fff7ed', icon:'#f97316'},
+    {title:'Brand Guidelines', name:'Brand_Guidelines_v3.pdf', type:'documents', size:'12 MB', status:'approved', color:'#fdf4ff', icon:'#a855f7'},
+    {title:'Q1 Company Deck', name:'Q1_Deck_2026.pptx', type:'presentations', size:'8.4 MB', status:'approved', color:'#eff6ff', icon:'#3b6ef5'},
+    {title:'Instagram Story Template', name:'Social_Template_IG.psd', type:'social', size:'3.3 MB', status:'pending', color:'linear-gradient(135deg,#ec4899,#f97316)', icon:'#fff'},
+    {title:'Brand Jingle', name:'Brand_Jingle_Main.mp3', type:'audio', size:'3.8 MB', status:'approved', color:'#f0fdf4', icon:'#22c55e'},
+  ];
+  const ICONS = {
+    logos:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+    images:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg>',
+    documents:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    presentations:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    social:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/></svg>',
+    audio:'<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/></svg>',
+  };
+  const META = {
+    'Logo_Primary_Dark.svg':{desc:'Official primary logo for dark backgrounds. Contains symbol and wordmark lockup.',dims:'2400 × 800 px',format:'SVG (Vector)',uploader:'Sarah J.'},
+    'Logo_Primary_Light.svg':{desc:'Official primary logo in full colour for white or light backgrounds.',dims:'2400 × 800 px',format:'SVG (Vector)',uploader:'Sarah J.'},
+    'Logo_Icon_Only.svg':{desc:'Standalone icon mark for favicons, app icons and social avatars.',dims:'400 × 400 px',format:'SVG (Vector)',uploader:'Sarah J.'},
+    'Logo_Wordmark.ai':{desc:'Horizontal wordmark without icon. Pending approval before production use.',dims:'3200 × 600 px',format:'AI (Illustrator)',uploader:'Mark T.'},
+    'Hero_Banner_Q1.jpg':{desc:'Q1 campaign hero banner for homepage and paid media placements.',dims:'2560 × 1440 px',format:'JPG',uploader:'Priya L.'},
+    'Product_Shot_Main.png':{desc:'Primary product photograph for marketing materials.',dims:'1920 × 1920 px',format:'PNG (Transparent)',uploader:'Priya L.'},
+    'Team_Photo_2026.jpg':{desc:'Official 2026 company team photo. Under review for colour grading.',dims:'4000 × 2667 px',format:'JPG',uploader:'Carlos M.'},
+    'Core_Palette_2026.pdf':{desc:'Definitive colour palette for 2026 including hex, RGB, CMYK and Pantone.',dims:'A4 Document',format:'PDF',uploader:'Sarah J.'},
+    'Brand_Guidelines_v3.pdf':{desc:'Full brand guidelines v3 covering logo, typography, colour and photography.',dims:'A4 · 48 pages',format:'PDF',uploader:'Sarah J.'},
+    'Q1_Deck_2026.pptx':{desc:'Official Q1 2026 company presentation deck for external stakeholders.',dims:'16:9 Widescreen',format:'PPTX',uploader:'James K.'},
+    'Social_Template_IG.psd':{desc:'Instagram Story template set. Awaiting final approval.',dims:'1080 × 1920 px',format:'PSD',uploader:'Mia R.'},
+    'Brand_Jingle_Main.mp3':{desc:'Official brand sonic identity — primary jingle for video ads.',dims:'0:08 duration',format:'MP3 · 320kbps',uploader:'Tom A.'},
+  };
+  const UPLOADERS = {'Sarah J.':'#6366f1','Mark T.':'#f59e0b','Priya L.':'#22c55e','Carlos M.':'#3b6ef5','James K.':'#ec4899','Mia R.':'#f97316','Tom A.':'#8b5cf6'};
+
+  let currentCat = 'all', currentGridView = 'grid', _deleteAsset = '', _uploadStatus = 'approved';
+  window._fileSelected = false;
+
+  function badgeClass(s){return s==='approved'?'badge-approved':s==='pending'?'badge-pending':'badge-review';}
+  function badgeLabel(s){return s==='approved'?'✓ Approved':s==='pending'?'⏳ Pending':'🔍 In Review';}
+
+  function getFiltered(){
+    const q=(document.getElementById('asset-search')?.value||'').toLowerCase();
+    const st=document.getElementById('status-filter')?.value||'all';
+    return ASSETS.filter(a=>(currentCat==='all'||a.type===currentCat)&&(a.name.toLowerCase().includes(q)||a.title.toLowerCase().includes(q))&&(st==='all'||a.status===st));
+  }
+
+  function renderAssets(){
+    const assets=getFiltered();
+    const cnt=document.getElementById('asset-count');
+    if(cnt) cnt.textContent='Showing '+assets.length+' asset'+(assets.length!==1?'s':'');
+    if(currentGridView==='grid'){
+      document.getElementById('view-grid').innerHTML=assets.map(a=>`
+        <div class="a-card">
+          <div class="a-thumb" style="background:${a.color};cursor:pointer;" onclick="openPreview('${a.name}')">
+            <div style="color:${a.icon};opacity:.85;">${ICONS[a.type]||''}</div>
+            <span class="a-badge ${badgeClass(a.status)}">${badgeLabel(a.status)}</span>
+          </div>
+          <div class="a-info">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+              <div style="min-width:0;"><div class="a-name">${a.title}</div><div style="font-size:10.5px;color:var(--text-3);font-family:'DM Mono',monospace;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.name}</div><div class="a-meta" style="margin-top:3px;">${a.type.charAt(0).toUpperCase()+a.type.slice(1)} · ${a.size}</div></div>
+              <button onclick="event.stopPropagation();openDownloadModal('${a.name}')" class="dl-btn" style="flex-shrink:0;margin-top:2px;"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+            </div>
+          </div>
+          <div class="admin-bar">
+            <button class="admin-btn" onclick="openEditPage('${a.name}')"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z"/></svg>Edit</button>
+            <button class="admin-btn danger" onclick="openDeleteModal('${a.name}')"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>Delete</button>
+          </div>
+        </div>`).join('');
+    } else {
+      document.getElementById('list-body').innerHTML=assets.map(a=>`
+        <div class="list-row" onclick="openPreview('${a.name}')">
+          <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+            <div class="list-icon" style="background:${a.color.includes('gradient')?'#f3f4f6':a.color};"><div style="color:${a.color.includes('gradient')?'#6b7280':a.icon};transform:scale(.75);">${ICONS[a.type]||''}</div></div>
+            <div style="min-width:0;"><div style="font-size:13px;font-weight:600;color:var(--text-1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.title}</div><div style="font-size:10.5px;color:var(--text-3);font-family:'DM Mono',monospace;">${a.name}</div></div>
+          </div>
+          <span style="font-size:12.5px;color:var(--text-2);">${a.type.charAt(0).toUpperCase()+a.type.slice(1)}</span>
+          <span style="font-size:12.5px;color:var(--text-3);">${a.size}</span>
+          <span class="a-badge ${badgeClass(a.status)}" style="position:static;display:inline-flex;">${badgeLabel(a.status)}</span>
+          <div style="display:flex;gap:5px;">
+            <button onclick="event.stopPropagation();openDownloadModal('${a.name}')" style="padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">↓</button>
+            <button onclick="event.stopPropagation();openEditPage('${a.name}')" style="padding:5px 8px;border:1px solid var(--border);border-radius:6px;background:#fff;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer;font-family:inherit;">Edit</button>
+            <button onclick="event.stopPropagation();openDeleteModal('${a.name}')" style="padding:5px 8px;border:1px solid #fecaca;border-radius:6px;background:#fff;font-size:11px;font-weight:600;color:var(--red);cursor:pointer;font-family:inherit;">Del</button>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  function switchCategory(el,cat){document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentCat=cat;renderAssets();}
+  function switchView2(v){
+    currentGridView=v;
+    document.getElementById('view-grid').style.display=v==='grid'?'grid':'none';
+    document.getElementById('view-list-body').style.display=v==='list'?'block':'none';
+    document.getElementById('toggle-grid').style.background=v==='grid'?'var(--accent)':'#fff';
+    document.getElementById('toggle-grid').style.color=v==='grid'?'#fff':'var(--text-3)';
+    document.getElementById('toggle-list').style.background=v==='list'?'var(--accent)':'#fff';
+    document.getElementById('toggle-list').style.color=v==='list'?'#fff':'var(--text-3)';
+    renderAssets();
+  }
+
+  // ── View switching ──
+  function showView(id){
+    document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active');});
+    document.getElementById('view-'+id).classList.add('active');
+    window.scrollTo(0,0);
+    if(id==='list') renderAssets();
+  }
+
+  // ── Preview modal ──
+  function openPreview(name){
+    window._previewAsset=name;
+    const a=ASSETS.find(x=>x.name===name);if(!a)return;
+    const m=META[name]||{desc:'',dims:'—',format:'—',uploader:'Unknown'};
+    document.getElementById('preview-banner').style.background=a.color;
+    document.getElementById('preview-icon').innerHTML='<div style="color:'+a.icon+';opacity:.9;transform:scale(2.2);">'+(ICONS[a.type]||'')+'</div><div style="font-size:11px;font-weight:600;color:'+a.icon+';opacity:.5;font-family:DM Mono,monospace;">'+a.name+'</div>';
+    const pb=a.status==='approved'?'var(--green-light)':a.status==='pending'?'#fffbeb':'#eff6ff';
+    const pc=a.status==='approved'?'#16a34a':a.status==='pending'?'#b45309':'#2563eb';
+    document.getElementById('preview-pills').innerHTML='<span style="font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;background:'+pb+';color:'+pc+';text-transform:uppercase;">'+a.status+'</span><span style="font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;background:#e0f2fe;color:#0284c7;text-transform:uppercase;">'+a.type+'</span>';
+    document.getElementById('preview-title').textContent=a.title;
+    document.getElementById('preview-desc').textContent=m.desc;
+    document.getElementById('preview-filename').textContent=a.name;
+    document.getElementById('preview-dims').textContent=m.dims;
+    document.getElementById('preview-format').textContent=m.format;
+    document.getElementById('preview-size').textContent=a.size;
+    const uc=UPLOADERS[m.uploader]||'#9ca3af';
+    const ini=m.uploader.split(' ').map(n=>n[0]).join('');
+    document.getElementById('preview-uploader').innerHTML='<span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:20px;height:20px;border-radius:50%;background:'+uc+';display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;">'+ini+'</span>'+m.uploader+'</span>';
+    openModal('preview-modal');
+  }
+
+  // ── Edit page ──
+  function openEditPage(name){
+    const a=ASSETS.find(x=>x.name===name);if(!a)return;
+    const m=META[name]||{desc:'',dims:'—',format:'—',uploader:'Unknown'};
+    document.getElementById('edit-breadcrumb').textContent=a.title;
+    document.getElementById('edit-title').textContent=a.title;
+    document.getElementById('edit-filename-sub').textContent=a.name;
+    const pb=a.status==='approved'?'var(--green-light)':a.status==='pending'?'#fffbeb':'#eff6ff';
+    const pc=a.status==='approved'?'#16a34a':a.status==='pending'?'#b45309':'#2563eb';
+    const pill=document.getElementById('edit-status-pill');
+    pill.style.background=pb;pill.style.color=pc;pill.textContent=a.status;
+    document.getElementById('ef-title').value=a.title;
+    document.getElementById('ef-filename').value=a.name;
+    document.getElementById('ef-desc').value=m.desc;
+    document.getElementById('ef-category').value=a.type;
+    document.getElementById('ef-dims').textContent=m.dims;
+    document.getElementById('ef-format').textContent=m.format;
+    setEditStatus(a.status);
+    const thumb=document.getElementById('edit-preview-thumb');
+    thumb.style.background=a.color;
+    thumb.innerHTML='<div style="color:'+a.icon+';opacity:.85;transform:scale(2.8);">'+(ICONS[a.type]||'')+'</div>';
+    document.getElementById('edit-preview-title').textContent=a.title;
+    document.getElementById('edit-preview-meta').textContent=a.type.charAt(0).toUpperCase()+a.type.slice(1)+' · '+a.size;
+    showView('edit');
+  }
+
+  let _editStatus='approved';
+  function setEditStatus(s){
+    _editStatus=s;
+    ['approved','pending','review'].forEach(r=>{
+      const btn=document.getElementById('status-'+r);if(!btn)return;
+      btn.style.borderColor=r===s?'var(--accent)':'var(--border)';
+      btn.style.background=r===s?'var(--accent-light)':'#fff';
+      btn.style.color=r===s?'var(--accent)':'var(--text-2)';
+    });
+    const pill=document.getElementById('edit-status-pill');
+    if(pill){const pb=s==='approved'?'var(--green-light)':s==='pending'?'#fffbeb':'#eff6ff';const pc=s==='approved'?'#16a34a':s==='pending'?'#b45309':'#2563eb';pill.style.background=pb;pill.style.color=pc;pill.textContent=s;}
+  }
+
+  function saveEdit(){showView('list');showToast('Asset updated successfully!');}
+
+  // ── Upload ──
+  function setUploadStatus(s){
+    _uploadStatus=s;
+    ['approved','pending'].forEach(r=>{
+      const btn=document.getElementById('upload-status-'+r);if(!btn)return;
+      btn.style.borderColor=r===s?'var(--accent)':'var(--border)';
+      btn.style.background=r===s?'var(--accent-light)':'#fff';
+      btn.style.color=r===s?'var(--accent)':'var(--text-2)';
+      const sub=btn.querySelector('div');if(sub)sub.style.color=r===s?'var(--accent)':'var(--text-3)';
+    });
+  }
+
+  function checkUploadForm(){
+    const hasFile=window._fileSelected;
+    const hasName=document.getElementById('upload-name')?.value.trim();
+    const hasCat=document.getElementById('upload-category')?.value;
+    const btn=document.getElementById('upload-submit-btn');if(!btn)return;
+    const ok=hasFile&&hasName&&hasCat;
+    btn.disabled=!ok;btn.style.opacity=ok?'1':'.5';btn.style.cursor=ok?'pointer':'not-allowed';
+  }
+
+  function onFileSelected(input){
+    if(!input.files||!input.files[0])return;
+    const file=input.files[0];
+    window._fileSelected=true;
+    const ext=file.name.split('.').pop().toUpperCase();
+    const sz=file.size>1048576?(file.size/1048576).toFixed(1)+' MB':(file.size/1024).toFixed(0)+' KB';
+    const dz=document.getElementById('upload-dropzone');
+    dz.style.borderColor='var(--green)';dz.style.background='var(--green-light)';
+    document.getElementById('dropzone-content').innerHTML='<div style="width:52px;height:52px;border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:var(--shadow);"><svg width="22" height="22" fill="none" stroke="var(--green)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:4px;">File selected!</div><div style="font-size:12.5px;color:var(--text-2);font-family:DM Mono,monospace;">'+file.name+'</div><div style="font-size:12px;color:var(--text-3);margin-top:4px;">'+ext+' · '+sz+'</div>';
+    const cols={svg:'#dcfce7',png:'#e0f2fe',jpg:'#fef9c3',jpeg:'#fef9c3',pdf:'#fce7f3',pptx:'#eff6ff',mp3:'#f0fdf4',mp4:'#ede9fe'};
+    const strks={svg:'#16a34a',png:'#0284c7',jpg:'#ca8a04',jpeg:'#ca8a04',pdf:'#db2777',pptx:'#3b6ef5',mp3:'#22c55e',mp4:'#6366f1'};
+    const bg=cols[ext.toLowerCase()]||'var(--bg)';
+    const stk=strks[ext.toLowerCase()]||'var(--text-3)';
+    const thumb=document.getElementById('upload-preview-thumb');
+    thumb.style.background=bg;
+    thumb.innerHTML='<div style="font-size:32px;font-weight:800;color:'+stk+';font-family:DM Mono,monospace;">.'+ext+'</div>';
+    const nm=document.getElementById('upload-preview-name');
+    nm.textContent=file.name;nm.style.color='var(--text-1)';
+    document.getElementById('upload-preview-meta').textContent=ext+' · '+sz;
+    if(!document.getElementById('upload-name').value)
+      document.getElementById('upload-name').value=file.name.split('.')[0].replace(/_/g,' ').replace(/-/g,' ');
+    checkUploadForm();
+  }
+
+  function submitUpload(){showView('list');showToast('Asset uploaded and '+(_uploadStatus==='approved'?'published!':'saved for review.'));}
+
+  // ── Download ──
+  function openDownloadModal(name){
+    window._dlAsset=name;
+    document.getElementById('dl-asset-name').textContent=name;
+    openModal('download-modal');
+  }
+
+  function triggerDownload(fmt){
+    closeModal('download-modal');
+    const name=window._dlAsset||'';
+    const icon=document.getElementById('dl-toast-icon');
+    const msg=document.getElementById('dl-toast-msg');
+    const toast=document.getElementById('dl-toast');
+    icon.innerHTML='<svg width="15" height="15" fill="none" stroke="#60a5fa" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/></svg>';
+    msg.textContent='Preparing '+fmt+' download...';
+    toast.style.display='flex';
+    setTimeout(()=>{icon.innerHTML='<svg width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';msg.innerHTML='<strong>'+name.split('.')[0]+'</strong> downloaded as '+fmt+'!';},900);
+    setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity .3s';setTimeout(()=>{toast.style.display='none';toast.style.opacity='1';toast.style.transition='';},300);},3500);
+  }
+
+  // ── Delete ──
+  function openDeleteModal(name){
+    _deleteAsset=name;
+    document.getElementById('delete-asset-name').textContent=name;
+    openModal('delete-modal');
+  }
+
+  function confirmDelete(){
+    const idx=ASSETS.findIndex(x=>x.name===_deleteAsset);
+    if(idx>-1) ASSETS.splice(idx,1);
+    closeModal('delete-modal');
+    showToast('Asset deleted.');
+    renderAssets();
+  }
+
+  function showDeprecatedModal(){openModal('deprecated-modal');}
+
+  // ── Instructions ──
+  let panelOpen=false;
+  function toggleInstructions(){
+    panelOpen=!panelOpen;
+    const panel=document.getElementById('instructions-panel');
+    panel.style.right=panelOpen?'0px':'-280px';
+    const icon=document.getElementById('tab-icon');
+    if(icon) icon.innerHTML=panelOpen?'<polyline points="9 18 15 12 9 6"/>':'<polyline points="15 18 9 12 15 6"/>';
+  }
+
+  // ── Modal helpers ──
+  function openModal(id){document.getElementById(id).style.display='flex';}
+  function closeModal(id){document.getElementById(id).style.display='none';}
+
+  // ── Toast ──
+  function showToast(msg){
+    const toast=document.getElementById('admin-toast');
+    document.getElementById('admin-toast-msg').textContent=msg;
+    toast.style.display='flex';
+    setTimeout(()=>{toast.style.opacity='0';toast.style.transition='opacity .3s';setTimeout(()=>{toast.style.display='none';toast.style.opacity='1';toast.style.transition='';},300);},3000);
+  }
+
+  // ── Nav ──
+  function toggleNav(id){
+    const sub=document.getElementById('sub-'+id);
+    const chev=document.getElementById('chevron-'+id);
+    if(!sub||!chev)return;
+    const open=sub.classList.contains('open');
+    sub.classList.toggle('open',!open);
+    chev.style.transform=open?'':'rotate(180deg)';
+  }
+
+  // Init
+  renderAssets();
+</script>
+</body>
+</html>
