@@ -772,6 +772,116 @@
   .fmt-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
   .fmt-label { font-size: 13px; font-weight: 700; color: var(--text-1); }
   .fmt-sub { font-size: 10.5px; color: var(--text-3); }
+  .brandhub-converter-module { margin-top: 4px; }
+  .brandhub-converter-dropzone {
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    background: #fafbff;
+    min-height: 124px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .brandhub-converter-dropzone:hover,
+  .brandhub-converter-dropzone.is-active {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .brandhub-converter-preview {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #fff;
+  }
+  .brandhub-converter-format-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 8px;
+  }
+  .brandhub-converter-format-btn {
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    background: #fff;
+    height: 40px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-1);
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .brandhub-converter-format-btn:hover { border-color: var(--accent); }
+  .brandhub-converter-format-btn.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .brandhub-converter-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .brandhub-converter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .brandhub-converter-label {
+    font-size: 11.5px;
+    color: var(--text-2);
+    font-weight: 600;
+  }
+  .brandhub-converter-input {
+    width: 100%;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0 10px;
+    font-size: 12.5px;
+    color: var(--text-1);
+    font-family: inherit;
+    outline: none;
+  }
+  .brandhub-converter-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(59,110,245,.08);
+  }
+  .brandhub-converter-status {
+    min-height: 18px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .brandhub-converter-status.is-error { color: #dc2626; }
+  .brandhub-converter-status.is-success { color: #16a34a; }
+  .brandhub-converter-logo {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  .brandhub-converter-logo button {
+    height: 30px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text-2);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 0 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .brandhub-converter-logo button:hover { border-color: var(--accent); color: var(--accent); }
 
   /* ── Asset Detail Modal ── */
   .detail-row {
@@ -1170,44 +1280,318 @@
 
 
   let currentDownloadAsset = '';
+const BRANDHUB_CONVERTER_MAX_DIMENSION = 8000;
+const brandhubConverterState = {
+  file: null,
+  sourceName: '',
+  image: null,
+  mimeType: '',
+  selectedFormat: 'jpeg',
+  width: 0,
+  height: 0,
+  aspectRatio: 1,
+  keepAspect: true,
+  objectUrl: '',
+  lastOutputName: ''
+};
+
+function getConverterMime(format) {
+  if (format === 'png') return 'image/png';
+  if (format === 'webp') return 'image/webp';
+  return 'image/jpeg';
+}
+
+function formatToExt(format) {
+  return format === 'jpeg' ? 'jpg' : format;
+}
+
+function getBaseName(name) {
+  return (name || 'brandhub-asset').replace(/\.[^/.]+$/, '');
+}
+
+function setConverterStatus(message, type) {
+  const status = document.getElementById('brandhub-converter-status');
+  if (!status) return;
+  status.classList.remove('is-error', 'is-success');
+  if (type) status.classList.add(type === 'error' ? 'is-error' : 'is-success');
+  status.textContent = message || '';
+}
+
+function resetConverterObjectUrl() {
+  if (brandhubConverterState.objectUrl) {
+    URL.revokeObjectURL(brandhubConverterState.objectUrl);
+    brandhubConverterState.objectUrl = '';
+  }
+}
+
+function resetConverterFields() {
+  const uploadInput = document.getElementById('brandhub-converter-upload');
+  const preview = document.getElementById('brandhub-converter-preview');
+  const dropText = document.getElementById('brandhub-converter-dropzone-text');
+  const widthInput = document.getElementById('brandhub-converter-width');
+  const heightInput = document.getElementById('brandhub-converter-height');
+  const qualityWrap = document.getElementById('brandhub-converter-quality-wrap');
+  const qualityValue = document.getElementById('brandhub-converter-quality-value');
+  const qualitySlider = document.getElementById('brandhub-converter-quality');
+  const successWrap = document.getElementById('brandhub-converter-success');
+  const convertBtn = document.getElementById('brandhub-converter-convert-btn');
+  if (uploadInput) uploadInput.value = '';
+  if (preview) {
+    preview.style.display = 'none';
+    preview.removeAttribute('src');
+  }
+  if (dropText) dropText.style.display = 'block';
+  if (widthInput) widthInput.value = '';
+  if (heightInput) heightInput.value = '';
+  if (qualityWrap) qualityWrap.style.display = 'block';
+  if (qualityValue) qualityValue.textContent = '0.92';
+  if (qualitySlider) qualitySlider.value = '0.92';
+  if (successWrap) successWrap.style.display = 'none';
+  if (convertBtn) convertBtn.disabled = false;
+}
+
+function resetConverterState() {
+  resetConverterObjectUrl();
+  brandhubConverterState.file = null;
+  brandhubConverterState.sourceName = '';
+  brandhubConverterState.image = null;
+  brandhubConverterState.mimeType = '';
+  brandhubConverterState.width = 0;
+  brandhubConverterState.height = 0;
+  brandhubConverterState.aspectRatio = 1;
+  brandhubConverterState.keepAspect = true;
+  brandhubConverterState.lastOutputName = '';
+  setConverterStatus('', '');
+  resetConverterFields();
+}
+
+function updateConverterFormatSelection() {
+  document.querySelectorAll('.brandhub-converter-format-btn').forEach((btn) => {
+    btn.classList.toggle('is-selected', btn.dataset.format === brandhubConverterState.selectedFormat);
+  });
+  const qualityWrap = document.getElementById('brandhub-converter-quality-wrap');
+  if (qualityWrap) {
+    qualityWrap.style.display = (brandhubConverterState.selectedFormat === 'jpeg' || brandhubConverterState.selectedFormat === 'webp') ? 'block' : 'none';
+  }
+}
+
+function updateConverterDimensionInputs() {
+  const widthInput = document.getElementById('brandhub-converter-width');
+  const heightInput = document.getElementById('brandhub-converter-height');
+  if (widthInput) widthInput.value = brandhubConverterState.width ? String(brandhubConverterState.width) : '';
+  if (heightInput) heightInput.value = brandhubConverterState.height ? String(brandhubConverterState.height) : '';
+}
+
+function updateDownloadModalAssetName() {
+  const nameEl = document.getElementById('dl-asset-name');
+  if (!nameEl) return;
+  const fallback = currentDownloadAsset || 'Select an image source';
+  const source = brandhubConverterState.sourceName ? ('Source: ' + brandhubConverterState.sourceName) : 'No source selected';
+  nameEl.textContent = fallback + ' - ' + source;
+}
+
+function setImageSourceFromDataUrl(dataUrl, sourceName, mimeType) {
+  const preview = document.getElementById('brandhub-converter-preview');
+  const dropText = document.getElementById('brandhub-converter-dropzone-text');
+  const img = new Image();
+  img.onload = function () {
+    brandhubConverterState.image = img;
+    brandhubConverterState.sourceName = sourceName;
+    brandhubConverterState.mimeType = mimeType;
+    brandhubConverterState.width = Math.min(img.naturalWidth || img.width || 0, BRANDHUB_CONVERTER_MAX_DIMENSION);
+    brandhubConverterState.height = Math.min(img.naturalHeight || img.height || 0, BRANDHUB_CONVERTER_MAX_DIMENSION);
+    brandhubConverterState.aspectRatio = (img.naturalWidth && img.naturalHeight) ? (img.naturalWidth / img.naturalHeight) : 1;
+    if (preview) {
+      preview.src = dataUrl;
+      preview.style.display = 'block';
+    }
+    if (dropText) dropText.style.display = 'none';
+    updateConverterDimensionInputs();
+    updateDownloadModalAssetName();
+    setConverterStatus('Source loaded. Choose options and click Convert & Download.', '');
+  };
+  img.onerror = function () {
+    setConverterStatus('Unable to load this image. Please choose a different file.', 'error');
+  };
+  img.src = dataUrl;
+}
+
+function setImageSourceFromFile(file) {
+  const accepted = ['image/png','image/jpeg','image/jpg','image/webp','image/bmp','image/gif','image/svg+xml'];
+  if (!accepted.includes((file.type || '').toLowerCase())) {
+    setConverterStatus('Invalid file type. Upload PNG, JPG, WebP, BMP, GIF, or SVG.', 'error');
+    return;
+  }
+  resetConverterObjectUrl();
+  brandhubConverterState.file = file;
+  brandhubConverterState.objectUrl = URL.createObjectURL(file);
+  setImageSourceFromDataUrl(brandhubConverterState.objectUrl, file.name || 'uploaded-image', file.type || '');
+}
+
+function handleConverterDimensionChange(changedField) {
+  const widthInput = document.getElementById('brandhub-converter-width');
+  const heightInput = document.getElementById('brandhub-converter-height');
+  if (!widthInput || !heightInput) return;
+  let width = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, parseInt(widthInput.value || '0', 10) || 0));
+  let height = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, parseInt(heightInput.value || '0', 10) || 0));
+  if (!width || !height) return;
+
+  if (brandhubConverterState.keepAspect && brandhubConverterState.aspectRatio) {
+    if (changedField === 'width') {
+      height = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, Math.round(width / brandhubConverterState.aspectRatio)));
+      heightInput.value = String(height);
+    } else {
+      width = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, Math.round(height * brandhubConverterState.aspectRatio)));
+      widthInput.value = String(width);
+    }
+  }
+  brandhubConverterState.width = width;
+  brandhubConverterState.height = height;
+}
+
+function selectConverterFormat(format) {
+  brandhubConverterState.selectedFormat = format;
+  updateConverterFormatSelection();
+}
+
+function useDemoLogoAsSource() {
+  const demoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220">
+  <defs>
+    <linearGradient id="bhg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="600" height="220" rx="28" fill="#f8fafc"/>
+  <g transform="translate(46,46)">
+    <path d="M0 64C0 28.7 28.7 0 64 0h0c35.3 0 64 28.7 64 64h0c0 35.3-28.7 64-64 64h0C28.7 128 0 99.3 0 64z" fill="url(#bhg)"/>
+    <path d="M30 96V32h40c21 0 33 10 33 26 0 9-4 16-12 20 10 4 15 11 15 21 0 17-14 29-37 29H30zM52 56h16c7 0 12-4 12-10s-5-10-12-10H52v20zm0 36h18c9 0 14-4 14-11s-5-11-14-11H52v22z" fill="#ffffff"/>
+  </g>
+  <text x="198" y="102" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="52" font-weight="800" fill="#0f172a">BrandHub</text>
+  <text x="200" y="140" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" font-weight="600" fill="#475569" letter-spacing=".4">Demo Logo</text>
+</svg>`;
+  const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(demoSvg);
+  setImageSourceFromDataUrl(dataUrl, 'brandhub-demo-logo.svg', 'image/svg+xml');
+}
+
+async function convertAndDownloadAsset() {
+  try {
+    if (!brandhubConverterState.image) {
+      setConverterStatus('Choose a source image first before converting.', 'error');
+      return;
+    }
+    const width = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, parseInt(document.getElementById('brandhub-converter-width').value || '0', 10) || 0));
+    const height = Math.max(1, Math.min(BRANDHUB_CONVERTER_MAX_DIMENSION, parseInt(document.getElementById('brandhub-converter-height').value || '0', 10) || 0));
+    if (!width || !height) {
+      setConverterStatus('Enter valid width and height values.', 'error');
+      return;
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      setConverterStatus('Conversion failed. Canvas is not available.', 'error');
+      return;
+    }
+    if (brandhubConverterState.selectedFormat === 'jpeg') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+    }
+    ctx.drawImage(brandhubConverterState.image, 0, 0, width, height);
+    const mimeType = getConverterMime(brandhubConverterState.selectedFormat);
+    const qualitySlider = document.getElementById('brandhub-converter-quality');
+    const quality = Math.max(0.1, Math.min(1, parseFloat(qualitySlider ? qualitySlider.value : '0.92') || 0.92));
+    const dataUrl = (brandhubConverterState.selectedFormat === 'jpeg' || brandhubConverterState.selectedFormat === 'webp')
+      ? canvas.toDataURL(mimeType, quality)
+      : canvas.toDataURL(mimeType);
+    const link = document.createElement('a');
+    const ext = formatToExt(brandhubConverterState.selectedFormat);
+    const defaultName = getBaseName(brandhubConverterState.sourceName || currentDownloadAsset || 'brandhub-asset') + '-converted.' + ext;
+    const customName = window.prompt('Save converted file as:', defaultName);
+    const finalName = (customName && customName.trim()) ? customName.trim() : defaultName;
+    link.href = dataUrl;
+    link.download = finalName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    brandhubConverterState.lastOutputName = finalName;
+    const successWrap = document.getElementById('brandhub-converter-success');
+    const successText = document.getElementById('brandhub-converter-success-text');
+    if (successWrap && successText) {
+      successText.textContent = finalName + ' downloaded successfully.';
+      successWrap.style.display = 'flex';
+    }
+    setConverterStatus('Conversion completed successfully.', 'success');
+  } catch (err) {
+    setConverterStatus('Conversion failed. Please try another format or source image.', 'error');
+  }
+}
+
+let brandhubConverterEventsBound = false;
+function initDownloadConverterEvents() {
+  if (brandhubConverterEventsBound) return;
+  const uploadInput = document.getElementById('brandhub-converter-upload');
+  const dropzone = document.getElementById('brandhub-converter-dropzone');
+  const qualitySlider = document.getElementById('brandhub-converter-quality');
+  const qualityValue = document.getElementById('brandhub-converter-quality-value');
+  const widthInput = document.getElementById('brandhub-converter-width');
+  const heightInput = document.getElementById('brandhub-converter-height');
+  const keepAspect = document.getElementById('brandhub-converter-keep-aspect');
+  if (!uploadInput || !dropzone || !qualitySlider || !qualityValue || !widthInput || !heightInput || !keepAspect) return;
+
+  dropzone.addEventListener('click', function () { uploadInput.click(); });
+  dropzone.addEventListener('dragover', function (event) {
+    event.preventDefault();
+    dropzone.classList.add('is-active');
+  });
+  dropzone.addEventListener('dragleave', function () { dropzone.classList.remove('is-active'); });
+  dropzone.addEventListener('drop', function (event) {
+    event.preventDefault();
+    dropzone.classList.remove('is-active');
+    const file = event.dataTransfer && event.dataTransfer.files ? event.dataTransfer.files[0] : null;
+    if (file) setImageSourceFromFile(file);
+  });
+
+  uploadInput.addEventListener('change', function (event) {
+    const file = event.target && event.target.files ? event.target.files[0] : null;
+    if (file) setImageSourceFromFile(file);
+  });
+
+  qualitySlider.addEventListener('input', function () {
+    qualityValue.textContent = Number(qualitySlider.value).toFixed(2);
+  });
+  widthInput.addEventListener('input', function () { handleConverterDimensionChange('width'); });
+  heightInput.addEventListener('input', function () { handleConverterDimensionChange('height'); });
+  keepAspect.addEventListener('change', function () {
+    brandhubConverterState.keepAspect = keepAspect.checked;
+  });
+  brandhubConverterEventsBound = true;
+}
+
   function openDownloadModal(name) {
     currentDownloadAsset = name;
-    document.getElementById('dl-asset-name').textContent = name;
+  initDownloadConverterEvents();
+  updateDownloadModalAssetName();
+  resetConverterState();
+  updateConverterFormatSelection();
+  const keepAspect = document.getElementById('brandhub-converter-keep-aspect');
+  if (keepAspect) keepAspect.checked = true;
     document.getElementById('download-modal').style.display = 'flex';
   }
   function closeDownloadModal() {
+  resetConverterState();
     document.getElementById('download-modal').style.display = 'none';
   }
   function triggerDownload(fmt) {
-    closeDownloadModal();
-    // Simulate brief download delay then show success toast
-    const toast = document.getElementById('dl-toast');
-    const toastIcon = document.getElementById('dl-toast-icon');
-    const toastMsg = document.getElementById('dl-toast-msg');
-
-    // Show "downloading" state
-    toastIcon.innerHTML = '<svg width="15" height="15" fill="none" stroke="#60a5fa" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-    toastMsg.textContent = 'Preparing ' + fmt + ' download...';
-    toast.style.display = 'flex';
-    toast.style.background = 'var(--navy)';
-
-    setTimeout(() => {
-      // Switch to success state
-      toastIcon.innerHTML = '<svg width="15" height="15" fill="none" stroke="#4ade80" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
-      toastMsg.innerHTML = '<strong>' + currentDownloadAsset.split('.')[0] + '</strong> downloaded as ' + fmt + ' successfully!';
-      toast.style.background = '#0f172a';
-    }, 900);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(8px)';
-      toast.style.transition = 'opacity .3s, transform .3s';
-      setTimeout(() => {
-        toast.style.display = 'none';
-        toast.style.opacity = '1';
-        toast.style.transform = '';
-      }, 300);
-    }, 3500);
+  const fmtMap = { JPEG: 'jpeg', PNG: 'png', WEBP: 'webp' };
+  const normalized = fmtMap[(fmt || '').toUpperCase()];
+  if (!normalized) {
+    setConverterStatus('Unsupported format selected.', 'error');
+    return;
+  }
+  selectConverterFormat(normalized);
+  convertAndDownloadAsset();
   }
 
 const ASSET_META = {
@@ -6141,36 +6525,78 @@ function settingsToast(msg) {
 
 <!-- ── DOWNLOAD FORMAT MODAL ── -->
 <div id="download-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:600;align-items:center;justify-content:center;" onclick="if(event.target===this)closeDownloadModal()">
-  <div style="background:#fff;border-radius:16px;padding:28px;width:340px;max-width:90vw;box-shadow:var(--shadow-lg);animation:fadeUp .2s ease;">
+  <div class="brandhub-converter-module" style="background:#fff;border-radius:16px;padding:22px;width:470px;max-width:92vw;box-shadow:var(--shadow-lg);animation:fadeUp .2s ease;">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
       <div>
         <h2 style="font-size:16px;font-weight:800;color:var(--text-1);">Download Asset</h2>
-        <p id="dl-asset-name" style="font-size:11.5px;color:var(--text-3);margin-top:3px;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></p>
+        <p id="dl-asset-name" style="font-size:11.5px;color:var(--text-3);margin-top:3px;max-width:360px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></p>
       </div>
       <button onclick="closeDownloadModal()" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-3);">
         <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <p style="font-size:12.5px;color:var(--text-2);margin-bottom:18px;">Select the file format you need:</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
-      <button onclick="triggerDownload('JPEG')" class="fmt-btn">
-        <div class="fmt-icon" style="background:#fef9c3;"><svg width="18" height="18" fill="none" stroke="#ca8a04" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg></div>
-        <div class="fmt-label">JPEG</div><div class="fmt-sub">Best for photos</div>
-      </button>
-      <button onclick="triggerDownload('SVG')" class="fmt-btn">
-        <div class="fmt-icon" style="background:#dcfce7;"><svg width="18" height="18" fill="none" stroke="#16a34a" stroke-width="2" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
-        <div class="fmt-label">SVG</div><div class="fmt-sub">Scalable vector</div>
-      </button>
-      <button onclick="triggerDownload('PNG')" class="fmt-btn">
-        <div class="fmt-icon" style="background:#e0f2fe;"><svg width="18" height="18" fill="none" stroke="#0284c7" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l5-5 4 4 3-3 5 5"/></svg></div>
-        <div class="fmt-label">PNG</div><div class="fmt-sub">Transparent bg</div>
-      </button>
-      <button onclick="triggerDownload('PDF')" class="fmt-btn">
-        <div class="fmt-icon" style="background:#fce7f3;"><svg width="18" height="18" fill="none" stroke="#db2777" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <div class="fmt-label">PDF</div><div class="fmt-sub">Print & share</div>
-      </button>
+    <p style="font-size:12.5px;color:var(--text-2);margin-bottom:10px;">Upload an image source, then convert it to your preferred format.</p>
+    <input id="brandhub-converter-upload" type="file" accept=".png,.jpg,.jpeg,.webp,.bmp,.gif,.svg,image/png,image/jpeg,image/webp,image/bmp,image/gif,image/svg+xml" style="display:none;">
+    <div id="brandhub-converter-dropzone" class="brandhub-converter-dropzone" style="margin-bottom:10px;">
+      <div id="brandhub-converter-dropzone-text">
+        <div style="font-size:12.5px;font-weight:700;color:var(--text-1);margin-bottom:3px;">Drag and drop an image here</div>
+        <div style="font-size:11px;color:var(--text-3);">or click to select PNG, JPG, WebP, BMP, GIF, or SVG</div>
+      </div>
+      <img id="brandhub-converter-preview" class="brandhub-converter-preview" style="display:none;" alt="Image preview">
     </div>
-    <button onclick="closeDownloadModal()" style="width:100%;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+    <div class="brandhub-converter-logo" style="margin-bottom:10px;">
+      <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;height:auto;">
+        <defs>
+          <linearGradient id="bh-logo-gradient-ui" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3b82f6"></stop>
+            <stop offset="100%" stop-color="#8b5cf6"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="600" height="220" rx="28" fill="#f8fafc"></rect>
+        <g transform="translate(46,46)">
+          <path d="M0 64C0 28.7 28.7 0 64 0h0c35.3 0 64 28.7 64 64h0c0 35.3-28.7 64-64 64h0C28.7 128 0 99.3 0 64z" fill="url(#bh-logo-gradient-ui)"></path>
+          <path d="M30 96V32h40c21 0 33 10 33 26 0 9-4 16-12 20 10 4 15 11 15 21 0 17-14 29-37 29H30zM52 56h16c7 0 12-4 12-10s-5-10-12-10H52v20zm0 36h18c9 0 14-4 14-11s-5-11-14-11H52v22z" fill="#ffffff"></path>
+        </g>
+        <text x="198" y="102" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="52" font-weight="800" fill="#0f172a">BrandHub</text>
+        <text x="200" y="140" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" font-weight="600" fill="#475569" letter-spacing=".4">Demo Logo</text>
+      </svg>
+      <button onclick="useDemoLogoAsSource()">Use this logo as source</button>
+    </div>
+    <div class="brandhub-converter-format-grid" style="margin-bottom:10px;">
+      <button onclick="selectConverterFormat('jpeg')" type="button" data-format="jpeg" class="brandhub-converter-format-btn is-selected">JPEG</button>
+      <button onclick="selectConverterFormat('png')" type="button" data-format="png" class="brandhub-converter-format-btn">PNG</button>
+      <button onclick="selectConverterFormat('webp')" type="button" data-format="webp" class="brandhub-converter-format-btn">WebP</button>
+    </div>
+    <div id="brandhub-converter-quality-wrap" style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <label for="brandhub-converter-quality" class="brandhub-converter-label">Quality</label>
+        <span id="brandhub-converter-quality-value" style="font-size:11.5px;color:var(--text-3);font-family:'DM Mono',monospace;">0.92</span>
+      </div>
+      <input id="brandhub-converter-quality" type="range" min="0.1" max="1" step="0.01" value="0.92" style="width:100%;">
+    </div>
+    <div class="brandhub-converter-row" style="margin-bottom:10px;">
+      <div class="brandhub-converter-field">
+        <label class="brandhub-converter-label" for="brandhub-converter-width">Width (max 8000)</label>
+        <input id="brandhub-converter-width" class="brandhub-converter-input" type="number" min="1" max="8000" placeholder="Width">
+      </div>
+      <div class="brandhub-converter-field">
+        <label class="brandhub-converter-label" for="brandhub-converter-height">Height (max 8000)</label>
+        <input id="brandhub-converter-height" class="brandhub-converter-input" type="number" min="1" max="8000" placeholder="Height">
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--text-2);margin-bottom:10px;user-select:none;">
+      <input id="brandhub-converter-keep-aspect" type="checkbox" checked style="accent-color:var(--accent);">
+      Keep aspect ratio
+    </label>
+    <div id="brandhub-converter-status" class="brandhub-converter-status"></div>
+    <div id="brandhub-converter-success" style="display:none;align-items:center;justify-content:space-between;gap:8px;margin:8px 0 12px;padding:8px 10px;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:8px;">
+      <span id="brandhub-converter-success-text" style="font-size:11.5px;font-weight:600;color:#166534;"></span>
+      <button onclick="resetConverterState()" style="height:30px;padding:0 10px;border:1px solid #86efac;border-radius:7px;background:#fff;font-size:11.5px;font-weight:700;color:#15803d;cursor:pointer;font-family:inherit;">Reset</button>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button id="brandhub-converter-convert-btn" onclick="convertAndDownloadAsset()" style="flex:1;height:38px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Convert &amp; Download</button>
+      <button onclick="closeDownloadModal()" style="width:110px;height:38px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fff;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;font-family:inherit;">Cancel</button>
+    </div>
   </div>
 </div>
 
